@@ -1,0 +1,54 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+elements:
+- elementId: title
+  elementType: text
+  bounds:
+  - 50
+  - 25
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 32
+    color: '#172554'
+    text: 'Click: fade in → fade out → appear'
+- elementId: animated
+  elementType: text
+  bounds:
+  - 50
+  - 200
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 44
+    color: '#172554'
+    text: Native animation playback
+- elementId: marker
+  elementType: shape
+  bounds:
+  - 420
+  - 360
+  - 120
+  - 90
+  shapeName: roundRect
+  fill:
+    type: solid
+    color: '#2563EB'
+animations:
+- elementId: animated
+  effect: fade-in
+  durationMs: 800
+- elementId: marker
+  effect: appear
+  trigger: withPrevious
+- elementId: animated
+  effect: fade-out
+  trigger: afterPrevious
+  delayMs: 1600
+  durationMs: 500
+- elementId: animated
+  effect: appear
+  trigger: onClick

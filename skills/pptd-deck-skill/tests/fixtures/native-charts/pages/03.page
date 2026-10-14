@@ -1,0 +1,88 @@
+elements:
+- elementId: heading
+  elementType: text
+  bounds:
+  - 40
+  - 25
+  - 880
+  - 55
+  content:
+    text: 'Pie + doughnut: editable slices'
+    fontFamily: Arial
+    fontSize: 30
+    color: '#172554'
+- elementId: pie
+  elementType: chart
+  bounds:
+  - 40
+  - 110
+  - 420
+  - 350
+  title:
+    text: Devices
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Category
+    - Value
+    rows:
+    - - Desktop
+      - 40
+    - - Mobile
+      - '35'
+    - - Tablet
+      - 15
+    - - Other
+      - 10
+  series:
+  - type: pie
+    encode:
+      category: Category
+      value: Value
+    fill:
+    - '#2563EB'
+    - '#F59E0B'
+    - '#9333EA'
+    - '#16A34A'
+    dataLabels:
+      show: true
+      content: percentage
+      numberFormat: 0%
+- elementId: donut
+  elementType: chart
+  bounds:
+  - 500
+  - 110
+  - 420
+  - 350
+  title:
+    text: Devices (ring)
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Category
+    - Value
+    rows:
+    - - Desktop
+      - 40
+    - - Mobile
+      - '35'
+    - - Tablet
+      - 15
+    - - Other
+      - 10
+  series:
+  - type: pie
+    encode:
+      category: Category
+      value: Value
+    innerRadius: 0.55
+    startAngle: 90
+    dataLabels:
+      show: true
+      content: category
+  legend: false

@@ -1,0 +1,10 @@
+version: v2
+title: Independent native chart acceptance
+size:
+- 960
+- 540
+pages:
+- pages/01.page
+- pages/02.page
+- pages/03.page
+- pages/04.page

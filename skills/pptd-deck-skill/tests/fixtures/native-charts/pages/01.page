@@ -1,0 +1,111 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+notes: Two editable charts, each with an embedded workbook.
+elements:
+- elementId: heading
+  elementType: text
+  bounds:
+  - 40
+  - 25
+  - 880
+  - 55
+  content:
+    text: 'Native charts: bars + mixed line'
+    fontFamily: Arial
+    fontSize: 30
+    color: '#172554'
+- elementId: bars
+  elementType: chart
+  bounds:
+  - 40
+  - 110
+  - 420
+  - 350
+  title:
+    text: Revenue / Cost
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Quarter
+    - Revenue
+    - Cost
+    rows:
+    - - Q1
+      - 14
+      - '9'
+    - - Q2
+      - '22'
+      - 12
+    - - Q3
+      - 18
+      - 14
+    - - Q4
+      - 30
+      - 19
+  series:
+  - type: bar
+    encode:
+      x: Quarter
+      y: Revenue
+    fill: '#2563EB'
+  - type: bar
+    encode:
+      x: Quarter
+      y: Cost
+    fill: '#F59E0B'
+  dataLabels:
+    show: true
+    numberFormat: '0'
+- elementId: mixed
+  elementType: chart
+  bounds:
+  - 500
+  - 110
+  - 420
+  - 350
+  title:
+    text: Actual / Target
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Quarter
+    - Actual
+    - Target
+    rows:
+    - - Q1
+      - 10
+      - 12
+    - - Q2
+      - 20
+      - null
+    - - Q3
+      - -5
+      - 18
+    - - Q4
+      - 30
+      - 25
+  series:
+  - type: bar
+    encode:
+      x: Quarter
+      y: Actual
+    fill: '#2563EB'
+  - type: line
+    encode:
+      x: Quarter
+      y: Target
+    lineColor: '#DC2626'
+    marker:
+      shape: circle
+      size: 6
+    nullHandling: connect
+  yAxis:
+    min: -10
+    max: 35
+    label:
+      numberFormat: '0'

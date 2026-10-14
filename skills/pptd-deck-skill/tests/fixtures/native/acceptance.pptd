@@ -1,0 +1,20 @@
+version: v2
+title: Native exporter acceptance
+size:
+- 960
+- 540
+theme:
+  colors:
+    ink: '#172554'
+    accent: '#2563EB'
+  textStyles:
+    title:
+      fontSize: 36
+      fontFamily:
+        latin: Arial
+        ea: Noto Sans SC
+      color: $ink
+      bold: true
+pages:
+- pages/01.page
+- pages/02.page

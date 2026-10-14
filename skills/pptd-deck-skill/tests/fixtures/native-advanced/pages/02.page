@@ -1,0 +1,56 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+elements:
+- elementId: title
+  elementType: text
+  bounds:
+  - 50
+  - 25
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 36
+    color: '#172554'
+    text: Editable merged table
+- elementId: table
+  elementType: table
+  bounds:
+  - 60
+  - 160
+  - 840
+  - 300
+  columnWidths:
+  - 0.3
+  - 0.3
+  - 0.4
+  rowHeights:
+  - 0.3
+  - 0.3
+  - 0.4
+  style:
+    cellStyle:
+      fontFamily: Arial
+      fontSize: 24
+      color: '#172554'
+      border:
+        width: 1
+        color: '#94A3B8'
+    firstRowStyle:
+      fill:
+        type: solid
+        color: '#DBEAFE'
+      bold: true
+  rows:
+  - - text: Merged 2 × 2
+      rowSpan: 2
+      colSpan: 2
+    - text: Header
+  - - text: Second row
+  - - text: A3
+    - text: B3
+    - text: C3
+      fill:
+        type: solid
+        color: '#FEF3C7'

@@ -1,0 +1,93 @@
+elements:
+- elementId: heading
+  elementType: text
+  bounds:
+  - 40
+  - 25
+  - 880
+  - 55
+  content:
+    text: Horizontal bars + percent stacks
+    fontFamily: Arial
+    fontSize: 30
+    color: '#172554'
+- elementId: horizontal
+  elementType: chart
+  bounds:
+  - 40
+  - 110
+  - 420
+  - 350
+  title:
+    text: Departments
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - People
+    - Department
+    rows:
+    - - 20
+      - 研发 Engineering
+    - - '12'
+      - 产品 Product
+    - - 8
+      - 运营 Operations
+  series:
+  - type: bar
+    encode:
+      x: People
+      y: Department
+    fill: '#2563EB'
+    name: Headcount
+  xAxis:
+    type: value
+    min: 0
+    max: 30
+  yAxis:
+    type: category
+    reverse: true
+- elementId: percent
+  elementType: chart
+  bounds:
+  - 500
+  - 110
+  - 420
+  - 350
+  title:
+    text: Revenue / Cost share
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Quarter
+    - Revenue
+    - Cost
+    rows:
+    - - Q1
+      - 14
+      - '9'
+    - - Q2
+      - '22'
+      - 12
+    - - Q3
+      - 18
+      - 14
+    - - Q4
+      - 30
+      - 19
+  series:
+  - type: bar
+    encode:
+      x: Quarter
+      y: Revenue
+    fill: '#2563EB'
+    stack: percent
+  - type: bar
+    encode:
+      x: Quarter
+      y: Cost
+    fill: '#F59E0B'
+    stack: percent

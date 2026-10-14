@@ -1,0 +1,130 @@
+elements:
+- elementId: heading
+  elementType: text
+  bounds:
+  - 40
+  - 25
+  - 880
+  - 55
+  content:
+    text: 'Line blanks: gap / zero / connect'
+    fontFamily: Arial
+    fontSize: 30
+    color: '#172554'
+- elementId: line-gap
+  elementType: chart
+  bounds:
+  - 35
+  - 110
+  - 285
+  - 350
+  title:
+    text: gap
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Month
+    - Value
+    rows:
+    - - Jan
+      - 10
+    - - Feb
+      - null
+    - - Mar
+      - 30
+    - - Apr
+      - 20
+  series:
+  - type: line
+    encode:
+      x: Month
+      y: Value
+    nullHandling: gap
+    lineColor: '#2563EB'
+    marker:
+      shape: diamond
+      size: 6
+  legend: false
+  yAxis:
+    min: 0
+    max: 35
+- elementId: line-zero
+  elementType: chart
+  bounds:
+  - 340
+  - 110
+  - 285
+  - 350
+  title:
+    text: zero
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Month
+    - Value
+    rows:
+    - - Jan
+      - 10
+    - - Feb
+      - null
+    - - Mar
+      - 30
+    - - Apr
+      - 20
+  series:
+  - type: line
+    encode:
+      x: Month
+      y: Value
+    nullHandling: zero
+    lineColor: '#2563EB'
+    marker:
+      shape: diamond
+      size: 6
+  legend: false
+  yAxis:
+    min: 0
+    max: 35
+- elementId: line-connect
+  elementType: chart
+  bounds:
+  - 645
+  - 110
+  - 285
+  - 350
+  title:
+    text: connect
+    fontSize: 20
+    fontFamily: Arial
+  fontFamily: Arial
+  data:
+    cols:
+    - Month
+    - Value
+    rows:
+    - - Jan
+      - 10
+    - - Feb
+      - null
+    - - Mar
+      - 30
+    - - Apr
+      - 20
+  series:
+  - type: line
+    encode:
+      x: Month
+      y: Value
+    nullHandling: connect
+    lineColor: '#2563EB'
+    marker:
+      shape: diamond
+      size: 6
+  legend: false
+  yAxis:
+    min: 0
+    max: 35

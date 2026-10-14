@@ -1,0 +1,60 @@
+background:
+  type: solid
+  color: '#F1F5F9'
+elements:
+- elementId: heading
+  elementType: text
+  bounds:
+  - 50
+  - 40
+  - 850
+  - 60
+  content:
+    style: $title
+    text: Geometry, image fit and fade
+- elementId: cover
+  elementType: image
+  bounds:
+  - 60
+  - 140
+  - 200
+  - 200
+  src: media/blocks.png
+  fit:
+    mode: cover
+- elementId: contain
+  elementType: image
+  bounds:
+  - 370
+  - 140
+  - 200
+  - 200
+  src: media/blocks.png
+  fit:
+    mode: contain
+- elementId: fill
+  elementType: image
+  bounds:
+  - 680
+  - 140
+  - 200
+  - 200
+  src: media/blocks.png
+  fit:
+    mode: fill
+- elementId: rotated
+  elementType: shape
+  bounds:
+  - 410
+  - 390
+  - 100
+  - 65
+  shapeName: triangle
+  rotation: 25
+  flip:
+  - true
+  - false
+  opacity: 0.6
+  fill:
+    type: solid
+    color: '#DC2626'

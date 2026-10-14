@@ -1,0 +1,22 @@
+{
+  "platform": "Darwin",
+  "python": "3.12.13",
+  "cjkFontPresent": true,
+  "family": "Arial Unicode MS",
+  "unicodePaths": true,
+  "utf8SaveRoundTrip": true,
+  "installedNativeExport": true,
+  "installedEditorSave": true,
+  "pipelineExport": true,
+  "staleQARejected": true,
+  "packageValidation": {
+    "slides": 1,
+    "fadeTransitions": 1,
+    "fontParts": 0,
+    "fontValidation": "not-embedded",
+    "relationshipValidation": "passed",
+    "bytes": 5379
+  },
+  "officeRenderVerified": false,
+  "browserGUIVerified": false
+}

@@ -1,0 +1,9 @@
+[project]
+name = "pptd-deck-skill"
+version = "2.0.0"
+description = "Python environment for the native PPTD editor and presentation pipeline"
+requires-python = ">=3.12"
+dependencies = ["PyYAML==6.0.3", "Pillow==12.0.0"]
+
+[tool.uv]
+package = false

@@ -1,0 +1,97 @@
+background: {type: solid, color: '#FFFFFF'}
+elements:
+- elementId: shadow-text
+  elementType: text
+  bounds:
+  - 50
+  - 40
+  - 800
+  - 60
+  content:
+    text: Shadow and crop acceptance
+    fontFamily: Arial
+    fontSize: 32
+    color: '#172554'
+    shadow: &id001
+      blur: 6
+      offset:
+      - -6
+      - 8
+      color: $shadow
+- elementId: shadow-shape
+  elementType: shape
+  bounds:
+  - 60
+  - 170
+  - 240
+  - 190
+  rotation: 15
+  opacity: 0.7
+  shapeName: roundRect
+  fill:
+    type: solid
+    color: '#2563EB'
+  shadow: *id001
+- elementId: fill
+  elementType: image
+  bounds:
+  - 350
+  - 170
+  - 160
+  - 240
+  src: media/blocks.png
+  fit:
+    mode: fill
+  crop:
+    left: -0.25
+    top: -0.5
+    right: 0.125
+    bottom: 0.1
+  shadow:
+    blur: 4
+    color: '#00000060'
+    offset:
+    - 5
+    - 5
+- elementId: cover
+  elementType: image
+  bounds:
+  - 540
+  - 170
+  - 160
+  - 240
+  src: media/blocks.png
+  fit:
+    mode: cover
+  crop:
+    left: -0.25
+    top: -0.5
+    right: 0.125
+    bottom: 0.1
+  shadow:
+    blur: 4
+    color: '#00000060'
+    offset:
+    - 5
+    - 5
+- elementId: contain
+  elementType: image
+  bounds:
+  - 730
+  - 170
+  - 160
+  - 240
+  src: media/blocks.png
+  fit:
+    mode: contain
+  crop:
+    left: -0.25
+    top: -0.5
+    right: 0.125
+    bottom: 0.1
+  shadow:
+    blur: 4
+    color: '#00000060'
+    offset:
+    - 5
+    - 5

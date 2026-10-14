@@ -1,0 +1,9 @@
+version: v2
+title: Native advanced acceptance
+size:
+- 960
+- 540
+pages:
+- pages/01.page
+- pages/02.page
+- pages/03.page

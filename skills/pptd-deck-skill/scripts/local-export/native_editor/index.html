@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PPTD Studio</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="projectbar">
+      <div class="brand">PPTD Studio <span>LOCAL</span></div>
+      <button id="open-project" class="primary">打开 PPTD 文件夹</button
+      ><span id="project-path"></span><span class="local-label">本地项目</span>
+    </div>
+    <header class="documentbar">
+      <div id="title">正在打开项目…</div>
+      <nav aria-label="文件操作">
+        <button id="save">保存本页</button
+        ><button id="export" class="primary">导出</button
+        ><button
+          id="preview-deck"
+          title="从第一页播放 · F5"
+          aria-label="播放演示文稿"
+        >
+          ▷</button
+        ><button id="editor-fullscreen" aria-label="全屏编辑" title="全屏编辑">
+          ⛶</button
+        ><button
+          id="toggle-inspector"
+          aria-expanded="false"
+          aria-controls="inspector"
+        >
+          属性
+        </button>
+      </nav>
+    </header>
+    <div class="toolbar" aria-label="编辑操作">
+      <button id="toggle-pages" aria-label="切换页面导航" aria-expanded="true">
+        ▤</button
+      ><span id="page-label"></span><span class="divider"></span
+      ><button id="undo" aria-label="撤销" title="撤销 ⌘/Ctrl+Z">↶</button
+      ><button
+        id="delete-selection"
+        aria-label="删除选中元素"
+        title="删除元素 · Delete"
+      >
+        ⌫</button
+      ><button id="redo" aria-label="重做" title="重做 ⇧⌘/Ctrl+Z">↷</button>
+      <div class="zoom-tools" aria-label="画布缩放">
+        <button id="zoom-out" aria-label="缩小画布">−</button
+        ><label class="zoom-label"
+          ><select id="zoom" aria-label="缩放比例">
+            <option value="fit">适应窗口</option>
+            <option value="0.25">25%</option>
+            <option value="0.5">50%</option>
+            <option value="0.75">75%</option>
+            <option value="1">100%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+            <option value="4">400%</option>
+          </select></label
+        ><button id="zoom-in" aria-label="放大画布">＋</button
+        ><span id="zoom-value"></span>
+      </div>
+    </div>
+    <main>
+      <aside class="pages" id="page-sidebar">
+        <h2 class="sr-only">页面</h2>
+        <div id="pages"></div>
+        <button id="new-page" class="new-page">新建页面</button>
+      </aside>
+      <section class="workspace" aria-label="幻灯片工作区">
+        <div id="text-tools" hidden>
+          <fieldset id="text-controls" class="text-toolbar">
+            <label title="主题文字样式"
+              ><span class="sr-only">主题文字样式</span
+              ><select id="text-style" aria-label="主题文字样式">
+                <option value="">未应用</option>
+              </select></label
+            ><label title="文字框字体"
+              ><span class="sr-only">字体</span
+              ><input
+                id="font-family"
+                list="font-families"
+                autocomplete="off"
+                aria-label="字体" /></label
+            ><label class="size-control" title="字号"
+              ><span class="sr-only">字号</span
+              ><input
+                id="font-size"
+                type="number"
+                min="1"
+                max="4000"
+                step="1"
+                aria-label="字号"
+              /><span>px</span></label
+            ><datalist id="font-families"></datalist
+            ><label class="color-control" title="文字颜色"
+              ><span class="sr-only">文字颜色</span
+              ><input id="text-color" type="color" aria-label="文字颜色" /><span
+                >A</span
+              ></label
+            ><label class="color-control highlight-control" title="高亮颜色"
+              ><span class="sr-only">高亮颜色</span
+              ><input
+                id="text-highlight"
+                type="color"
+                aria-label="高亮颜色" /><span></span></label
+            ><button
+              id="text-bold"
+              aria-label="加粗"
+              aria-pressed="false"
+              title="加粗"
+            ></button
+            ><button
+              id="text-italic"
+              aria-label="斜体"
+              aria-pressed="false"
+              title="斜体"
+            ></button
+            ><button
+              id="text-underline"
+              aria-label="下划线"
+              aria-pressed="false"
+              title="下划线"
+            ></button
+            ><button
+              id="text-strike"
+              aria-label="删除线"
+              aria-pressed="false"
+              title="删除线"
+            ></button
+            ><span class="divider"></span
+            ><button
+              id="text-fx"
+              aria-label="文字公式"
+              title="插入或编辑文字中的公式"
+              title="文字效果"
+            ></button
+            ><button
+              id="text-horizontal"
+              aria-label="水平对齐"
+              title="水平对齐"
+            ></button
+            ><button
+              id="text-vertical"
+              aria-label="垂直对齐"
+              title="垂直对齐"
+            ></button
+            ><button
+              id="text-spacing"
+              aria-label="行间距"
+              title="行间距"
+            ></button
+            ><span class="divider"></span
+            ><button
+              id="text-opacity"
+              aria-label="文字不透明度"
+              title="不透明度"
+            ></button
+            ><button id="text-layer" aria-label="文字图层" title="图层"></button
+            ><button
+              id="text-more"
+              aria-label="更多文字属性"
+              title="对齐与文字内容"
+            >
+              ›
+            </button>
+          </fieldset>
+          <button
+            id="text-expand"
+            aria-label="展开文字工具栏"
+            aria-expanded="false"
+            title="展开全部文字工具"
+          >
+            ⌄
+          </button>
+        </div>
+        <div id="shape-tools" class="object-toolbar" hidden>
+          <button
+            id="shape-replace"
+            aria-label="替换形状"
+            title="替换形状"
+          ></button
+          ><span class="divider"></span
+          ><label class="object-color" title="填充颜色"
+            ><input
+              id="shape-fill"
+              type="color"
+              aria-label="图形填充颜色" /></label
+          ><button id="shape-fill-options" aria-label="图形填充选项">
+            填充⌄</button
+          ><button id="shape-border" aria-label="图形边框">无边框⌄</button
+          ><span class="divider"></span
+          ><button
+            id="shape-flip-h"
+            aria-label="水平翻转"
+            title="水平翻转"
+          ></button
+          ><button
+            id="shape-flip-v"
+            aria-label="垂直翻转"
+            title="垂直翻转"
+          ></button
+          ><button
+            id="shape-opacity"
+            aria-label="图形不透明度"
+            title="不透明度"
+          ></button
+          ><button id="shape-layer" aria-label="图形图层" title="图层"></button>
+        </div>
+        <div id="viewport">
+          <div id="stage-holder">
+            <div
+              id="stage"
+              tabindex="0"
+              aria-label="画布：选择元素后可用方向键移动"
+            ></div>
+          </div>
+        </div>
+        <div class="insert-toolbar" aria-label="插入元素">
+          <button id="add-text" aria-label="插入文字" title="文字"></button
+          ><button
+            id="add-shape"
+            aria-label="图形工具"
+            title="形状、线条和图标"
+            aria-expanded="false"
+          ></button
+          ><button
+            id="add-image"
+            aria-label="插入图片"
+            title="本地 PNG / JPEG"
+          ></button
+          ><button id="add-table" aria-label="插入表格" title="表格"></button
+          ><button
+            id="open-theme"
+            aria-label="幻灯片主题"
+            title="幻灯片主题"
+          ></button
+          ><button
+            id="more-insert"
+            aria-label="更多插入工具"
+            title="插入公式、添加水印"
+            aria-expanded="false"
+          >
+            ···</button
+          ><input
+            id="image-file"
+            type="file"
+            accept="image/png,image/jpeg"
+            hidden
+          />
+        </div>
+        <section
+          id="shape-menu"
+          class="floating-menu"
+          aria-label="图形工具面板"
+          hidden
+        >
+          <div class="menu-tabs" role="tablist">
+            <button id="shape-tab" role="tab" aria-selected="true">形状</button
+            ><button id="line-tab" role="tab" aria-selected="false">线条</button
+            ><button id="icon-tab" role="tab" aria-selected="false">
+              图标
+            </button>
+          </div>
+          <div id="shape-options" class="shape-options"></div>
+        </section>
+        <section
+          id="more-menu"
+          class="floating-menu compact-menu"
+          aria-label="更多插入工具菜单"
+          hidden
+        >
+          <button id="insert-formula">插入公式</button
+          ><button id="insert-watermark">添加水印</button>
+        </section>
+        <div class="canvas-footer">
+          <span id="status" role="status">连接本地项目</span>
+          <details class="warnings">
+            <summary>预览说明</summary>
+            <ul id="warnings"></ul>
+          </details>
+          <button
+            id="toggle-notes"
+            aria-expanded="false"
+            aria-controls="notes-panel"
+          >
+            显示演讲者备注
+          </button>
+        </div>
+        <div id="notes-panel" hidden>
+          <label class="sr-only" for="notes">本页演讲者备注</label
+          ><textarea
+            id="notes"
+            rows="4"
+            aria-label="本页演讲者备注"
+            placeholder="添加演讲者备注…"
+            spellcheck="false"
+          ></textarea>
+        </div>
+      </section>
+      <aside class="inspector" id="inspector" hidden>
+        <div class="inspector-heading">
+          <h2>属性</h2>
+          <button id="close-inspector" aria-label="关闭属性面板">×</button>
+        </div>
+        <div id="theme-panel" hidden>
+          <h3>幻灯片主题</h3>
+          <h4>文本样式</h4>
+          <div id="theme-styles"></div>
+          <button id="new-text-style">＋ 添加文本样式</button>
+          <h4>主题色</h4>
+          <div id="theme-colors"></div>
+          <button id="new-theme-color">＋ 添加主题色</button>
+          <h4>当前页背景</h4>
+          <input
+            id="background-color"
+            type="color"
+            aria-label="当前页背景颜色"
+          />
+          <div class="theme-background-actions"><button id="background-image">使用本地图片</button><button id="background-all">应用背景到全部</button></div>
+          <label
+            >背景图片<input
+              id="background-file"
+              type="file"
+              accept="image/png,image/jpeg"
+          /></label>
+          <details>
+            <summary>完整主题 JSON</summary>
+            <textarea
+              id="theme-source"
+              rows="12"
+              aria-label="完整主题 JSON"
+            ></textarea
+            ><button id="apply-theme">应用主题源码</button>
+          </details>
+          <button id="save-theme" class="primary">保存主题到项目</button>
+        </div>
+        <div id="element-panel">
+          <div id="selection-label">请选择元素</div>
+          <fieldset id="properties" disabled>
+            <div class="grid">
+              <label>X<input id="x" type="number" step="1" /></label
+              ><label>Y<input id="y" type="number" step="1" /></label
+              ><label
+                >宽<input id="width" type="number" min="1" step="1" /></label
+              ><label
+                >高<input id="height" type="number" min="1" step="1" /></label
+              ><label>旋转<input id="rotation" type="number" step="1" /></label>
+            </div>
+            <div id="text-details" hidden>
+              <div class="grid">
+                <label
+                  >水平对齐<select id="text-align">
+                    <option value="left">左对齐</option>
+                    <option value="center">居中</option>
+                    <option value="right">右对齐</option>
+                    <option value="justify">两端对齐</option>
+                    <option value="distributed">分散对齐</option>
+                  </select></label
+                ><label
+                  >垂直对齐<select id="text-anchor">
+                    <option value="top">顶部</option>
+                    <option value="middle">中部</option>
+                    <option value="bottom">底部</option>
+                  </select></label
+                >
+              </div>
+              <button id="text-script">上标 / 下标</button>
+              <button id="clear-highlight">清除高亮</button>
+              <p class="hint">格式作用于整个文字框。字体文件不会下载或嵌入。</p>
+            </div>
+            <details id="text-label">
+              <summary>文字 / 富文本标记</summary>
+              <label class="sr-only" for="text">文字 / 富文本标记</label>
+              <textarea id="text" rows="6" spellcheck="false" aria-label="文字 / 富文本标记"></textarea>
+            </details>
+            <label id="fill-label"
+              >纯色填充<input id="fill" type="color"
+            /></label>
+          </fieldset>
+          <div class="layer-tools">
+            <button id="layer-up">上移一层</button
+            ><button id="layer-down">下移一层</button>
+          </div>
+          <div class="element-actions">
+            <button id="duplicate">复制元素</button
+            ><button id="delete">删除元素</button>
+          </div>
+          <details id="data-panel" hidden>
+            <summary>数据 / 单元格文字</summary>
+            <p class="hint">离开输入框后更新草稿。空图表单元格表示缺失值。</p>
+            <div id="data-cells"></div>
+          </details>
+          <details class="layers-panel">
+            <summary>本页图层</summary>
+            <div id="layers"></div>
+          </details>
+          <details id="source-panel">
+            <summary>本页 YAML</summary>
+            <p class="hint">
+              应用源码后更新画布。属性编辑保留未知字段，会重新排版 YAML
+              并移除注释。
+            </p>
+            <textarea
+              id="source"
+              rows="18"
+              spellcheck="false"
+              aria-label="本页 YAML 源码"
+            ></textarea
+            ><button id="apply-source">应用源码</button
+            ><button id="download-draft">下载本页草稿</button>
+          </details>
+          <button id="add-chart">插入图表</button>
+        </div>
+      </aside>
+    </main>
+    <div id="error" role="alert" hidden></div>
+    <dialog
+      id="export-dialog"
+      class="editor-dialog export-dialog"
+      aria-label="导出设置"
+    >
+      <div class="dialog-heading">
+        <h2>导出</h2>
+        <button data-close="export-dialog" aria-label="关闭导出设置">×</button>
+      </div>
+      <div class="export-row">
+        <label for="export-format">输出格式</label
+        ><select id="export-format" aria-label="输出格式">
+          <option value="pptx">PPT（.pptx）</option>
+          <option value="png">图片 PNG · 本页</option>
+          <option value="svg">图片 SVG · 本页</option>
+        </select>
+      </div>
+      <div class="export-row">
+        <label for="export-embed">嵌入字体</label
+        ><input
+          id="export-embed"
+          class="switch-control"
+          role="switch"
+          type="checkbox"
+          disabled
+          aria-describedby="export-font-note"
+        />
+      </div>
+      <p id="export-font-note" class="hint export-note">
+        暂不支持嵌入字体，PPT 保留字体名称。
+      </p>
+      <div class="export-row">
+        <label for="export-transition">切换动画</label
+        ><select id="export-transition" aria-label="切换动画">
+          <option value="fade">淡入淡出</option>
+          <option value="none">无效果</option>
+        </select>
+      </div>
+      <div class="export-row">
+        <label for="export-destination">储存至</label
+        ><select id="export-destination" aria-label="储存至">
+          <option value="download">浏览器下载</option>
+          <option value="folder">指定本地文件夹</option>
+        </select>
+      </div>
+      <label id="export-directory-row" hidden
+        >保存文件夹<input
+          id="export-directory"
+          placeholder="/Users/…/Desktop"
+          autocomplete="off"
+        /><span class="hint"
+          >填写已有文件夹的绝对路径；同名文件会自动编号。</span
+        ></label
+      >
+      <div class="export-row">
+        <label for="export-filename">文件名</label
+        ><input id="export-filename" autocomplete="off" />
+      </div>
+      <p id="export-scope" class="hint export-note">
+        PPT 包含全部页面及未保存草稿。
+      </p>
+      <div class="dialog-actions">
+        <button id="export-download" class="primary">下载</button>
+      </div>
+    </dialog>
+    <dialog
+      id="project-dialog"
+      class="editor-dialog"
+      aria-label="打开本地 PPTD 项目"
+    >
+      <div class="dialog-heading">
+        <h2>打开本地项目</h2>
+        <button data-close="project-dialog" aria-label="关闭打开项目">×</button>
+      </div>
+      <p>打开文件夹中的 .pptd、页面和图片资源。</p>
+      <label
+        >本地项目绝对路径<input
+          id="local-project-path"
+          placeholder="/Users/…/project/deck.pptd" /></label
+      ><button id="open-path" class="primary">打开并编辑原文件夹</button>
+      <div class="dialog-divider">或选择文件夹</div>
+      <button id="choose-project-folder">选择 PPTD 文件夹</button
+      ><input id="project-folder" type="file" webkitdirectory multiple hidden />
+      <p class="hint">
+        选择文件夹会建立本地工作副本；使用“下载项目”带走全部修改。路径打开方式直接保存原文件。
+      </p>
+      <button id="download-project">下载当前 PPTD 项目</button
+      ><button id="save-all">保存全部页面与主题</button
+      ><label class="discard-option"
+        ><input
+          id="discard-project-drafts"
+          type="checkbox"
+        />打开其他项目时放弃当前未保存草稿</label
+      >
+    </dialog>
+    <dialog id="formula-dialog" class="editor-dialog" aria-label="插入公式">
+      <div class="dialog-heading">
+        <h2 id="formula-title">插入公式</h2>
+        <button data-close="formula-dialog" aria-label="关闭公式编辑">×</button>
+      </div>
+      <label id="formula-location-row" hidden
+        >编辑位置<select id="formula-location" aria-label="公式编辑位置">
+          <option value="new">在文末插入</option>
+        </select></label
+      >
+      <label
+        >LaTeX 公式<textarea id="formula-source" rows="4" spellcheck="false">
+E = mc^2</textarea
+        >
+      </label>
+      <div class="formula-examples" aria-label="公式示例">
+        <span>插入示例</span>
+        <button type="button" data-formula-example="cos">余弦</button>
+        <button type="button" data-formula-example="kl">KL 散度</button>
+        <button type="button" data-formula-example="normal">正态分布</button>
+        <button type="button" data-formula-example="matrix">矩阵</button>
+        <button type="button" data-formula-example="cases">分段函数</button>
+      </div>
+      <div id="formula-preview" class="formula-preview"></div>
+      <p id="formula-error" role="status"></p>
+      <p class="hint">
+        支持文本、常用符号与函数、分数、根式、上下标、积分、伸缩括号、矩阵、分段函数和重音；导出为可编辑 Office 公式。
+      </p>
+      <div class="dialog-actions"><button id="formula-apply" class="primary">插入公式</button></div>
+    </dialog>
+    <dialog id="watermark-dialog" class="editor-dialog" aria-label="添加水印">
+      <div class="dialog-heading">
+        <h2>添加水印 / Logo</h2>
+        <button data-close="watermark-dialog" aria-label="关闭水印设置">
+          ×
+        </button>
+      </div>
+      <label
+        >文字水印<input
+          id="watermark-text"
+          placeholder="例如：内部资料" /></label
+      ><label
+        >或上传 Logo<input
+          id="watermark-file"
+          type="file"
+          accept="image/png,image/jpeg"
+      /></label>
+      <div class="grid">
+        <label
+          >不透明度<input
+            id="watermark-opacity"
+            type="number"
+            min="0"
+            max="100"
+            value="20" /></label
+        ><label
+          >位置<select id="watermark-position">
+            <option value="corner">右下角</option>
+            <option value="center">页面居中</option>
+          </select></label
+        >
+      </div>
+      <div id="watermark-preview" class="formula-preview">水印预览</div>
+      <div class="dialog-actions"><button id="watermark-current">应用到本页</button><button id="watermark-all" class="primary">应用到所有幻灯片</button></div>
+      <p class="hint">
+        水印是可编辑文字或图片图层，可删除和撤销。原有元素保持不变。
+      </p>
+    </dialog>
+    <dialog id="style-dialog" class="editor-dialog" aria-label="主题文本样式">
+      <div class="dialog-heading">
+        <h2>主题文本样式</h2>
+        <button data-close="style-dialog" aria-label="关闭主题样式">×</button>
+      </div>
+      <label>样式名称<input id="style-name" /></label
+      ><label>字体<input id="style-font" list="font-families" /></label>
+      <div class="grid">
+        <label
+          >字号<input
+            id="style-size"
+            type="number"
+            min="1"
+            max="4000"
+            value="28" /></label
+        ><label
+          >文字颜色<input id="style-color" type="color" value="#172554"
+        /></label>
+      </div>
+      <label><input id="style-bold" type="checkbox" />加粗</label
+      >
+      <div class="dialog-actions"><button id="style-apply" class="primary">应用样式</button></div>
+    </dialog>
+    <dialog id="color-dialog" class="editor-dialog" aria-label="编辑主题色">
+      <div class="dialog-heading"><h2>编辑主题色</h2><button data-close="color-dialog" aria-label="关闭主题色编辑">×</button></div>
+      <label>主题色名称<input id="color-name" readonly /></label>
+      <label>颜色<input id="color-value" type="color" /></label>
+      <p class="hint">名称用于页面引用；修改颜色会更新所有引用此主题色的元素。</p>
+      <div class="dialog-actions"><button id="color-apply" class="primary">应用颜色</button></div>
+    </dialog>
+    <dialog id="theme-delete-dialog" class="editor-dialog" aria-label="删除主题项">
+      <div class="dialog-heading"><h2>删除主题项</h2><button data-close="theme-delete-dialog" aria-label="关闭删除确认">×</button></div>
+      <p id="theme-delete-message"></p>
+      <p id="theme-delete-error" class="theme-entry-error" role="alert"></p>
+      <div class="dialog-actions"><button data-close="theme-delete-dialog">取消</button><button id="theme-delete-confirm" class="primary">确认删除</button></div>
+    </dialog>
+    <dialog id="presentation" aria-label="演示播放">
+      <div id="presentation-viewport"><div id="presentation-slide"></div></div>
+      <div class="presentation-controls">
+        <button id="preview-prev" aria-label="上一页或上一步">←</button
+        ><button id="preview-restart" aria-label="重新播放本页">↺</button
+        ><select id="slide-transition" aria-label="切页效果">
+          <option value="fade">淡入淡出</option>
+          <option value="none">无效果</option></select
+        ><span id="preview-count"></span
+        ><button id="preview-next" aria-label="下一页或下一步">→</button
+        ><button id="preview-fullscreen" aria-label="全屏播放">⛶</button
+        ><button id="preview-close">退出播放</button>
+      </div>
+      <div id="presentation-warning" role="status" hidden></div>
+    </dialog>
+    <script type="module" src="/app.mjs"></script>
+  </body>
+</html>

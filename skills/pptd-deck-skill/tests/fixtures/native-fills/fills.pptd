@@ -1,0 +1,7 @@
+version: v2
+size:
+- 960
+- 540
+pages:
+- one.page
+- two.page

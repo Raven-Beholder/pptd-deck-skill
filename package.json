@@ -1,0 +1,47 @@
+{
+  "name": "pptd-deck-skill",
+  "version": "2.0.0",
+  "description": "Presentation skill, local PPTD web editor and native PPTX exporter.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "pptd-deck-skill": "bin/pptd-deck-skill.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Raven-Beholder/pptd-deck-skill.git"
+  },
+  "files": [
+    "bin/",
+    "skills/pptd-deck-skill/SKILL.md",
+    "skills/pptd-deck-skill/reference/",
+    "skills/pptd-deck-skill/scripts/*.py",
+    "skills/pptd-deck-skill/scripts/local-export/*.py",
+    "skills/pptd-deck-skill/scripts/local-export/*.md",
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/",
+    "README.md",
+    "README_EN.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "requirements.txt",
+    "theme.md",
+    "theme_EN.md",
+    "docs/",
+    "tools/build_native_distribution.py",
+    "tools/audit_native_tree.py",
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "scripts": {
+    "test": "node tools/test_native.mjs",
+    "pack:check": "npm pack --dry-run",
+    "audit": "python tools/audit_native_tree.py",
+    "build:native": "python tools/build_native_distribution.py --output dist/native-pptd-review.zip",
+    "build:editor": "python tools/build_native_distribution.py --editor --output dist/native-editor-review.zip"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Raven-Beholder"
+}

@@ -1,0 +1,18 @@
+background:
+  type: image
+  src: media/blocks.png
+  fit:
+    mode: cover
+  opacity: 0.6
+elements:
+- elementType: text
+  elementId: label
+  bounds:
+  - 100
+  - 200
+  - 750
+  - 100
+  content:
+    text: Background image
+    fontFamily: Arial
+    fontSize: 44

@@ -1,0 +1,81 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+notes: 'Plain notes: <literal> & review.'
+elements:
+- elementId: title
+  elementType: text
+  bounds:
+  - 50
+  - 35
+  - 860
+  - 65
+  content:
+    style: $title
+    text: Auditable export · 可审计导出
+- elementId: rich
+  elementType: text
+  bounds:
+  - 50
+  - 125
+  - 500
+  - 120
+  content:
+    fontFamily: Arial
+    fontSize: 24
+    lineHeight: 1.2
+    text: <p><strong>Bold</strong> <em>italic</em> <u>underline</u></p><p>H<sub>2</sub>O
+      &amp; x<sup>2</sup> <span style="color:#2563EB">blue</span></p>
+- elementId: box
+  elementType: shape
+  bounds:
+  - 610
+  - 130
+  - 240
+  - 100
+  shapeName: roundRect
+  fill:
+    type: solid
+    color: $accent
+  border:
+    width: 2
+    color: '#172554'
+    style: dash
+- elementId: link
+  elementType: text
+  bounds:
+  - 50
+  - 270
+  - 400
+  - 45
+  content:
+    fontFamily: Arial
+    fontSize: 20
+    text: <p><a href="https://example.com">Example link</a></p>
+- elementId: photo
+  elementType: image
+  bounds:
+  - 610
+  - 270
+  - 200
+  - 150
+  src: media/blocks.png
+  fit:
+    mode: cover
+- elementId: gradient
+  elementType: shape
+  bounds:
+  - 50
+  - 350
+  - 470
+  - 70
+  shapeName: rect
+  fill:
+    type: gradient
+    gradientType: linear
+    angle: 0
+    stops:
+    - position: 0
+      color: '#2563EB'
+    - position: 1
+      color: '#F59E0B'

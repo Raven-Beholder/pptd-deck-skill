@@ -1,0 +1,52 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+elements:
+- elementId: title
+  elementType: text
+  bounds:
+  - 50
+  - 25
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 36
+    color: '#172554'
+    text: Editable Office Math
+- elementId: pythagoras
+  elementType: text
+  bounds:
+  - 50
+  - 125
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 32
+    color: '#172554'
+    text: 'Pythagoras: \(a^2+b^2=c^2\)'
+- elementId: fraction
+  elementType: text
+  bounds:
+  - 50
+  - 245
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 32
+    color: '#172554'
+    text: 'Fraction: \(\frac{x_1^2+\alpha}{\sqrt{y}}\)'
+- elementId: integral
+  elementType: text
+  bounds:
+  - 50
+  - 365
+  - 860
+  - 110
+  content:
+    fontFamily: Arial
+    fontSize: 32
+    color: '#172554'
+    text: 'Integral: \(\int_0^1 x^2\mathrm{d}x=\frac{1}{3}\)'

@@ -1,0 +1,80 @@
+background:
+  type: solid
+  color: '#FFFFFF'
+elements:
+- elementType: text
+  elementId: gradient-title
+  bounds:
+  - 40
+  - 30
+  - 880
+  - 70
+  content:
+    text: Gradient text ABC 渐变
+    fontFamily:
+      latin: Arial
+      ea: Noto Sans SC
+    fontSize: 40
+    gradient: &id004
+      type: gradient
+      gradientType: linear
+      stops: &id001
+      - position: 0
+        color: '#FFFFFF'
+      - position: 0.45
+        color: '#93C5FD'
+      - position: 1
+        color: '#1E3A8A'
+      angle: 35
+- elementType: shape
+  elementId: radial
+  bounds:
+  - 40
+  - 140
+  - 240
+  - 300
+  shapeName: rect
+  fill: &id003
+    type: gradient
+    gradientType: radial
+    stops: *id001
+- elementType: shape
+  elementId: image-shape
+  bounds:
+  - 330
+  - 140
+  - 240
+  - 300
+  shapeName: ellipse
+  opacity: 0.75
+  fill: &id002
+    type: image
+    src: media/blocks.png
+    fit:
+      mode: contain
+    opacity: 0.6
+- elementType: table
+  elementId: image-cell
+  bounds:
+  - 620
+  - 140
+  - 300
+  - 300
+  columnWidths:
+  - 0.5
+  - 0.5
+  rowHeights:
+  - 0.5
+  - 0.5
+  rows:
+  - - text: Image
+      fill: *id002
+    - text: Radial
+      fill: *id003
+  - - text: Linear
+      fill: *id004
+    - text: Solid
+  style:
+    cellStyle:
+      fontFamily: Arial
+      fontSize: 22

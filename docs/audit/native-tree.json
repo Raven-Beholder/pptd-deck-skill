@@ -1,0 +1,701 @@
+{
+  "schemaVersion": 1,
+  "currentTreeNativeOnly": true,
+  "historicalGitObjectsPurged": false,
+  "certifiedCleanRoom": false,
+  "thirdPartyRuntimeAssets": [],
+  "files": {
+    ".gitattributes": {
+      "sha256": "50d054c3548a703e690d7617690b113f522a094b5f79f621f61eac3529c29d23",
+      "bytes": 195
+    },
+    ".github/workflows/test.yml": {
+      "sha256": "f75fbb0294dcb068f6b037c82b76121e76f8f9a219e958d4367499d96d28e870",
+      "bytes": 1473
+    },
+    ".gitignore": {
+      "sha256": "9ef773824e6f5a0464b81c05ebe1338115118828d59d719caf869a8247476657",
+      "bytes": 223
+    },
+    "AGENTS.md": {
+      "sha256": "e08710fde06083b406cd0b37f52e3cc0d287b270cab5b1d56e48e69d0473d308",
+      "bytes": 944
+    },
+    "LICENSE": {
+      "sha256": "ad8a028292fda7e019f061107092b84c85dcc0351f47e7fb2370114bbc8fe5c5",
+      "bytes": 1073
+    },
+    "README.md": {
+      "sha256": "176b7dad00941c47e32b4a0d2ef4b1a74154e1e228ff20e0406c4c826cfa98c6",
+      "bytes": 4019
+    },
+    "README_EN.md": {
+      "sha256": "866db09869a1f80b1550879a1f041a68fda843a47d0a71669946027d92521f25",
+      "bytes": 4149
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "sha256": "f6ffa12db629f528ecd169a3e0eb01cd7db5f1aeb877b305e7810ad4e1249c39",
+      "bytes": 1709
+    },
+    "bin/pptd-deck-skill.js": {
+      "sha256": "29dfed10fa8f5fe3ba0fc240dd3e34c664f1c54c7911da069a325e6551a55eef",
+      "bytes": 4885
+    },
+    "docs/native-icons-overview.svg": {
+      "sha256": "9522d12b65b714b61a8d4a6da3a1a131cdfc34738a8f9d99044deb6a1d50ae3c",
+      "bytes": 20331
+    },
+    "example/dji-pocket4/DJI Osmo Pocket 4 \u4ea7\u54c1\u6df1\u5ea6\u89e3\u8bfb.pptx": {
+      "sha256": "38ab9b78b00dc0ee5b58f663a5b4e0f24a4a09f0199a8af4952b1a0d91e91731",
+      "bytes": 6894919
+    },
+    "package.json": {
+      "sha256": "b7a5585f4b5484e7214a8583eaab4d6b24771ad8c711f6d058785b8e59438efa",
+      "bytes": 1406
+    },
+    "pyproject.toml": {
+      "sha256": "153c473b139c102d1f0b087b738d70752091f29edac97d2c9f1e389d4e8d2412",
+      "bytes": 246
+    },
+    "requirements.txt": {
+      "sha256": "e986e5851598fdf5d4b7d057ecc1d32cef48940b25ca54f25141335d64787fba",
+      "bytes": 29
+    },
+    "skills/pptd-deck-skill/SKILL.md": {
+      "sha256": "316cb2715e1a275bafb479830913936f14bd95019a3c0b2d3d95fb463eae3560",
+      "bytes": 5382
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/01/en/dusk-violet-consulting.md": {
+      "sha256": "a48c25db24dbd5f04d6471c1c3a2eb4dbdc2055f70c3b8111c8ee33d88b3a4b5",
+      "bytes": 21626
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/02/en/indigo-due-diligence.md": {
+      "sha256": "71db85633188d89607e8d1827a4a95f1a1cbe4669c98fe8edd76379f823b09c3",
+      "bytes": 21187
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/03/en/pine-green-strategy.md": {
+      "sha256": "9b6fdba1e13c7da2181da7aaf013511f1b42fd09463c9811dd608d66ee2df545",
+      "bytes": 20718
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/04/en/red-black-business.md": {
+      "sha256": "1891c8ca3cc8aef181bfd76e3493d937e361165bacf497058ba6a0b781dd3d2f",
+      "bytes": 19149
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/05/en/moss-green-transformation.md": {
+      "sha256": "53a83e7e800fbae335a5898af0e884f088a277e945e75886a0ffebb68cd7ccdc",
+      "bytes": 21019
+    },
+    "skills/pptd-deck-skill/reference/design_system/01_strategy/06/en/map-strategy.md": {
+      "sha256": "c42db2dc47f9dda6b1caa8079df156db9e7959d05c4ea74d3d1dba6c7fa08f83",
+      "bytes": 9037
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/01/en/honey-orange-memo.md": {
+      "sha256": "a79f55609d1d91a38934f6474f009fcc925c20c2b24c4599f86ccd80947608ac",
+      "bytes": 20720
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/02/en/lake-blue-memo.md": {
+      "sha256": "6601608ea1e3542eb6cae185834e21c9a90c5d09d813fee9f743b45d6b0f4c6d",
+      "bytes": 17953
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/03/en/xuan-paper-annual.md": {
+      "sha256": "00e108f9748c3e5c7feb6c7ead60015cd2e0b4c11caa7721099fa0b0b2ca5c66",
+      "bytes": 18856
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/04/en/lead-gray-quarterly.md": {
+      "sha256": "a15187918f7bcf0c068db084451eb035554479c81b0e4585426ad5f619bc4db2",
+      "bytes": 16987
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/05/en/ink-green-market-trends.md": {
+      "sha256": "813d0807b6a6af8ba3d9afc204a8703b8ea44d0ed9eba6ea885ab5bfb09e64a9",
+      "bytes": 20928
+    },
+    "skills/pptd-deck-skill/reference/design_system/02_business/06/en/orange-tech.md": {
+      "sha256": "75b31493f7e326312a35fde307fb389365d1355c8243c21568b261ddf0aa366f",
+      "bytes": 20560
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/01/en/sky-blue-wayfinding.md": {
+      "sha256": "a2038a5149ac3febcea9cc42bac5790bcab86b112c2ba4fe755b0ba444b3f017",
+      "bytes": 9746
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/02/en/mist-blue-travelogue.md": {
+      "sha256": "663b3fe85363d240a9f8e38022212632f31ee90b2de000a6b8d66f2c71a46fc0",
+      "bytes": 24852
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/03/en/warm-jade-annual-report.md": {
+      "sha256": "bb853f698050186f6753473d3447bcf99b8df0241622b9f645cc14dfdbe5d250",
+      "bytes": 22157
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/04/en/color-stripes-documentary.md": {
+      "sha256": "5bdcbd5f021c99e3a9bc37d5410d2f6dc729a775c477e575125bf925b95c9988",
+      "bytes": 18845
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/05/en/moon-white-imagery.md": {
+      "sha256": "3dfe63eb34198982802fa76acbbd3a792b8d34614a5e1ce968c6e6c4965b1023",
+      "bytes": 19668
+    },
+    "skills/pptd-deck-skill/reference/design_system/03_work/06/en/red-white-business.md": {
+      "sha256": "02700e8b9f009b3fa5cec673dbcfab1c0b5dbb161d51695a2589d9edfa896f79",
+      "bytes": 19616
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/01/en/cream-collage.md": {
+      "sha256": "81e0ef548a8b515f4522acd53f57071e38914c81ab7ecf3f649093d99900247f",
+      "bytes": 9295
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/02/en/silk-yellow-magazine.md": {
+      "sha256": "9d1017f3fc21c2327442b2b762e5dc0f21c27674b87e0b0eae8a8b4fa7b26ac2",
+      "bytes": 20200
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/03/en/pine-soot-pictorial.md": {
+      "sha256": "7ebfb029e69012e9460191507016ef7b8e116c018dcd036d0d9374a6356736d2",
+      "bytes": 19281
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/04/en/gold-orange-type-journal.md": {
+      "sha256": "d17a9dd9b2e7827af7dcff099b5376c493dfd10ef76766f63dccd2d3a4c1d043",
+      "bytes": 19502
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/05/en/silver-gray-luxury-magazine.md": {
+      "sha256": "d1dccbae157399a41c26257748f41ba2f9f56d638a3c87a0b81086aced2bccd1",
+      "bytes": 23976
+    },
+    "skills/pptd-deck-skill/reference/design_system/04_promotion/06/en/fresh-brand.md": {
+      "sha256": "bf4a27937456aa5cafa001603f2062be45854b98f9d5c487cc05e0015bbf5fad",
+      "bytes": 20828
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/01/en/pink-purple-diagnosis.md": {
+      "sha256": "7ea8a474249e50146d2e287981709bf2aa6e81ba66b467a7eb2f66eab109eb55",
+      "bytes": 15734
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/02/en/teal-green-academic-defense.md": {
+      "sha256": "edf5481950e75eee8b531bb6e54d8b29db7a811e9529ea5215d86156f2554309",
+      "bytes": 16103
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/03/en/pastel-derivation.md": {
+      "sha256": "6c43c6553deefb2cfddc2ffdb5def51080c927469aaa7b96328964316cbceecc",
+      "bytes": 14068
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/04/en/paper-white-courseware.md": {
+      "sha256": "988afcc62005542f7efcc27f573c395a3887e1aedd291152ed4f5ab58fb30a2a",
+      "bytes": 10997
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/05/en/blue-line-courseware.md": {
+      "sha256": "75fca304e56562ea638980f64a1fba60ede6bd29737740f313fac0f4695ad482",
+      "bytes": 10957
+    },
+    "skills/pptd-deck-skill/reference/design_system/05_academic/06/en/dark-themed-data.md": {
+      "sha256": "b8540b4bd8cda0dd6e3e567426bfe77299974140036a81162c4339fa8f36265e",
+      "bytes": 21038
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/blue-line-courseware/design.md": {
+      "sha256": "cbceb29f83eefbab1b593923948344fc60143cb124fed37885eb78c07034701b",
+      "bytes": 14267
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/deep-blue-atlas/design.md": {
+      "sha256": "9ec1dceff1768027c704261feee85c39ff84d4812a5eabdb116194452be7670a",
+      "bytes": 13777
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/paper-white-courseware/design.md": {
+      "sha256": "afd099d9cd40a30c1a393c9910604b9caf8e4c6d8a1f490efad29b8da21cda53",
+      "bytes": 14310
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/pastel-derivation/design.md": {
+      "sha256": "8c959783f95073be9c7f1df7382a987640e1f7b43ca23ae9e95b0211860ab83a",
+      "bytes": 14971
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/teal-green-academic-defense/design.md": {
+      "sha256": "2945f10d4844153aa26add53feabf105c54701216662154ca5ccf3353bdf11c9",
+      "bytes": 14420
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/wine-red-data/design.md": {
+      "sha256": "6b6fa9f7ec50ea38a466dcd904682a129ac0d0c5f7b929ad788aa1b915876d1a",
+      "bytes": 14505
+    },
+    "skills/pptd-deck-skill/reference/design_system/academic/wine-red-data/theme.json": {
+      "sha256": "790d3ad420bd3d572eaaaaf32c04d367e091eee266b0882b46da7c3f30a425db",
+      "bytes": 555
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/apricot-white-brief/design.md": {
+      "sha256": "94a912c08d769a44e7b13a8332fda0148299d708cb4d21beed5847feb0f67fc9",
+      "bytes": 17794
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/indigo-due-diligence/design.md": {
+      "sha256": "34ac9b1cdda0f344aaa1a36c5dca3ba5daad148295fc86642a4bdff96e948557",
+      "bytes": 12056
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/marine-blue-research/design.md": {
+      "sha256": "be40268248dcc50fba0e2ed06ad7427c80bf4ebc3b68c8403270a7ca9a658a62",
+      "bytes": 12057
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/moss-green-transformation/design.md": {
+      "sha256": "f7f4e31e18f7ecd50017527c821003787aec2c0cd522842e213c4c017c4ffa81",
+      "bytes": 13505
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/pine-green-strategy/design.md": {
+      "sha256": "29ed43e59579278a2fcd93f4ec4d915041c73c5a51a8e50111e2b16be7e7f121",
+      "bytes": 15421
+    },
+    "skills/pptd-deck-skill/reference/design_system/consulting/red-black-growth/design.md": {
+      "sha256": "83f3c08597dc51ae32aed1bcf7ec8210e27f2e003d6cff3a90be95c908531c8f",
+      "bytes": 12963
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/black-gold-ledger/design.md": {
+      "sha256": "03e708f0b2a347f3de053b98081daffb875a51fe6570761234cfbacf32ca805b",
+      "bytes": 15611
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/ebony-ledger/design.md": {
+      "sha256": "8d162c31122401419a011d1be21b0608aeae19df778ff443d7a2eeac9e13623c",
+      "bytes": 14968
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/honey-orange-memo/design.md": {
+      "sha256": "08af45cf6170095695d426e43a5d4a407d5579f4b092edef853eae0e957dea69",
+      "bytes": 13093
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/lake-blue-memo/design.md": {
+      "sha256": "d866c14b688afd597e5ac27eda35385669b50b5bc52852cd195db1439c00bcd8",
+      "bytes": 16367
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/prospect-annual/design.md": {
+      "sha256": "f84d64c4d10a8ebd0cc7161cacd85b338bbce295df552e9445ce2c109da76cd9",
+      "bytes": 14998
+    },
+    "skills/pptd-deck-skill/reference/design_system/finance/rice-paper-annual/design.md": {
+      "sha256": "b98b50eced346dc6d86c00cf0acfeb32298b0e9521fb3bbee2b5889b6b82abbf",
+      "bytes": 11329
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/aqua-charity-report/design.md": {
+      "sha256": "26209fc8f074e44d139e977db283a79920954a2a15b045e4359d78cba14fd148",
+      "bytes": 15464
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/cream-collage/design.md": {
+      "sha256": "9f8cfef54ff28d9ee8a9d998325b97e90bdd4f45703cc7f20d2a9cd40ba9b2ce",
+      "bytes": 12937
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/pine-soot-pictorial/design.md": {
+      "sha256": "f755132236574cb66d8937d55e3cde5df5ad5900ff19ae6960e7d9bbbd0705bd",
+      "bytes": 14309
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/silk-yellow-magazine/design.md": {
+      "sha256": "935291996cc74934c6980fddfceb7eeeda96b98cae573e379d657e22ed47ea90",
+      "bytes": 13578
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/silver-gray-luxury-magazine/design.md": {
+      "sha256": "883ca1821b3cfcf0d3b5282296168a8cbb361e675611709fccbc8fc40dc69ed1",
+      "bytes": 14171
+    },
+    "skills/pptd-deck-skill/reference/design_system/promotion/travel-green-handbook/design.md": {
+      "sha256": "5e960091a9f92bb95a5a0afb28d5341d4c58b74d36a7f83dd37c1854bb221018",
+      "bytes": 15734
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/blue-flame-brand/design.md": {
+      "sha256": "49c6d12df76e72e8940e99b5251ddeb8b31a570a1fa8d217f9f672e39a7dc924",
+      "bytes": 14982
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/electric-violet-business/design.md": {
+      "sha256": "30b7f007eeb5fc7495f98a22240847504c02c002a6413e5ac7afcf0901a923cb",
+      "bytes": 13346
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/moon-white-imagery/design.md": {
+      "sha256": "30e29b39a01630a1fa91b915731a5529b559fcec42a32def2c071be3f0c9dfcd",
+      "bytes": 13833
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/sky-blue-wayfinding/design.md": {
+      "sha256": "da54734ef2f533e72b11f8d75fe8d2a8629489d2f3491214c0589bc938a69e65",
+      "bytes": 15769
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/warm-clay-works/design.md": {
+      "sha256": "8c4db65126cbb7a2e80c444a5ee7e6d07e219c2dd4d604f1392dc704398bd856",
+      "bytes": 13808
+    },
+    "skills/pptd-deck-skill/reference/design_system/work/warm-jade-annual-report/design.md": {
+      "sha256": "5961b8a59ad467f283fe1e6aa49b7866784e876f4b30a6a0dae83d9508a1d735",
+      "bytes": 16040
+    },
+    "skills/pptd-deck-skill/reference/fonts.md": {
+      "sha256": "4320f5a553092d32c68e1e5b756bc12cd31a09793a4e41b90d5463b2fc9a7474",
+      "bytes": 963
+    },
+    "skills/pptd-deck-skill/reference/general-poster.md": {
+      "sha256": "93540877bdafc194042784de15a67f7403259638563d13504feb6f5d8ee43281",
+      "bytes": 27404
+    },
+    "skills/pptd-deck-skill/reference/native-authoring.md": {
+      "sha256": "fb4187973287802c7fbb0884c27c832fa6b0e205c6c111e03723db5f402ac633",
+      "bytes": 4198
+    },
+    "skills/pptd-deck-skill/reference/pipeline.md": {
+      "sha256": "d39550de5555fecd7b8bc69d378b87cd373783381a6afb7182954f5dd12aa460",
+      "bytes": 7762
+    },
+    "skills/pptd-deck-skill/reference/pptd.md": {
+      "sha256": "03068da917aba6ca7c4a7092df61256b7b3424133335adc5b431afa214ba655d",
+      "bytes": 88335
+    },
+    "skills/pptd-deck-skill/reference/shapes.md": {
+      "sha256": "3b7a343ba6e1116144312d7585f30cd2033b96cf1fbf0647cfe1250082a15cfd",
+      "bytes": 15399
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/academic-research.md": {
+      "sha256": "6dcb08a7af81d9fba07ba8fa899c7feefb6a11f029a437d1b556db69c426bc7a",
+      "bytes": 15523
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/analysis-decision.md": {
+      "sha256": "99beb366864485cd2f090a7475ba1371daefd82ec2d6df2a448962f6298188bf",
+      "bytes": 6086
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/brand-creative.md": {
+      "sha256": "f2ecc90a24c48cdeba1b9d33c5bcf95c831fe66a00398d464c6e0e95ce38f32b",
+      "bytes": 15037
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/business-plan.md": {
+      "sha256": "d81fc8f02c0c844845fe72b8fb7f78e6a4e1f35ef933c91ea284680e139a1e12",
+      "bytes": 6535
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/education-training.md": {
+      "sha256": "a3f1583f92d1b829c6a466708222668a70fb8e3f1b19102b583af432c6ae89de",
+      "bytes": 24812
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/management-report.md": {
+      "sha256": "f123740acdfc75899feb75fadd23f282e683c993646b730c1539d1d7cdcccd07",
+      "bytes": 5763
+    },
+    "skills/pptd-deck-skill/reference/slides_categories/tech-engineering.md": {
+      "sha256": "4b13d120656b28f5d05b185729a5bd1dd159a30015fb102a63cd2715c40f6ebc",
+      "bytes": 18940
+    },
+    "skills/pptd-deck-skill/reference/slides_categories.md": {
+      "sha256": "196ef1d40fbe6d670e5d4e6e148f9f1ed06d2b54de337a431e884adb899622b9",
+      "bytes": 4798
+    },
+    "skills/pptd-deck-skill/reference/windows.md": {
+      "sha256": "027de5f3484b5450a66adb3b0b306ad0a5b0c7b1effa13f7427a9ad12876ff4e",
+      "bytes": 4117
+    },
+    "skills/pptd-deck-skill/scripts/export_pptx.py": {
+      "sha256": "a36724a08ecb15bc6436c2bec4f1a0a002485127be57ea782289364eba19cbb3",
+      "bytes": 894
+    },
+    "skills/pptd-deck-skill/scripts/font_support.py": {
+      "sha256": "88cf62eb28fd5bad7e41ccf860e18d62a7cb41b68a669c14385f5f4326ae6528",
+      "bytes": 6537
+    },
+    "skills/pptd-deck-skill/scripts/local-export/ICONS_NOTICE.md": {
+      "sha256": "7b8c3b52eb48d7b2bdf26c83d23d18d7c9ddae5497f43c4fa3d01bed489f06cb",
+      "bytes": 149
+    },
+    "skills/pptd-deck-skill/scripts/local-export/NATIVE_NOTICE.md": {
+      "sha256": "f6ffa12db629f528ecd169a3e0eb01cd7db5f1aeb877b305e7810ad4e1249c39",
+      "bytes": 1709
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_animation.py": {
+      "sha256": "b87cacf35c0bb8263c0754bcc80b099228d8f3e2dab96cb1a8bcbeb1e08fa45f",
+      "bytes": 5238
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_chart.py": {
+      "sha256": "48498e6378985d8da0f0864d81cb27fc04d157640051427b73e51a5ab5292832",
+      "bytes": 11903
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_chart_model.py": {
+      "sha256": "ab3663c74d7a199d3a164e73530b53599f4f2f86d3ff45d2450ba4ccaf0127c7",
+      "bytes": 18252
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_cli.py": {
+      "sha256": "0ee418635bf30c0d6ecbd54c2d88887aac7551795e97fd78da28111617d5ed9a",
+      "bytes": 2885
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_common.py": {
+      "sha256": "5fbb9c8690ccc8312dbda84a0a8561a5602e9e314da0314bf53f453b705df436",
+      "bytes": 5603
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/app.mjs": {
+      "sha256": "465681e159e103a70e0429fcca3508e14a773af9ecea86ed4d940cf70841d7f2",
+      "bytes": 117097
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/charts.mjs": {
+      "sha256": "80bb78b412372d50f0ea1696f686bb7654580cd2d049a35abf58fe199964b409",
+      "bytes": 14994
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/icons.mjs": {
+      "sha256": "a2266065144de7055754a2ee0253e79dfd33075019ba2ca818bc7da17c6f74e4",
+      "bytes": 21838
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/images.mjs": {
+      "sha256": "04a10d98d0a53022c17d9b55f984757a22e2278c76810af060174dd8981b0ee7",
+      "bytes": 5369
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/index.html": {
+      "sha256": "f8d3bd5e4d8ef2f74a971902fa12a252218466dffd9548fb79ffc37d5a3afbbe",
+      "bytes": 25360
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/math.mjs": {
+      "sha256": "79fe867fd8c0cffac737451c7e42ca7a60e3c8b921649ce3ab14ad46ce6ca5ab",
+      "bytes": 5593
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/model.mjs": {
+      "sha256": "0540f1e862e7874bf790522be99145adbd44c9e8edead6b967300c1bff5f6e60",
+      "bytes": 10295
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/playback.mjs": {
+      "sha256": "a99e20266ecccba89bfd219777a69d172f2374522af398d321499f93813e7693",
+      "bytes": 3096
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/shapes.mjs": {
+      "sha256": "d3787113e8969a1d153936603a196293038bd3512fd1b594d47c5d4aab5dac3a",
+      "bytes": 8491
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/styles.css": {
+      "sha256": "690ad236d301ece41a1ad26c7b2e0f0783a7c3cfe32d9bb61f9077ddb543ba2e",
+      "bytes": 34142
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/text-format.mjs": {
+      "sha256": "eb8fc2ebd50ae525e8613231b24b23b93aab688108f582ca975921a7a35d6799",
+      "bytes": 20528
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor/ui.mjs": {
+      "sha256": "2fe90f2b8986ce5d12d0d92855ae3a6cd3bacf87ca8968e432e664ea7aa74376",
+      "bytes": 14382
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_editor.py": {
+      "sha256": "6e28e5d42c0b53406af20224ed2d4a668cacc8588d5f9346b14dacb85dc28445",
+      "bytes": 12150
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_effects.py": {
+      "sha256": "fb6684e4c7e47e6daa90809e8abd2b57865d20e8c15fb50dd6ed81882220ef86",
+      "bytes": 870
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_fill.py": {
+      "sha256": "92cb688ec24f2b780cc4fef5e6f7c259e276e9177013d793ad08f35efc12788a",
+      "bytes": 3087
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_fonts.py": {
+      "sha256": "3d5171a921eef252572017887457b59619a4a314daba119bc5a14d58c8482a9a",
+      "bytes": 3624
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_math.py": {
+      "sha256": "95da556c7a580f276990e02af21d9d3a2fa241181feba485dc1c0d31ff80c39a",
+      "bytes": 20379
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_media.py": {
+      "sha256": "ee2cd343c58d3169f37647dd040e7cc3e6f6bfdc03c019b6f4d302efdab44bf9",
+      "bytes": 4541
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_package.py": {
+      "sha256": "b06a406daad4145e47df4dbfef50f0a9e8d736b0e414b23424dad1768fa6eedf",
+      "bytes": 2825
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_preview.py": {
+      "sha256": "dd21aad560f48d0856e4f8cbaccf0b815e91211dab73c24edf2b87513e6ee905",
+      "bytes": 2256
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_project.py": {
+      "sha256": "de1ed18794d4c05dbffc0d07920f4ab3a4225384ebf6304228ed9f5ae6df95f8",
+      "bytes": 19764
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_table.py": {
+      "sha256": "8b844b1367849f410588b278d76245ba0f6f2aedf33589da15d543869571618b",
+      "bytes": 8206
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_text.py": {
+      "sha256": "87d17d3089dd3248d194250538bf7a323704e7145c364dbbdc741431d40b8c7f",
+      "bytes": 11874
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_validation.py": {
+      "sha256": "1eeacaa52467e420cdb1334cdbc89f61e723524d8e68d1cc1919b09a785f2bf1",
+      "bytes": 3875
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_workbook.py": {
+      "sha256": "b7670e744744e0fc97115613420fd4a1842fad9bda80175195774a266b194f5f",
+      "bytes": 2584
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_workspace.py": {
+      "sha256": "1e59eb7d15d4b9a6eda1ea9cb5f3049690f29dab5eb5362ac805980a755151c8",
+      "bytes": 6401
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_writer.py": {
+      "sha256": "dcc4ec4c775805d69709a8cbe5059f21d6718956625dd26b465d5ea28151d389",
+      "bytes": 17743
+    },
+    "skills/pptd-deck-skill/scripts/pipeline.py": {
+      "sha256": "d281ca8ab0c3764c189f3d4dcbdf4b4e464edfa4e19475fb7643c32937c6f99e",
+      "bytes": 22982
+    },
+    "skills/pptd-deck-skill/scripts/render_native.py": {
+      "sha256": "7048bf81d94ac964eae84012a1bf72df6e5f81fba8aa1ba204111cc956a57c65",
+      "bytes": 21839
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native/acceptance.pptd": {
+      "sha256": "e61b786c90b44eb3935c8627778af6eec07a06e31ef7cef3b26a86090714cc1f",
+      "bytes": 304
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native/media/blocks.png": {
+      "sha256": "c8e0d882addc13d7e65998af923ed66657987ce268b8b517831f62d59fc9d732",
+      "bytes": 222
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native/pages/01.page": {
+      "sha256": "ebb9d5e0d733ae205767f9d89c7865b2234cd4d3526494980e98d41cb008f50f",
+      "bytes": 1344
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native/pages/02.page": {
+      "sha256": "70440fe6d80e9d5571dbf77c2af4d3ab0f45ed2c1e456555074b17b1979d2134",
+      "bytes": 798
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-advanced/advanced.pptd": {
+      "sha256": "7430e75d893e3cf543460629958b048a316e5b2c71639ecae0a4c683db82346c",
+      "bytes": 119
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-advanced/pages/01.page": {
+      "sha256": "da27c8bfd7b6151214662c0a8676ea39e2ec709628f91e01eff9d3403974d45d",
+      "bytes": 858
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-advanced/pages/02.page": {
+      "sha256": "226140c88897a7bbc8a3baf229cb4704e93420c8438e54bb12b41f4bb70dd21b",
+      "bytes": 847
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-advanced/pages/03.page": {
+      "sha256": "159266846d7599d05c64ba4297bc848c0b4d64b2a61aa4c60b527cc93a7f6ce4",
+      "bytes": 885
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-charts/charts.pptd": {
+      "sha256": "bd17bfa48f636b335ac896ceb29065dee027bbb63a0695a553efb1eaa04352ee",
+      "bytes": 144
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-charts/pages/01.page": {
+      "sha256": "5206eb6cc348ee9c638455d19cc182a8b439dac54920f71a92bb87b55f579cc8",
+      "bytes": 1597
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-charts/pages/02.page": {
+      "sha256": "0a89ee66c5fba6bd1d47dca038ca265a544f71dc6ede9e4b8328958001715fe3",
+      "bytes": 1344
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-charts/pages/03.page": {
+      "sha256": "2e479d15f66baefd5482122c231967c2747743f21ba981915e9445a2f773ce4d",
+      "bytes": 1297
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-charts/pages/04.page": {
+      "sha256": "aa4d3b9fa5e1d4009129465fbbad0ec199230e277d83a7ca404ce40f5df56477",
+      "bytes": 1787
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-effects/effects.pptd": {
+      "sha256": "514385665e335f108236efa7559a541b2366f1ffea3778aa137edf4203836c36",
+      "bytes": 89
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-effects/media/blocks.png": {
+      "sha256": "c8e0d882addc13d7e65998af923ed66657987ce268b8b517831f62d59fc9d732",
+      "bytes": 222
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-effects/one.page": {
+      "sha256": "772a800683f55652ed61fdc65b8fe87adfa71cb1621fabb832773100c6267b2f",
+      "bytes": 1359
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-fills/fills.pptd": {
+      "sha256": "989d8f02032301f489cd8cffedbffa0e5d20b283b657de10b779a1d37a25628f",
+      "bytes": 59
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-fills/media/blocks.png": {
+      "sha256": "c8e0d882addc13d7e65998af923ed66657987ce268b8b517831f62d59fc9d732",
+      "bytes": 222
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-fills/one.page": {
+      "sha256": "88c55a08bf2386c08ed7d3f3a4488aecf7df97b7060fcaa0fc1a5eddc4b78de1",
+      "bytes": 1266
+    },
+    "skills/pptd-deck-skill/tests/fixtures/native-fills/two.page": {
+      "sha256": "ac694392f776bf6c6ea18796e0c2e00267fe109509184ba3ce3857c217052c6f",
+      "bytes": 256
+    },
+    "skills/pptd-deck-skill/tests/test_native_charts.py": {
+      "sha256": "ccc8b775ed686cff74e7ccea0aa3c8392ed130ebda749b031dd2c57aa0c10084",
+      "bytes": 7402
+    },
+    "skills/pptd-deck-skill/tests/test_native_distribution.py": {
+      "sha256": "0d13e389a359a288ceafb8c22d4bf3044b359590937a2f31b182f68179d56479",
+      "bytes": 6613
+    },
+    "skills/pptd-deck-skill/tests/test_native_editor.py": {
+      "sha256": "8685942d44b6c0dd7545f5f0162a7e88c7bd4b2c04fe245951f5ceb62561a5e7",
+      "bytes": 22959
+    },
+    "skills/pptd-deck-skill/tests/test_native_export.py": {
+      "sha256": "4f2a25a31a0751bb7d465edbbe54ede71eb9075060bd2834f529995501de80f3",
+      "bytes": 15028
+    },
+    "skills/pptd-deck-skill/tests/test_native_fonts.py": {
+      "sha256": "89c92dc9c773bf30948b6b2978abe0d65274a8646b5a0a68882eeb5d88b43c4f",
+      "bytes": 1809
+    },
+    "skills/pptd-deck-skill/tests/test_native_math.py": {
+      "sha256": "980e3330e73d14a9ac70132f4c8bbe26113f55fac408c9898af4e0a92e9c4d02",
+      "bytes": 4033
+    },
+    "skills/pptd-deck-skill/tests/test_native_platform.py": {
+      "sha256": "0a2958411c7ac7463e21946bbd0d158a467fd8662c0547201a5b1393ba1d26ea",
+      "bytes": 1450
+    },
+    "skills/pptd-deck-skill/tests/test_native_render.py": {
+      "sha256": "038b2cb815310d0cf4946005e48ad25ea3f140b3c7cfb11468bfda3772321570",
+      "bytes": 1506
+    },
+    "skills/pptd-deck-skill/tests/test_pipeline.py": {
+      "sha256": "d4d7859163e78d5242cd08d74498192e8a7ecceca2b029f897a2dc6e7045abf3",
+      "bytes": 9873
+    },
+    "test/native-charts-preview.test.js": {
+      "sha256": "5f03aec3fccd3267043efd2d443351a95c75598e17f59ff59e180aff5a9f1f52",
+      "bytes": 1341
+    },
+    "test/native-editor-model.test.js": {
+      "sha256": "8733f8e3857751fe0e72285392356c948a4fa182d0d3ef3b3a35353d30c06913",
+      "bytes": 10331
+    },
+    "test/native-icons.test.js": {
+      "sha256": "fbe47cf205d4c83cdaeb400ed386b666d351a092d8d8b2f902e1c4a143f7a393",
+      "bytes": 1111
+    },
+    "test/native-math-preview.test.js": {
+      "sha256": "49bdb1d3526b16ef8ac19e43ec8cd13254e77813c3e4c04b18d40f7f17be6fd9",
+      "bytes": 2315
+    },
+    "test/native-playback.test.js": {
+      "sha256": "ca76cc402016886b49bacaf90d25baf80fcb9320ce06d2624f6c208b5e882584",
+      "bytes": 1821
+    },
+    "test/native-text-selection.test.js": {
+      "sha256": "642195cbe735b542264d8a8d0dd3c075f2cbfad27e5eaf6c1cba70554eb8162e",
+      "bytes": 6982
+    },
+    "theme.md": {
+      "sha256": "192b566090169b49140d4de2e639d706d653e85c581afa4e1af826c97f50ecd8",
+      "bytes": 18266
+    },
+    "theme_EN.md": {
+      "sha256": "6f5f03dc35ced24c061ffc7ed606beaba07b826b80369a875f5205e8436369fd",
+      "bytes": 18543
+    },
+    "tools/audit_native_tree.py": {
+      "sha256": "1dc203b6799c88c45117c4aae804aebf724f1f5ef514742e1ce6d45d6a81fdd4",
+      "bytes": 1828
+    },
+    "tools/build_native_distribution.py": {
+      "sha256": "17a0f4415cea1bb2007ad24ce9dc9388f17280b6489e8c3f091e2772392837dc",
+      "bytes": 9241
+    },
+    "tools/pptx_semantics.py": {
+      "sha256": "e13c48053667af1376e968cc0c8398c187e4124b3821f54f8a804e833b85b175",
+      "bytes": 21366
+    },
+    "tools/setup_cloud.sh": {
+      "sha256": "d783847a39d1b88a6f1df87dea94f7b84c74cb5d572441d5e2ccac1bce055cd2",
+      "bytes": 466
+    },
+    "tools/smoke_native_install.py": {
+      "sha256": "3b4c05e110637b8e87c8c78b2c6432d8be90f0a4cc97afa927cd3a0eae921bff",
+      "bytes": 6379
+    },
+    "tools/test_native.mjs": {
+      "sha256": "f35ac4c18285a295673df9585c38d201d3226439abde2b727b069fc2e1177943",
+      "bytes": 632
+    },
+    "uv.lock": {
+      "sha256": "eb187340b0a98a9cc6a8f3f33a0ba923c9127baed602f745088866de0023a6b5",
+      "bytes": 32982
+    }
+  }
+}

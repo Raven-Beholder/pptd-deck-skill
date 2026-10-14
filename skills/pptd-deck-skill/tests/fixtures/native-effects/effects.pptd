@@ -1,0 +1,9 @@
+pages:
+- one.page
+size:
+- 960
+- 540
+theme:
+  colors:
+    shadow: '#17255480'
+version: v2
