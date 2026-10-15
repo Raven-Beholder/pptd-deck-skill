@@ -6,7 +6,7 @@ from urllib.parse import unquote
 from zipfile import ZipFile, BadZipFile
 import xml.etree.ElementTree as ET
 from native_common import NS, NativeExportError
-from native_project_fonts import read_eot, font_info
+from native_project_fonts import read_eot, font_info, used_font_faces
 
 ExportError=NativeExportError
 
@@ -58,9 +58,9 @@ def verify_output(pptx,transition='fade',expect_fonts=False):
                     fades+=1
             if not slides:raise ExportError('PPTX has no slides')
             fonts=[n for n in names if n.startswith('ppt/fonts/') and not n.endswith('/')]
-            if expect_fonts and not fonts:raise ExportError('font embedding requested but no font parts found')
             declared=set()
             families=[]
+            embedded_faces=set()
             presentation=ET.fromstring(archive.read('ppt/presentation.xml'))
             for item in presentation.findall('p:embeddedFontLst/p:embeddedFont',NS):
                 face=item.find('p:font',NS)
@@ -79,9 +79,14 @@ def verify_output(pptx,transition='fade',expect_fonts=False):
                     if family not in info['aliases']:raise ExportError('embedded font family mismatch')
                     variant='boldItalic' if info['bold'] and info['italic'] else 'bold' if info['bold'] else 'italic' if info['italic'] else 'regular'
                     if tag!=variant:raise ExportError('embedded font variant mismatch')
+                    embedded_faces.add((family, variant))
                     declared.add(target)
                 if not versions:raise ExportError('embedded font has no data')
             if declared!=set(fonts) or set(font_relationships.values())!=declared:raise ExportError('orphan embedded font part or relationship')
             if fonts and (presentation.get('embedTrueTypeFonts')!='1' or presentation.get('saveSubsetFonts')!='0'):raise ExportError('invalid full-font embedding settings')
+            used=used_font_faces({name:archive.read(name) for name in names if name.endswith('.xml') and name.startswith(('ppt/slides/', 'ppt/charts/'))})
+            missing=[dict(family=family,variant=variant) for family,variant in sorted(used-embedded_faces)] if expect_fonts else []
+            embedding={'requested':bool(expect_fonts),'status':'not-requested' if not expect_fonts else 'none' if not fonts else 'partial' if missing else 'complete',
+                       'missingFaces':missing,'embeddedFamilies':families}
     except (BadZipFile,KeyError,ET.ParseError) as error:raise ExportError('invalid PPTX package: '+str(error)) from error
-    return {'slides':slides,'fadeTransitions':fades,'fontParts':len(fonts),'embeddedFamilies':families,'fontValidation':'passed' if fonts else 'not-embedded','relationshipValidation':'passed','bytes':pptx.stat().st_size}
+    return {'slides':slides,'fadeTransitions':fades,'fontParts':len(fonts),'embeddedFamilies':families,'fontValidation':'passed' if fonts else 'not-embedded','fontEmbedding':embedding,'relationshipValidation':'passed','bytes':pptx.stat().st_size}

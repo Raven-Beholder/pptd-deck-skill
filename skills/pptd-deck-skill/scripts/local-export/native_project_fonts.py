@@ -98,7 +98,7 @@ def require_editable(info):
         raise NativeExportError(f"字体 {info['family']} 不允许可编辑嵌入，不能加入可编辑项目。请使用允许分发和编辑嵌入的字体。")
 
 
-def local_font_path(root, relative):
+def local_font_path(root, relative, *, allow_missing=False):
     if (not isinstance(relative, str) or not relative or ':' in relative or '\\' in relative
             or relative != str(PurePosixPath(relative)) or PurePosixPath(relative).is_absolute()
             or '..' in PurePosixPath(relative).parts):
@@ -108,7 +108,11 @@ def local_font_path(root, relative):
         target = target / part
         if target.is_symlink():
             raise NativeExportError('font resource symlinks are not supported')
-    if not target.is_file() or target.suffix.lower() not in ('.ttf', '.otf'):
+    if target.suffix.lower() not in ('.ttf', '.otf'):
+        raise NativeExportError('missing local TTF/OTF resource: ' + relative)
+    if not target.is_file():
+        if allow_missing and not target.exists():
+            return None
         raise NativeExportError('missing local TTF/OTF resource: ' + relative)
     return target
 
@@ -146,7 +150,7 @@ class FontResource:
                     role=self.role, bytes=self.path.stat().st_size, license=self.info['license'], licenseUrl=self.info['licenseUrl'])
 
 
-def project_fonts(root, entries):
+def project_fonts(root, entries, *, allow_missing=False):
     if entries is None:
         return []
     if not isinstance(entries, list) or len(entries) > 64:
@@ -155,7 +159,23 @@ def project_fonts(root, entries):
     for entry in entries:
         fields(entry, 'family src weight style license role', 'customFonts')
         family = string(entry.get('family'), 'font family')
-        path = local_font_path(root, entry.get('src'))
+        if not family or entry.get('role', 'text') not in ('text', 'math'):
+            raise NativeExportError('project font requires a family and text/math role')
+        if type(entry.get('weight', 400)) is not int or entry.get('weight', 400) not in (400, 700) or entry.get('style', 'normal') not in ('normal', 'italic'):
+            raise NativeExportError('project font weight/style must be 400/700 and normal/italic')
+        path = local_font_path(root, entry.get('src'), allow_missing=allow_missing)
+        if path is None:
+            # Export keeps the declared family name. Missing binaries are not
+            # embedded; malformed paths, symlinks and invalid present files fail.
+            key = (family, entry.get('weight', 400), entry.get('style', 'normal'))
+            if key in keys:
+                raise NativeExportError('duplicate project font face: ' + family)
+            keys.add(key)
+            if 'license' in entry:
+                notice = entry['license']
+                if not isinstance(notice, str) or not notice or ':' in notice or '\\' in notice or '..' in PurePosixPath(notice).parts or PurePosixPath(notice).is_absolute() or notice != str(PurePosixPath(notice)):
+                    raise NativeExportError('font license must be a project-relative notice file')
+            continue
         stamp = path.stat()
         total += stamp.st_size
         if total > FONT_TOTAL_LIMIT:
@@ -240,33 +260,50 @@ def read_eot(data):
     return font
 
 
-def embed_project_fonts(package, presentation, resources):
-    """Embed every explicitly emitted text family/style, failing on gaps."""
-    available = {(resource.family, resource.variant): resource for resource in resources}
-    math_families = {resource.family for resource in resources if resource.role == 'math'}
+def used_font_faces(parts):
+    """Read emitted families/styles, including charts and OMML math alphabets."""
     used = set()
-    for name, data in list(package.parts.items()):
+    for name, data in parts.items():
         if not name.endswith('.xml') or not name.startswith(('ppt/slides/', 'ppt/charts/')):
             continue
         doc = ET.fromstring(data)
+        math_props = {props for formula in doc.findall('.//m:oMath', NS)
+                      for props in formula.findall('.//a:rPr', NS)}
         for props in doc.iter():
             if props.tag not in ('{' + NS['a'] + '}' + key for key in ('rPr', 'defRPr', 'endParaRPr')):
                 continue
-            bold, italic = props.get('b') == '1', props.get('i') == '1'
+            bold, italic = props.get('b') in ('1', 'true'), props.get('i') in ('1', 'true')
             variant = 'boldItalic' if bold and italic else 'bold' if bold else 'italic' if italic else 'regular'
             for child in props:
                 if child.tag in ('{' + NS['a'] + '}' + key for key in ('latin', 'ea', 'cs')):
                     family = child.get('typeface')
-                    used.add((family, 'regular' if family in math_families else variant))
-    missing = used - set(available)
-    if missing:
-        raise NativeExportError('缺少项目字体资源：' + '、'.join(f'{family}/{variant}' for family, variant in sorted(missing)) + '。请添加对应字体文件，或关闭嵌入字体。')
-    if not used:
-        raise NativeExportError('没有可嵌入的文本字体。')
+                    if family:
+                        used.add((family, 'regular' if props in math_props else variant))
+    return used
+
+
+def declared_font_defaults(entries, resources=()):
+    """Retain default family names even when their declared files are absent."""
+    inferred = {font.src: dict(family=font.family, role=font.role, weight=font.weight, style=font.style) for font in resources}
+    entries = [inferred.get(entry['src'], entry) for entry in entries or []]
+    text = next((entry['family'] for entry in entries if entry.get('role', 'text') == 'text'
+                 and entry.get('weight', 400) == 400 and entry.get('style', 'normal') == 'normal'), 'MiSans')
+    math = next((entry['family'] for entry in entries if entry.get('role') == 'math'
+                 and entry.get('weight', 400) == 400 and entry.get('style', 'normal') == 'normal'), 'Cambria Math')
+    return text, math
+
+
+def embed_project_fonts(package, presentation, resources):
+    """Embed available faces; leave unavailable families/styles as references."""
+    available = {(resource.family, resource.variant): resource for resource in resources}
+    used = used_font_faces(package.parts)
+    embedded_families = {family for family, _ in used if any(name == family for name, _ in available)}
+    if not embedded_families:
+        return
     presentation.set('embedTrueTypeFonts', '1')
     presentation.set('saveSubsetFonts', '0')
     font_list = node('p:embeddedFontLst', presentation)
-    for family in sorted({family for family, _ in used}):
+    for family in sorted(embedded_families):
         item = node('p:embeddedFont', font_list)
         node('p:font', item, typeface=family, charset='0')
         # Store all supplied faces of a used family to retain future editability.
@@ -280,7 +317,7 @@ def embed_project_fonts(package, presentation, resources):
             node('p:' + variant, item, **{'r:id': rid})
     notices = {}
     for resource in resources:
-        if resource.family in {family for family, _ in used} and resource.notice:
+        if resource.family in embedded_families and resource.notice:
             notices.setdefault(resource.notice, set()).add(resource.family)
     for index, (path, families) in enumerate(sorted(notices.items(), key=lambda item: str(item[0])), 1):
         notice = ET.Element('{urn:pptd:font-license}fontLicense', families=', '.join(sorted(families)))

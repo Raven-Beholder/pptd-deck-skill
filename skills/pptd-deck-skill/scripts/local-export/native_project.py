@@ -19,6 +19,7 @@ from native_writer import export_native
 from native_media import image_size
 from native_project_fonts import FONT_LIMIT, font_info, require_editable, project_fonts
 from native_validation import verify_output
+from native_export_audit import verify_content
 
 TEXT_LIMIT = 1024 * 1024
 PROJECT_LIMIT = 100 * 1024 * 1024
@@ -183,7 +184,7 @@ class Project:
                     raise ValueError('project YAML exceeds 16 MiB editor limit')
                 text = data.decode('utf-8')
                 pages.append(dict(path=path, text=text, hash=digest(data), page=page_value(parse(text))))
-            fonts = project_fonts(self.root, deck.get('customFonts'))
+            fonts = project_fonts(self.root, deck.get('customFonts'), allow_missing=True)
             return dict(manifest=self.manifest, manifestHash=digest(raw), deck=deck, pages=pages,
                         fonts=[font.public() for font in fonts])
 
@@ -316,7 +317,7 @@ class Project:
                     staged.unlink(missing_ok=True)
             return dict(manifestHash=digest(data))
 
-    def export(self, drafts, manifest_hash, hashes=None, theme=None, transition="fade", embed_fonts=False):
+    def export(self, drafts, manifest_hash, hashes=None, theme=None, transition="fade", embed_fonts=False, *, with_report=False):
         if transition not in ("none", "fade"):
             raise ValueError("unsupported slide transition")
         if not isinstance(embed_fonts, bool):
@@ -339,7 +340,13 @@ class Project:
                     raise ValueError('theme must be a mapping')
                 deck['theme'] = theme
                 contents[self.manifest] = yaml.safe_dump(deck, allow_unicode=True, sort_keys=False).encode('utf-8')
-            assets = asset_paths(deck)
+            # Missing font files are optional export resources. Keep their
+            # declarations and family names, but do not treat them as images.
+            assets = asset_paths({key: value for key, value in deck.items() if key != 'customFonts'})
+            available = {font['src'] for font in current['fonts']}
+            for entry in deck.get('customFonts', []):
+                if entry['src'] in available:
+                    assets.update(asset_paths(entry))
             for page in current['pages']:
                 text = drafts.get(page['path'], page['text'])
                 value = page_value(parse(text))
@@ -363,11 +370,13 @@ class Project:
                     target.write_bytes(data)
                 output = root / 'output.pptx'
                 export_native(root / self.manifest, output, transition, parse, embed_fonts=embed_fonts)
-                verify_output(output, transition, embed_fonts)
-                return output.read_bytes()
+                report = verify_output(output, transition, embed_fonts)
+                verify_content(root / self.manifest, output)
+                data = output.read_bytes()
+                return (data, report) if with_report else data
 
     def font(self, name):
-        if name not in {entry.src for entry in project_fonts(self.root, self.load()['deck'].get('customFonts'))}:
+        if name not in {entry.src for entry in project_fonts(self.root, self.load()['deck'].get('customFonts'), allow_missing=True)}:
             raise ValueError('font is not declared in project')
         data = self.read(name, FONT_LIMIT)
         require_editable(font_info(data))

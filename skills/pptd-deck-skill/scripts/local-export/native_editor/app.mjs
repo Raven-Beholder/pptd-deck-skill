@@ -107,7 +107,12 @@ async function api(path, body, binary = false) {
     const result = await response.json();
     throw new Error(result.error || `HTTP ${response.status}`);
   }
-  return binary ? response.blob() : response.json();
+  if (binary) {
+    const blob = await response.blob();
+    blob.unembeddedFontCount = Number(response.headers.get("X-PPTD-Unembedded-Font-Count") || 0);
+    return blob;
+  }
+  return response.json();
 }
 
 function status(message) {
@@ -1406,10 +1411,10 @@ function exportSettings(resetName = false) {
   $("export-directory-row").hidden = !folder;
   $("export-download").textContent = folder ? "保存" : "下载";
   $("export-transition").disabled = format !== "pptx";
-  $("export-embed").disabled = format !== "pptx" || !(project.fonts?.length);
+  $("export-embed").disabled = format !== "pptx";
   $("export-font-note").textContent = project.fonts?.length
-    ? "嵌入项目中的完整字体，保留后续编辑所需字符；缺少使用的字体或字重会明确报错。"
-    : "请在项目管理中添加允许分发的字体，才能嵌入 PPT。当前导出保留字体名称。";
+    ? "嵌入可用的完整项目字体；缺少的字体或字重保留名称，由 Office 使用本机字体或替代字体。"
+    : "当前没有可嵌入的项目字体；仍可导出，保留字体名称，由 Office 使用本机字体或替代字体。";
   $("export-scope").textContent =
     format === "pptx"
       ? "PPT 包含全部页面及未保存草稿。"
@@ -1477,7 +1482,10 @@ $("export-download").addEventListener("click", () =>
     } else download(blob, filename);
     $("export-dialog").close();
     render();
-    status(saved ? `已保存：${saved.path}` : "已交给浏览器下载");
+    const fontNote = blob.unembeddedFontCount
+      ? `；${blob.unembeddedFontCount} 个字体或字重未嵌入，打开时由 Office 使用本机字体或替代字体。`
+      : "";
+    status((saved ? `已保存：${saved.path}` : "已交给浏览器下载") + fontNote);
   }),
 );
 $("download-draft").addEventListener("click", () =>

@@ -12,13 +12,25 @@ python "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-r
 
 `--font-family` selects the body by catalog ID. Repeat `--extra-font` for additional families. STIX Two Math is added by default; `--math-family` selects a catalog MATH family explicitly. Downloads use pinned official bytes and hashes. Full fonts and notices live in `fonts/`, are declared in `customFonts`, and use relative `fonts.json` mappings. After download, generation and editing work offline. Regular/bold/italic mappings reflect the available real faces. Avoid combining these options with installed font options.
 
-For an installed-font workflow, find local font files (macOS `/System/Library/Fonts`, Linux `/usr/share/fonts`, Windows `%WINDIR%/Fonts`). Use one multilingual body family for Chinese and Latin. Font names must correspond to the mapped files:
+For offline installed fonts, omit font options. `init` discovers real paths, exact
+family names, TTC indices and topic coverage automatically. It downloads nothing:
+
+```sh
+python "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --topic "数据库入门" --pages 12
+```
+
+Existing projects preserve their font choices. `fonts-config "$PROJECT/deck.pptd"`
+creates a missing `fonts.json`; `prepare` also does this automatically. If a
+declared family is missing, read the suggested replacement and change it
+deliberately. Existing mappings are never overwritten. See [generation helpers](generation-helpers.md).
+
+Explicit font files remain supported. Use one multilingual family for Chinese and Latin. Names must match the selected file and TTC index:
 
 ```sh
 python3 "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-red-data --topic "Attention Is All You Need" --pages 18 --research --body-font "/absolute/installed/body.ttf" --math-font "/absolute/installed/math.otf" --family "Actual Font Family"
 ```
 
-`init` creates deck.pptd, pages, media, fonts.json, theme.json, brief.json and evidence.json; it refuses to overwrite a nonempty project. Fill all TODO content. Existing projects skip init: add fonts.json and research evidence directly. Other themes use their design.md and manually authored manifest/theme. Do not fabricate an unsupported preset.
+`init` creates deck.pptd, pages, media, fonts.json, theme.json, brief.json and evidence.json; it refuses to overwrite a nonempty project. Fill all TODO content. Existing projects skip init: configure missing fonts and maintain research evidence directly. Other themes use their design.md and manually authored manifest/theme. Do not fabricate an unsupported preset.
 
 `fonts.json` maps real font files for each declared family and math. Paths may be absolute installed paths or relative to the configuration file. Optional `bold`, `italic`, `boldItalic` entries can select real faces. If synthetic styles are acceptable, set `syntheticStyles: true`; the report discloses the approximation. A TTC descriptor uses `{"path":"font.ttc","index":0}`. Example:
 
@@ -26,9 +38,21 @@ python3 "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-
 {"families":{"Actual Font Family":{"regular":"/absolute/body.ttf","syntheticStyles":true}},"math":{"regular":"/absolute/math.otf","italic":"/absolute/math-italic.otf","syntheticStyles":true}}
 ```
 
-Local installed mappings alone do not bundle fonts into the delivered project. On another machine, remap them and rerun checks. Declared project fonts and notices travel with project copies and ZIPs; a self-contained relative `fonts.json` travels too. Use `export --embed-fonts` to embed used project families in PPTX. Missing used families/styles or restricted embedding rights stop export. Missing glyphs are errors, not silent font fallback.
+Local installed mappings alone do not bundle fonts into the delivered project. On another machine, remap them and rerun checks. Declared project fonts and notices travel with project copies and ZIPs; a self-contained relative `fonts.json` travels too. Use `export --embed-fonts` to embed available project families in PPTX. Missing families, styles or font files retain their names without stopping export. `fontEmbedding.missingFaces` lists faces left for Office to resolve; the mode distinguishes complete, partial and no embedding. Restricted embedding rights, corrupt present files and unsafe paths still stop export. Layout QA still requires readable mappings and rejects missing glyphs.
 
 ## Source evidence
+
+To start from supported PPTX/POTX objects, use `template-samples --source "$TEMPLATE"
+--project "$NEW_PROJECT"`. It creates editable starter pages, extracted images,
+font mappings and an explicit unsupported-object report. Inspect these before
+authoring. It is not a lossless import. See [generation helpers](generation-helpers.md).
+
+For a user-supplied PPTX/POTX design, first follow [template import and page acceptance](template-import.md).
+`template-import` pins the original and ordered reference images and extracts layout evidence.
+`prepare` adds per-page paired/difference images. `review --template-decisions` requires
+findings for every mapped page. Template projects cannot pass through structural mode.
+Project copies retain references but require new QA. Automatic editable PPTX conversion
+and actual Office rendering are outside this import route.
 
 Research decks set `brief.json` `requiresSources` to true. Maintain evidence.json alongside the pages. Source URLs and locations must identify primary evidence. Pin local source bytes with sha256 when available:
 
@@ -61,6 +85,11 @@ python3 "$SKILL_DIR/scripts/pipeline.py" export "$PROJECT/deck.pptd" --output "$
 The editor command starts a local HTTP service. Share its printed URL; open/control it only when authorized. User changes saved through the editor require another prepare, page inspection, review and export. An editor preview cannot replace validation of the eventual PPTX file. Retain the editable project for future rework.
 
 `.pipeline/` stores preflight, per-page images, render/review/export reports and repair backups. Input and code hashes prevent export after source, font, asset, tool or inspection-image changes. Export stages and validates ZIP/XML, relationships, page count and transitions, then publishes atomically. Existing PPTX is preserved unless an authorized replacement uses `--force`. Default transitions are fade; `--transition none` honors an explicit request.
+
+Export also compares actual OOXML text, element presence, formula counts and
+effective font size/bold/italic/families with the source. Silent content loss or
+style fallback blocks publication. `packageValidation.contentValidation` records
+per-page counts. This is a source/package check, not visual or Office verification.
 
 ## Repair loop: continue working after an error
 

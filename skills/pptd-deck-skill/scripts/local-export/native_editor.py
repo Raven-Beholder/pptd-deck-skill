@@ -49,12 +49,14 @@ def create_server(project, port=0, *, imported=False):
         def log_message(self, *args):
             pass
 
-        def reply(self, status, data, kind='application/json'):
+        def reply(self, status, data, kind='application/json', headers=None):
             if isinstance(data, dict):
                 data = json.dumps(data, ensure_ascii=False, allow_nan=False).encode('utf-8')
             self.send_response(status)
             self.send_header('Content-Type', kind + ('; charset=utf-8' if kind.startswith('text/') else ''))
             self.send_header('Content-Length', str(len(data)))
+            for name, value in (headers or {}).items():
+                self.send_header(name, str(value))
             self.send_header('Cache-Control', 'no-store')
             self.send_header('X-Content-Type-Options', 'nosniff')
             self.send_header('Referrer-Policy', 'no-referrer')
@@ -201,8 +203,11 @@ def create_server(project, port=0, *, imported=False):
                 elif url.path == '/api/export':
                     if not isinstance(body.get('hashes'), dict):
                         raise ValueError('expected baseline page hashes')
-                    data = project.export(body.get('drafts'), body.get('manifestHash'), body['hashes'], body.get('theme'), body.get('transition', 'fade'), body.get('embedFonts', False))
-                    self.reply(200, data, 'application/vnd.openxmlformats-officedocument.presentationml.presentation')
+                    data, report = project.export(body.get('drafts'), body.get('manifestHash'), body['hashes'], body.get('theme'), body.get('transition', 'fade'), body.get('embedFonts', False), with_report=True)
+                    embedding = report['fontEmbedding']
+                    self.reply(200, data, 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                               headers={'X-PPTD-Font-Embedding': embedding['status'],
+                                        'X-PPTD-Unembedded-Font-Count': len(embedding['missingFaces'])})
                 elif url.path == '/api/download-project':
                     data = project_archive(project, body.get('drafts'), body.get('manifestHash'), body.get('hashes'), body.get('theme'))
                     self.reply(200, data, 'application/zip')

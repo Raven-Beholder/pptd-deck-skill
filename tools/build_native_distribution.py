@@ -19,14 +19,14 @@ SOURCE = ROOT / 'skills/pptd-deck-skill/scripts/local-export'
 MODULES = (
     'native_cli', 'native_animation', 'native_common', 'native_effects', 'native_fill',
     'native_math', 'native_media', 'native_package', 'native_table', 'native_text', 'native_writer',
-    'native_chart', 'native_chart_model', 'native_workbook', 'native_validation', 'native_project_fonts',
+    'native_chart', 'native_chart_model', 'native_workbook', 'native_validation', 'native_project_fonts', 'native_export_audit',
 )
 EDITOR_MODULES = ('native_editor', 'native_project', 'native_preview', 'native_fonts', 'native_workspace', 'native_picker', 'native_font_catalog')
 EDITOR_ASSETS = ('index.html', 'app.mjs', 'model.mjs', 'styles.css', 'charts.mjs', 'text-format.mjs', 'shapes.mjs', 'math.mjs', 'playback.mjs', 'ui.mjs', 'images.mjs', 'icons.mjs', 'page-drag.mjs', 'project-fonts.mjs')
 EDITOR_IMPORTS = set(EDITOR_MODULES) | {'http.server', 'socketserver', 'secrets', 'urllib.parse', 'urllib.request', 'threading', 'base64', 'uuid', 'subprocess', 'shutil'}
 IMPORTS = set(MODULES) | {
     'argparse', 'json', 'os', 'pathlib', 'tempfile', 'zipfile', 'yaml', 'dataclasses',
-    'math', 're', 'xml.etree.ElementTree', 'functools', 'hashlib', 'struct', 'posixpath',
+    'math', 're', 'xml.etree.ElementTree', 'xml.etree', 'functools', 'hashlib', 'struct', 'posixpath',
     'html', 'html.parser', 'copy',
     'io', 'sys', 'urllib.parse',
 }
@@ -45,8 +45,9 @@ licensed PyYAML dependency:
 
 Use --force to replace an existing output; --transition accepts fade or none.
 Fonts are family references by default. Use --embed-fonts for declared local
-static TTF/OTF customFonts resources. Include used families/styles and their
-distribution notices. No font binaries are bundled with this archive.
+static TTF/OTF customFonts resources. Available faces and distribution notices
+are embedded. Missing faces/files remain font references for Office; reports
+list unembedded faces. No font binaries are bundled with this archive.
 Supported: rich-text subset, basic shapes/lines, local PNG/JPEG, shared fills,
 outer shadows, tables, editable bar/line/pie/doughnut charts with embedded XLSX,
 bounded editable formulas, basic entrance/exit animations.

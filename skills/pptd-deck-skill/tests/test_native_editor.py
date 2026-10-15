@@ -70,7 +70,11 @@ class NativeEditorTests(unittest.TestCase):
         with zipfile.ZipFile(io.BytesIO(portable)) as archive:self.assertIn(new['path'],archive.namelist())
         for entries in ([],[paths[0],paths[0]],['../escape.yaml'],[self.project.manifest]):
             with self.assertRaises(ValueError):self.project.arrange_pages(entries,restored['manifestHash'])
-        with self.assertRaises(ValueError):self.project.export({},restored['manifestHash'],hashes,embed_fonts=True)
+        blob, report = self.project.export({},restored['manifestHash'],hashes,embed_fonts=True,with_report=True)
+        self.assertEqual(report['fontEmbedding']['status'], 'none')
+        self.assertTrue(report['fontEmbedding']['missingFaces'])
+        with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+            self.assertFalse(any(name.startswith('ppt/fonts/') for name in archive.namelist()))
         with self.assertRaises(ValueError):self.project.export({},restored['manifestHash'],hashes,transition='fake')
 
     def test_theme_draft_export_and_atomic_manifest_save(self):
@@ -329,6 +333,15 @@ class NativeEditorTests(unittest.TestCase):
             self.assertIn("default-src 'none'", headers['Content-Security-Policy'])
             self.assertEqual(request('GET', '/api/project', auth=False)[0], 403)
             self.assertEqual(request('GET', '/api/fonts', auth=False)[0], 403)
+            snapshot = self.project.load()
+            export_body = dict(drafts={}, manifestHash=snapshot['manifestHash'],
+                               hashes={page['path']: page['hash'] for page in snapshot['pages']}, embedFonts=True)
+            code, data, headers = request('POST', '/api/export', export_body)
+            self.assertEqual(code, 200)
+            self.assertEqual(headers['X-PPTD-Font-Embedding'], 'none')
+            self.assertGreater(int(headers['X-PPTD-Unembedded-Font-Count']), 0)
+            with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                self.assertIn(b'Auditable export', archive.read('ppt/slides/slide1.xml'))
             code, fonts, _ = request('GET', '/api/fonts')
             self.assertEqual(code, 200)
             self.assertIsInstance(json.loads(fonts)['families'], list)

@@ -31,6 +31,8 @@ class FontInventoryTests(unittest.TestCase):
         second = font_bytes('Family B', second_offset + 28)
         self.file.write_bytes(struct.pack('>4sIIII', b'ttcf', 0x10000, 2, 20, second_offset) + first + second)
         self.assertEqual(families(self.file), {'Family A', 'Family B'})
+        self.assertEqual(families(self.file, 0), {'Family A'})
+        self.assertEqual(families(self.file, 1), {'Family B'})
 
     def test_corrupt_table_offsets_and_excessive_collection_counts_are_bounded(self):
         for data in (font_bytes('Broken', 1 << 30), b'ttcf' + struct.pack('>II', 0x10000, 100000), b'OTTO'):

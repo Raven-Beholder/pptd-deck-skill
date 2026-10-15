@@ -72,17 +72,36 @@ def main():
             try:service.wait(timeout=5)
             except subprocess.TimeoutExpired:service.kill();service.wait(timeout=5)
             service.stdout.close();service.stderr.close()
-        run([sys.executable,str(skill/'scripts/local-export/native_cli.py'),str(manifest),'--output',str(project/'standalone.pptx')])
+        standalone=run([sys.executable,str(skill/'scripts/local-export/native_cli.py'),str(manifest),'--output',str(project/'standalone.pptx')])
+        assert json.loads(standalone.stdout)['contentValidation']['status']=='passed'
         verify_output(project/'standalone.pptx')
+        automatic=work/'automatic fonts'
+        run([sys.executable,str(pipeline),'init','--project',str(automatic),'--topic','Offline font selection','--pages','1'])
+        assert json.loads((automatic/'fonts.json').read_text(encoding='utf-8'))['families']
+        starter=work/'template starter'
+        extracted=run([sys.executable,str(pipeline),'template-samples','--source',str(project/'standalone.pptx'),'--project',str(starter)])
+        assert json.loads(extracted.stdout)['pages']==1
+        run([sys.executable,str(skill/'scripts/local-export/native_cli.py'),str(starter/'deck.pptd'),'--output',str(starter/'starter.pptx')])
         for command in ['prepare','review']:
             run([sys.executable,str(pipeline),command,str(manifest),*(['--mode','structural','--reason','Automated source/layout checks; human visual review not performed','--note','Smoke tested installed pipeline only, no image inspection claim'] if command=='review' else [])])
         # Structural review is truthful even though prepare produced the layout proof.
-        run([sys.executable,str(pipeline),'export',str(manifest),'--output',str(project/'verified.pptx')])
+        embedded_attempt=run([sys.executable,str(pipeline),'export',str(manifest),'--output',str(project/'verified.pptx'),'--embed-fonts'])
+        assert json.loads(embedded_attempt.stdout)['fontEmbedding']['status']=='none'
         report=verify_output(project/'verified.pptx')
+        # Exercise installed template import without pretending to inspect images.
+        references=project/'references.json'
+        references.write_text(json.dumps({'renderer':'Synthetic Pillow smoke fixture; no Office verification','pages':['.pipeline/images/01.png']}),encoding='utf-8')
+        run([sys.executable,str(pipeline),'template-import',str(manifest),'--source',str(project/'standalone.pptx'),'--references',str(references)])
+        run([sys.executable,str(pipeline),'prepare',str(manifest)])
+        template_report=json.loads((project/'.pipeline/render.json').read_text(encoding='utf-8'))
+        assert len(template_report['templateComparison']['pages'])==1
+        run([sys.executable,str(pipeline),'review',str(manifest),'--note','No human comparison performed'],expected=2)
+        run([sys.executable,str(pipeline),'export',str(manifest),'--output',str(project/'unreviewed.pptx')],expected=2)
+        assert not (project/'unreviewed.pptx').exists()
         page.write_text(page.read_text(encoding='utf-8').replace('Editable math','Changed math'),encoding='utf-8')
         failure=run([sys.executable,str(pipeline),'export',str(manifest),'--output',str(project/'stale.pptx')],expected=2)
         assert json.loads(failure.stdout)['status']=='needs_repair' and not (project/'stale.pptx').exists()
         # Installed entrypoint must work without the source checkout or legacy tools.
-        result={'platform':platform.system(),'python':platform.python_version(),'cjkFontPresent':cjk,'family':family,'unicodePaths':True,'utf8SaveRoundTrip':True,'installedNativeExport':True,'installedEditorSave':True,'installedFontCatalog':True,'pipelineExport':True,'staleQARejected':True,'packageValidation':report,'officeRenderVerified':False,'browserGUIVerified':False}
+        result={'platform':platform.system(),'python':platform.python_version(),'cjkFontPresent':cjk,'family':family,'unicodePaths':True,'utf8SaveRoundTrip':True,'installedNativeExport':True,'installedEditorSave':True,'installedFontCatalog':True,'pipelineExport':True,'installedTemplateImport':True,'unreviewedTemplateRejected':True,'staleQARejected':True,'automaticLocalFonts':True,'installedTemplateSamples':True,'exportContentValidation':True,'missingEmbeddingFontsAllowed':True,'packageValidation':report,'officeRenderVerified':False,'browserGUIVerified':False}
     out=ROOT/'docs/audit/platform-smoke.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result))
 if __name__=='__main__':main()

@@ -9,13 +9,25 @@
   "installedEditorSave": true,
   "installedFontCatalog": true,
   "pipelineExport": true,
+  "installedTemplateImport": true,
+  "unreviewedTemplateRejected": true,
   "staleQARejected": true,
+  "automaticLocalFonts": true,
+  "installedTemplateSamples": true,
+  "exportContentValidation": true,
+  "missingEmbeddingFontsAllowed": true,
   "packageValidation": {
     "slides": 1,
     "fadeTransitions": 1,
     "fontParts": 0,
     "embeddedFamilies": [],
     "fontValidation": "not-embedded",
+    "fontEmbedding": {
+      "requested": false,
+      "status": "not-requested",
+      "missingFaces": [],
+      "embeddedFamilies": []
+    },
     "relationshipValidation": "passed",
     "bytes": 5379
   },

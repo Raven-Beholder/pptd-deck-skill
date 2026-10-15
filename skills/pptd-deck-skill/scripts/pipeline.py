@@ -32,6 +32,10 @@ from render_native import Renderer, check_capabilities
 from font_support import FontRegistry, face
 from PIL import Image, ImageDraw
 from native_validation import verify_output, ExportError
+from native_export_audit import verify_content
+import template_workflow
+import auto_fonts
+import template_samples
 
 VERSION=1
 class NeedsRepair(ValueError): pass
@@ -47,7 +51,7 @@ def load(manifest):
     manifest=Path(manifest).resolve();root=manifest.parent;deck=parse(manifest.read_text(encoding='utf-8'))
     fields(deck,'version title size theme pages customFonts','presentation')
     if deck.get('version')!='v2' or not isinstance(deck.get('pages'),list) or not deck['pages']:raise NeedsRepair('manifest needs version v2 and a nonempty pages list')
-    project_fonts(root,deck.get('customFonts'))
+    project_fonts(root,deck.get('customFonts'),allow_missing=True)
     pages=[page_value(parse(project_path(root,p).read_text(encoding='utf-8'))) for p in deck['pages']]
     return root,deck,pages
 
@@ -55,14 +59,24 @@ def snapshot(manifest, fonts):
     root,deck,pages=load(manifest);inputs={Path(manifest).resolve().relative_to(root).as_posix():digest(manifest)}
     for path in deck['pages']:inputs[path]=digest(project_path(root,path))
     for font in deck.get('customFonts',[]):
-        inputs[font['src']]=digest(project_path(root,font['src']))
-        if font.get('license'):inputs[font['license']]=digest(project_path(root,font['license']))
+        path=root/font['src']
+        inputs[font['src']]=digest(project_path(root,font['src'])) if path.is_file() else 'missing-project-font'
+        if font.get('license'):
+            inputs[font['license']]=digest(project_path(root,font['license'])) if (root/font['license']).is_file() else 'missing-font-notice'
     for page in pages:
         for element in page['elements']:
             if element['elementType']=='image':
                 path=element['src'];inputs[path]=digest(project_path(root,path))
     for name in ['brief.json','evidence.json','theme.json']:
         if (root/name).is_file():inputs[name]=digest(root/name)
+    if (root/'template-samples.json').is_file():
+        inputs['template-samples.json']=digest(root/'template-samples.json')
+        samples=read(root/'template-samples.json')
+        for path,expected in samples['files'].items():
+            actual=digest(project_path(root,path))
+            if actual!=expected:raise NeedsRepair('template sample evidence changed; preserve original source and regenerate starter pages')
+            inputs[path]=actual
+    inputs.update(template_workflow.inputs(root,deck['pages']))
     config=read(fonts);registry=FontRegistry(config,Path(fonts).resolve().parent)
     font_files={str(path):digest(path) for path in registry.files()}
     # Changes to rendering or exporting code invalidate previous approvals.
@@ -115,6 +129,8 @@ def prepare(args):
     root,deck,pages=load(args.manifest);state=root/'.pipeline';fonts=Path(args.fonts or root/'fonts.json').resolve()
     state.mkdir(parents=True,exist_ok=True)
     for name in ['render.json','review.json','issues.json']: (state/name).unlink(missing_ok=True)
+    if not fonts.exists() and not args.fonts:
+        save(fonts,auto_fonts.configure(root,deck,pages))
     fingerprint,input_map=snapshot(args.manifest,fonts)
     # Native writer validates export semantics in memory, without publishing a PPTX.
     writer=Writer(dict(deck,pages=pages),root,'fade');writer.slides();writer.scaffold()
@@ -145,6 +161,8 @@ def prepare(args):
         overview.save(images/'overview.jpg',quality=92)
         report={'mode':'layout-proof','pages':records,'overview':(images/'overview.jpg').relative_to(root).as_posix(),'overviewSha256':digest(images/'overview.jpg'),'warnings':renderer.warnings,'limitations':sorted(renderer.limitations)}
     report.update(version=VERSION,projectRoot=str(root),fingerprint=fingerprint,fontConfig=str(fonts),officeRenderVerified=False)
+    if (root/'template.json').exists():
+        report['templateComparison']=template_workflow.compare(root,deck,report)
     save(state/'render.json',report)
     if report['warnings']:
         save(state/'issues.json',{'status':'needs_repair','stage':'render','issues':report['warnings'],'taskComplete':False})
@@ -162,19 +180,29 @@ def fresh(args, require_review=False):
         for page in report['pages']:
             if digest(project_path(root,page['image']))!=page['sha256']:raise NeedsRepair('review image changed; rerun prepare and review')
         if digest(project_path(root,report['overview']))!=report['overviewSha256']:raise NeedsRepair('overview changed; rerun prepare and review')
+    if (root/'template.json').exists():template_workflow.verify_comparison(root,report)
     if require_review:
         review=read(state/'review.json')
         if review['fingerprint']!=fingerprint or review['renderSha256']!=digest(state/'render.json') or review['pages']!=list(range(1,len(pages)+1)):raise NeedsRepair('review does not cover the current complete deck; review all pages again')
         if not review.get('passed'):raise NeedsRepair('visual review marked issues; fix them and rerun prepare')
+        if (root/'template.json').exists():
+            if review['mode']!='visual' or not template_workflow.decisions(review.get('templateDecisions'),report['templateComparison']):raise NeedsRepair('template page acceptance is incomplete or failed')
     return root,deck,pages,report,fonts,fingerprint
 
 def review(args):
+    # A failed new review must not leave a previous passing approval usable.
+    (Path(args.manifest).resolve().parent/'.pipeline/review.json').unlink(missing_ok=True)
     root,deck,pages,report,fonts,fingerprint=fresh(args)
     if not args.note.strip():raise NeedsRepair('review requires a note describing what was inspected')
     if args.mode=='visual' and report['mode']!='layout-proof':raise NeedsRepair('structural-only prepare cannot be marked visually reviewed')
     if args.mode=='structural' and not args.reason:raise NeedsRepair('structural review needs a reason such as model image-input unavailable')
-    save(root/'.pipeline/review.json',{'version':VERSION,'fingerprint':fingerprint,'renderSha256':digest(root/'.pipeline/render.json'),'pages':list(range(1,len(pages)+1)),'mode':args.mode,'reason':args.reason,'passed':not args.failed,'note':args.note})
-    if args.failed: raise NeedsRepair('Review found issues: '+args.note+'; fix source and rerun prepare/review')
+    template_decisions=None;passed=not args.failed
+    if (root/'template.json').exists():
+        if args.mode!='visual' or not getattr(args,'template_decisions',None):raise NeedsRepair('template review requires visual mode and --template-decisions with per-page findings')
+        template_decisions=read(args.template_decisions)
+        passed=template_workflow.decisions(template_decisions,report['templateComparison']) and passed
+    save(root/'.pipeline/review.json',{'version':VERSION,'fingerprint':fingerprint,'renderSha256':digest(root/'.pipeline/render.json'),'pages':list(range(1,len(pages)+1)),'mode':args.mode,'reason':args.reason,'passed':passed,'note':args.note,'templateDecisions':template_decisions})
+    if not passed: raise NeedsRepair('Review found issues: '+args.note+'; fix source and rerun prepare/review')
     print(json.dumps({'status':'needs_repair' if args.failed else 'review_recorded','taskComplete':False,'next':'Fix source and rerun prepare' if args.failed else 'Tell the user about the PPTD web editor preview/rework entry, then run export.'},ensure_ascii=False))
 
 def export(args):
@@ -186,6 +214,7 @@ def export(args):
         embedded=bool(getattr(args,'embed_fonts',False))
         staged=Path(tmp)/'deck.pptx';native_export(Path(args.manifest).resolve(),staged,args.transition,embed_fonts=embedded)
         package=verify_output(staged,args.transition,embedded)
+        package['contentValidation']=verify_content(Path(args.manifest).resolve(),staged)
         with ZipFile(staged) as archive:
             if archive.testzip() is not None:raise NeedsRepair('PPTX ZIP validation failed')
             slides=[p for p in archive.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
@@ -196,6 +225,7 @@ def export(args):
                 if (transition is not None)!=(args.transition=='fade'):raise NeedsRepair('PPTX transition validation failed')
             maths=sum(len(doc.findall('.//m:oMath',NS)) for doc in documents)
         if snapshot(args.manifest,fonts)[0]!=fingerprint:raise NeedsRepair('inputs changed during export; output was not published; prepare/review again')
+        fresh(args,True)
         output.parent.mkdir(parents=True,exist_ok=True)
         pending=output.with_name('.'+output.name+'.'+uuid.uuid4().hex+'.pending')
         try:
@@ -204,7 +234,8 @@ def export(args):
             else:os.link(pending,output)
         finally:pending.unlink(missing_ok=True)
     review_record=read(root/'.pipeline/review.json')
-    result={'version':VERSION,'status':'complete','fingerprint':fingerprint,'output':str(output),'outputSha256':digest(output),'slides':len(pages),'editableMathObjects':maths,'transition':args.transition,'fontMode':'embedded-project' if embedded else 'system-not-embedded','qaMode':review_record['mode'],'limitations':report['limitations'],'officeRenderVerified':False,'computerUseUsed':False,'packageValidation':package,'editorCommand':editor_command(args.manifest)}
+    font_mode='system-not-embedded' if not package['fontParts'] else 'partial-embedded-project' if package['fontEmbedding']['status']=='partial' else 'embedded-project'
+    result={'version':VERSION,'status':'complete','fingerprint':fingerprint,'output':str(output),'outputSha256':digest(output),'slides':len(pages),'editableMathObjects':maths,'transition':args.transition,'fontMode':font_mode,'fontEmbedding':package['fontEmbedding'],'qaMode':review_record['mode'],'limitations':report['limitations'],'officeRenderVerified':False,'computerUseUsed':False,'packageValidation':package,'editorCommand':editor_command(args.manifest)}
     save(root/'.pipeline/export.json',result);print(json.dumps(result,ensure_ascii=False))
 
 def fresh_for_repair(args):
@@ -257,18 +288,21 @@ def init(args):
         if choices[ofl].get('role','text')!='text' or choices[math_id].get('role')!='math':raise NeedsRepair('choose a text body font and a MATH font')
         family=choices[ofl]['family']
     else:
-        if not args.body_font or not args.math_font:raise NeedsRepair('provide --body-font and --math-font, or choose --font-family from the OFL catalog')
         if getattr(args,'math_family',None) or getattr(args,'extra_font',[]):raise NeedsRepair('catalog options require --font-family')
-        body=Path(args.body_font).resolve();math_font=Path(args.math_font).resolve()
-        face(str(body),args.body_font_index);face(str(math_font),args.math_font_index)
-        names=sorted(families(body))
-        if not names:raise NeedsRepair('body font has no readable family metadata')
-        family=args.family or next((n for n in names if n=='Arial Unicode MS'),names[0])
-        if family not in names:raise NeedsRepair(f'font family does not match the font file; available names: {names}')
-        math_map={'regular':{'path':str(math_font),'index':args.math_font_index},'syntheticStyles':True}
-        alternative=math_font.with_name(math_font.stem+'Italic'+math_font.suffix)
-        if alternative.is_file():math_map['italic']=str(alternative)
-        config={'families':{family:{'regular':{'path':str(body),'index':args.body_font_index},'syntheticStyles':True}},'math':math_map}
+        if not args.body_font and not args.math_font:
+            family,config=auto_fonts.defaults(args.topic,args.family)
+        else:
+            if not args.body_font or not args.math_font:raise NeedsRepair('provide both --body-font and --math-font, or omit both for offline automatic selection')
+            body=Path(args.body_font).resolve();math_font=Path(args.math_font).resolve()
+            face(str(body),args.body_font_index);face(str(math_font),args.math_font_index)
+            names=sorted(families(body,args.body_font_index))
+            if not names:raise NeedsRepair('body font has no readable family metadata at the selected index')
+            family=args.family or next((n for n in names if n=='Arial Unicode MS'),names[0])
+            if family not in names:raise NeedsRepair(f'font family does not match the font file/index; available names: {names}')
+            math_map={'regular':{'path':str(math_font),'index':args.math_font_index},'syntheticStyles':True}
+            alternative=math_font.with_name(math_font.stem+'Italic'+math_font.suffix)
+            if alternative.is_file():math_map['italic']=str(alternative)
+            config={'families':{family:{'regular':{'path':str(body),'index':args.body_font_index},'syntheticStyles':True}},'math':math_map}
         save(project/'fonts.json',config)
     save(project/'theme.json',theme)
     save(project/'brief.json',{'topic':args.topic,'audience':'具备相关基础的读者','pages':args.pages,'requiresSources':args.research,'minimumBodyFontSize':16})
@@ -288,19 +322,40 @@ def init(args):
         save(project/'fonts.json',project_font_config(value))
     print(json.dumps({'status':'initialized','project':str(project),'manifest':str(project/'deck.pptd'),'family':family,'next':'Read the selected design.md; fill all TODO pages and evidence.json, then prepare.'},ensure_ascii=False))
 
+def fonts_config(args):
+    root,deck,pages=load(args.manifest)
+    target=root/'fonts.json'
+    if target.exists():raise NeedsRepair('fonts.json exists; preserve existing mappings or rename it before configuring again')
+    value=auto_fonts.configure(root,deck,pages)
+    save(target,value)
+    print(json.dumps({'status':'fonts_configured','fontConfig':str(target),'families':list(value['families']),'downloaded':False,'sourceChanged':False},ensure_ascii=False))
+
 def main():
     configure_utf8_console()
     parser=argparse.ArgumentParser(description=__doc__);commands=parser.add_subparsers(dest='command',required=True)
     p=commands.add_parser('init');p.add_argument('--project',required=True);p.add_argument('--theme',default='wine-red-data');p.add_argument('--topic',required=True);p.add_argument('--pages',type=int,default=18);p.add_argument('--body-font');p.add_argument('--math-font');p.add_argument('--font-family',help='body font id from the OFL catalog');p.add_argument('--extra-font',action='append',default=[]);p.add_argument('--math-family',help='OFL MATH font id; defaults to stix-two-math for catalog init');p.add_argument('--family');p.add_argument('--research',action='store_true');p.add_argument('--body-font-index',type=int,default=0);p.add_argument('--math-font-index',type=int,default=0)
+    p=commands.add_parser('template-import',help='Import a PPTX/POTX reference and extract layout evidence; no editable conversion')
+    p.add_argument('manifest');p.add_argument('--source',required=True);p.add_argument('--references',required=True);p.add_argument('--mapping')
+    p=commands.add_parser('fonts-config',help='Map existing project/installed families offline without changing source fonts')
+    p.add_argument('manifest')
+    p=commands.add_parser('template-samples',help='Create editable starter pages and local assets from supported PPTX/POTX objects')
+    p.add_argument('--source',required=True);p.add_argument('--project',required=True);p.add_argument('--topic',default='Template starter')
     for name in ['prepare','review','repair','export','editor-info']:
         p=commands.add_parser(name);p.add_argument('manifest');p.add_argument('--fonts')
         if name=='prepare':p.add_argument('--structural-only',action='store_true');p.add_argument('--reason')
-        if name=='review':p.add_argument('--mode',choices=['visual','structural'],default='visual');p.add_argument('--note',required=True);p.add_argument('--reason');p.add_argument('--failed',action='store_true')
+        if name=='review':p.add_argument('--mode',choices=['visual','structural'],default='visual');p.add_argument('--note',required=True);p.add_argument('--reason');p.add_argument('--failed',action='store_true');p.add_argument('--template-decisions',help='JSON list of per-page template acceptance decisions')
         if name=='repair':p.add_argument('--apply',action='store_true')
         if name=='export':p.add_argument('--output');p.add_argument('--force',action='store_true');p.add_argument('--transition',choices=['fade','none'],default='fade');p.add_argument('--embed-fonts',action='store_true')
     args=parser.parse_args()
     try:
-        if args.command=='editor-info':print(json.dumps({'command':editor_command(args.manifest),'notice':'用网页版 PPTD 编辑器查看效果或修改返工；文件改变后重新 prepare/review/export。'},ensure_ascii=False))
+        if args.command=='template-samples':
+            print(json.dumps(template_samples.create(args.source,args.project,args.topic),ensure_ascii=False))
+        elif args.command=='template-import':
+            root,deck,pages=load(args.manifest)
+            contract=template_workflow.import_template(root,deck['pages'],args.source,args.references,read(args.mapping) if args.mapping else None)
+            print(json.dumps({'status':'template_imported','contract':str(root/'template.json'),'layouts':contract['layouts'],'next':'Read layout evidence and reference images; author editable pages, then prepare and review with --template-decisions.'},ensure_ascii=False))
+        elif args.command=='fonts-config':fonts_config(args)
+        elif args.command=='editor-info':print(json.dumps({'command':editor_command(args.manifest),'notice':'用网页版 PPTD 编辑器查看效果或修改返工；文件改变后重新 prepare/review/export。'},ensure_ascii=False))
         else:globals()[args.command](args)
     except (ValueError,OSError,KeyError,TypeError,struct.error,ExportError) as error:
         result={'status':'needs_repair','stage':args.command,'taskComplete':False,'error':str(error),'next':'Diagnose and repair this stage, then rerun it. Do not treat the first error as task completion. Preserve source and previous published outputs.'}

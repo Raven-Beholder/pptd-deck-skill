@@ -93,7 +93,7 @@ class FontRegistry:
         from native_fonts import families
         for family,mapping in config.get('families',{}).items():
             path,index,_=self.descriptor(family)
-            if family not in families(path):raise ValueError(f'font family {family} does not match mapped file {path}')
+            if family not in families(path,index):raise ValueError(f'font family {family} does not match mapped file {path} at index {index}')
             face(str(path),index)
     def descriptor(self, family, math_mode=False, bold=False, italic=False):
         if isinstance(family,dict): raise ValueError('QA requires a single fontFamily; use one mapped multilingual family')

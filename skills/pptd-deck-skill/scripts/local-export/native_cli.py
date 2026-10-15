@@ -12,6 +12,7 @@ import yaml
 from native_common import NativeExportError
 from native_writer import export_native
 from native_validation import verify_output
+from native_export_audit import verify_content
 
 
 def export(project, output, transition='fade', force=False, *, embed_fonts=False):
@@ -36,7 +37,8 @@ def export(project, output, transition='fade', force=False, *, embed_fonts=False
         with zipfile.ZipFile(staged) as archive:
             if archive.testzip() is not None:
                 raise NativeExportError('generated ZIP failed CRC validation')
-        verify_output(staged, transition, embed_fonts)
+        validation = verify_output(staged, transition, embed_fonts)
+        content_audit = verify_content(manifest, staged)
         size = staged.stat().st_size
         if force:
             os.replace(staged, target)
@@ -45,7 +47,9 @@ def export(project, output, transition='fade', force=False, *, embed_fonts=False
             # Unlike exists()+replace(), it also protects a concurrently created target.
             os.link(staged, target)
     return dict(output=str(target), slides=slides, bytes=size, exporter='native-python-v1',
-                compatibility='experimental-subset', fontMode='embedded-project' if embed_fonts else 'system', legacyFallback=False)
+                compatibility='experimental-subset',
+                fontMode=('partial-embedded-project' if validation['fontEmbedding']['status']=='partial' else 'embedded-project') if validation['fontParts'] else 'system',
+                fontEmbedding=validation['fontEmbedding'], legacyFallback=False, contentValidation=content_audit)
 
 
 def main(argv=None):
@@ -55,7 +59,7 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--transition', choices=('fade', 'none'), default='fade')
     parser.add_argument('--force', action='store_true')
-    parser.add_argument('--embed-fonts', action='store_true', help='embed local customFonts resources, including all supplied glyphs')
+    parser.add_argument('--embed-fonts', action='store_true', help='embed available local customFonts; retain missing faces as Office font references')
     args = parser.parse_args(argv)
     try:
         result = export(args.project, args.output, args.transition, args.force, embed_fonts=args.embed_fonts)

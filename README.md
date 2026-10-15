@@ -96,7 +96,7 @@ macOS 使用 Finder；Windows 使用系统文件夹对话框；Linux 桌面需�
 编辑器先加载项目字体，再绘制画面，无需在另一台电脑安装。未指定字体的文字使用项目中的第一个常规正文字体；数学字体单独声明。
 也可添加允许分发和可编辑嵌入的静态 TTF/OTF。单个字体最多 32 MiB，项目最多 100 MiB；不支持 TTC、WOFF 或可变字体。
 导出 PPT 时可启用“嵌入字体”，CLI 使用 `--embed-fonts`。完整字体保留后续编辑需要的字符。
-缺少使用的字体或字重、嵌入受限或字体损坏时会明确报错。PPTX 字体加载仍取决于接收软件的支持。
+缺少字体、字重或本地字体文件时继续导出。可用字体正常嵌入，其余保留名称，由 Office 使用本机字体或替代字体；导出结果提示未嵌入项。嵌入受限、字体损坏或非法路径仍会报错。PPTX 字体加载仍取决于接收软件的支持。
 详见[项目字体说明](skills/pptd-deck-skill/reference/fonts.md)。
 
 生成阶段也可直接使用 OFL 字体。例如创建中文项目，同时加入代码和数学字体：
@@ -117,6 +117,10 @@ uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py init --project
 - **主题样式**：统一设置字体、颜色和文字样式，也可以调整单个元素。
 - **检查与导出**：检查字体、布局和来源记录，生成默认带淡入转场的 PPTX。
 
+生成时可省略字体参数，工具会离线查找本机字体，读取准确名称和 TTC 索引，再检查字符覆盖。已有项目缺少 `fonts.json` 时可自动配置；已有映射和指定字体会保留。
+
+`template-samples` 可将 PPTX/POTX 中支持的文字、实心形状和图片生成可编辑页面样例。复杂对象会列入报告，原始模板会保留。导出还会检查实际 PPTX 是否丢失文字或元素，以及字号、粗体等是否回退。详见[生成辅助工具](skills/pptd-deck-skill/reference/generation-helpers.md)。
+
 ## 文档
 
 - [制作、检查与导出流程](skills/pptd-deck-skill/reference/pipeline.md)
@@ -124,6 +128,18 @@ uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py init --project
 - [原生制作支持范围](skills/pptd-deck-skill/reference/native-authoring.md)
 - [主题与设计预设](theme.md)
 - [Windows 使用说明](skills/pptd-deck-skill/reference/windows.md)
+
+## 模板导入与逐页验收
+
+已有 PPTX/POTX 模板可导入为项目参考。先从演示软件导出按实际页序排列的 PNG/JPEG，并在 `references.json` 中记录渲染来源和图片路径。
+
+```sh
+uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py template-import /path/to/project/deck.pptd --source /path/to/template.pptx --references /path/to/references.json
+```
+
+工具保留原文件和参考图，提取母版、版式、占位符位置、主题配色与字体信息。根据这些信息制作可编辑页面后，`prepare` 生成逐页并排图和差异图；`review --template-decisions` 记录每页结论。缺页、验收失败或证据变更会阻止流水线导出。像素差不等于验收通过，结构检查也不能替代模板对照。
+
+这是模板参考导入，尚不提供任意 PPTX 到可编辑 PPTD 的自动转换。最终交付使用流水线导出；编辑器和独立导出命令不执行这套验收门禁。完整命令、映射格式和能力边界见[模板导入指南](skills/pptd-deck-skill/reference/template-import.md)。
 
 ## 开发
 
@@ -141,7 +157,7 @@ CI 覆盖 macOS、Windows 和 Linux。构建使用文件白名单，并记录文
 
 ## 当前支持情况
 
-支持 PPTD 制作、编辑和 PPTX 导出。字体嵌入支持项目中的静态 TTF/OTF。PPTX 导入和部分复杂特效尚未支持；具体范围见 [原生制作指南](skills/pptd-deck-skill/reference/native-authoring.md)。
+支持 PPTD 制作、编辑、PPTX 导出，以及 PPTX/POTX 模板参考导入和逐页对照。字体嵌入支持项目中的静态 TTF/OTF。自动可编辑 PPTX 转换和部分复杂特效尚未支持；具体范围见 [原生制作指南](skills/pptd-deck-skill/reference/native-authoring.md)。
 
 布局预览使用 Pillow，公式间距为近似值，不能代替 PowerPoint、WPS 或 Keynote 中的实际渲染检查。Windows 的浏览器拖拽与中文输入法仍需人工检查。
 

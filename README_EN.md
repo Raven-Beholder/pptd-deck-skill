@@ -98,7 +98,7 @@ Fonts live in the project's `fonts/` folder and use relative `customFonts` paths
 The editor loads project fonts before drawing. Other computers need no system installation. Text without an explicit family uses the first regular project text font; math fonts have a separate role.
 You may also add redistributable static TTF/OTF fonts that permit editable embedding. Each font is limited to 32 MiB, and the project to 100 MiB. TTC, WOFF and variable fonts are unsupported.
 Enable “Embed Fonts” for PPT export, or use `--embed-fonts` in the CLI. Full fonts retain characters needed for future editing.
-Missing families or styles, restricted embedding rights and corrupt fonts produce explicit errors. PPTX font loading still depends on the receiving application's support.
+Missing families, styles or local font files do not stop export. Available fonts are embedded; other faces retain their names for Office to resolve using installed or substitute fonts. Export reports list the unembedded faces. Restricted embedding rights, corrupt fonts and unsafe paths still produce errors. PPTX font loading still depends on the receiving application's support.
 See the [project font guide](skills/pptd-deck-skill/reference/fonts.md).
 
 Generation can use OFL fonts directly. For example, create a Chinese project with code and math fonts:
@@ -119,6 +119,10 @@ Use `fonts list` to inspect the catalog and `fonts add` to add fonts to an exist
 - **Theme styles**: set fonts, colors and text styles across the deck, or adjust individual elements.
 - **Checks and export**: check fonts, layout and source records, then generate a PPTX with fade transitions by default.
 
+Omit font options to discover local fonts offline, read exact names and TTC indices, and check character coverage. Missing `fonts.json` mappings can be configured automatically. Existing mappings and explicit family choices are preserved.
+
+`template-samples` creates editable starter pages from supported PPTX/POTX text, solid shapes and images. Complex objects are listed in a report and the original template is retained. Export also checks the actual PPTX for dropped text/elements and font-size or bold fallback. See [generation helpers](skills/pptd-deck-skill/reference/generation-helpers.md).
+
 ## Documentation
 
 - [Authoring, review and export workflow](skills/pptd-deck-skill/reference/pipeline.md)
@@ -126,6 +130,18 @@ Use `fonts list` to inspect the catalog and `fonts add` to add fonts to an exist
 - [Native authoring support](skills/pptd-deck-skill/reference/native-authoring.md)
 - [Themes and design presets](theme_EN.md)
 - [Windows guide](skills/pptd-deck-skill/reference/windows.md)
+
+## Template import and page acceptance
+
+Import an existing PPTX/POTX as project reference evidence. First export PNG/JPEG images from a presentation application in actual slide order. Record their renderer provenance and paths in `references.json`.
+
+```sh
+uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py template-import /path/to/project/deck.pptd --source /path/to/template.pptx --references /path/to/references.json
+```
+
+The importer preserves the original and reference images. It extracts masters, layouts, placeholder bounds, theme colors and font information. Author editable pages using that evidence. `prepare` generates per-page paired and difference images; `review --template-decisions` records each page's findings. Missing pages, failed acceptance or changed evidence block pipeline export. Pixel differences do not determine acceptance, and structural checks cannot replace template comparison.
+
+This imports template references; it does not automatically convert arbitrary PPTX files into editable PPTD. Use pipeline export for final delivery. Editor and standalone export commands do not enforce these acceptance gates. See the [template import guide](skills/pptd-deck-skill/reference/template-import.md) for commands, mapping formats and limitations.
 
 ## Development
 
@@ -143,7 +159,7 @@ CI covers macOS, Windows and Linux. Builds use a file allowlist and record hashe
 
 ## Current support
 
-PPTD authoring, editing and PPTX export are supported. Font embedding supports project-local static TTF/OTF resources. PPTX import and some complex effects are still unavailable. See the [native authoring guide](skills/pptd-deck-skill/reference/native-authoring.md) for details.
+PPTD authoring, editing, PPTX export, PPTX/POTX template reference import and page comparison are supported. Font embedding supports project-local static TTF/OTF resources. Automatic editable PPTX conversion and some complex effects are still unavailable. See the [native authoring guide](skills/pptd-deck-skill/reference/native-authoring.md) for details.
 
 Layout previews use Pillow and approximate equation spacing. They do not replace rendering checks in PowerPoint, WPS or Keynote. Windows browser drag interactions and Chinese IME behavior still need manual checks.
 

@@ -151,7 +151,7 @@ def write_table(writer, tree, element, index, owner, bounds, math_mode=True):
                     attrs['vMerge'] = '1'
             cell = node('a:tc', row, **attrs)
             style = cell_style(element, table_style, source if anchor else {}, r, c, len(heights), len(widths), writer.theme,
-                               default_font=writer.package.default_font if any(font.role == 'text' for font in writer.fonts) else None)
+                               default_font=writer.package.default_font if writer.package.has_project_text_font else None)
             content = {key: value for key, value in style.items() if key in (STYLE_FIELDS + ' align').split()}
             content['text'] = source.get('text', '') if anchor else ''
             text_body(cell, content, writer.theme, writer.package, owner, body_tag='a:txBody', math_mode=math_mode)

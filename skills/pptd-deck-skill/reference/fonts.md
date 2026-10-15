@@ -59,12 +59,29 @@ font's actual distribution license.
 The editor loads these fonts before preview and carries them in SVG exports.
 Project copies and ZIPs include declared fonts and license files. PNG records
 the rendered appearance. PPTX export with `--embed-fonts` stores full EOT font
-parts, family/style references, full license notices and editable embedding settings. Missing used
-families/styles stop export. Font data, permissions and relationships are
+parts, family/style references, full license notices and editable embedding settings. Missing
+families, styles or local font files do not stop export. Available resources are
+embedded; unembedded faces retain their family/style references for Office to
+resolve with installed or substitute fonts. `fontEmbedding` reports `complete`,
+`partial` or `none` and lists `missingFaces`. The editor shows a non-blocking count
+after download. Even with no embeddable fonts, export remains available.
+Font data, permissions and relationships are
 validated before publication. Office/WPS/Keynote rendering is a separate check;
 not every application supports embedded fonts equally.
 
+Corrupt present files, invalid paths and restricted embedding rights remain
+errors. Missing resources are not downloaded automatically. Font replacement
+can change line wrapping. Layout QA still needs readable mapped fonts to render
+its own previews; this export behavior does not certify substituted Office output.
+
 ## Native layout QA
+
+For offline local generation, omit font options from `pipeline init`. The tool
+discovers installed files, reads exact family names and TTC indices, and checks
+topic coverage. `prepare` checks the complete text. `fonts-config deck.pptd`
+creates a missing mapping for existing project/installed fonts without changing
+source family choices. No fonts are downloaded or installed by this route.
+See [generation helpers](generation-helpers.md) for commands and substitution rules.
 
 For portable generation, select a catalog body family and optional additional
 families. CJK fonts include real regular/bold faces; Latin text families include

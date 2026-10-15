@@ -26,12 +26,12 @@
       "bytes": 1073
     },
     "README.md": {
-      "sha256": "aacc9c8a53082d9a5970996884397baff9bb1fde2c9a287348c658d8279ef06a",
-      "bytes": 8355
+      "sha256": "ffda2f7c6a14151b8c7a66aafd7b4f6198a5704b02c802ac3230f872e0629ffd",
+      "bytes": 10251
     },
     "README_EN.md": {
-      "sha256": "864b1ec3b5e5adc59f7a2babcf5bfe5d9883cd9abf10a98fbdb870af67dcceaa",
-      "bytes": 9122
+      "sha256": "49681937883442b0a7960bdf198c5bad7db5a3230bd9bf444a521f2d76eaa9ec",
+      "bytes": 11295
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "d596490924dd753e41cacbbe5129cf50886167f97e98d017e8fbcf6b1c450456",
@@ -282,8 +282,8 @@
       "bytes": 29
     },
     "skills/pptd-deck-skill/SKILL.md": {
-      "sha256": "767468413b3dfcd359d3e72cf5080aa1704db8dd7c061c56a5bf59753d543df6",
-      "bytes": 5897
+      "sha256": "aeee8a4ff30ebc9ebb3efdddc00a1792f451c0dfd7a327a9cce48c36fcc656e3",
+      "bytes": 7453
     },
     "skills/pptd-deck-skill/reference/design_system/01_strategy/01/en/dusk-violet-consulting.md": {
       "sha256": "a48c25db24dbd5f04d6471c1c3a2eb4dbdc2055f70c3b8111c8ee33d88b3a4b5",
@@ -530,20 +530,24 @@
       "bytes": 16040
     },
     "skills/pptd-deck-skill/reference/fonts.md": {
-      "sha256": "8231f7bd83055829d2c22182f8815b37b4a27ede0dc5f422df09e2ac32936f45",
-      "bytes": 6409
+      "sha256": "f066baeea072151bd05048d06800d9230b5a38b2eee3e4a09d788f9da96c73ad",
+      "bytes": 7565
     },
     "skills/pptd-deck-skill/reference/general-poster.md": {
       "sha256": "93540877bdafc194042784de15a67f7403259638563d13504feb6f5d8ee43281",
       "bytes": 27404
+    },
+    "skills/pptd-deck-skill/reference/generation-helpers.md": {
+      "sha256": "9e5bf4a1a04103b5fd40773a747f98530b6e9174b2de31730a5971fc0a8e031f",
+      "bytes": 4147
     },
     "skills/pptd-deck-skill/reference/native-authoring.md": {
       "sha256": "e3e421cb553ff096e707af60cafd0ccdb82a66bda7a7eb26dde4bf99ea271f84",
       "bytes": 5585
     },
     "skills/pptd-deck-skill/reference/pipeline.md": {
-      "sha256": "2045a92fecb06afbca3a53e0f70ebde04badc0c623fb3ff17cae6c9824e452aa",
-      "bytes": 8887
+      "sha256": "032df685b7c5ab0e102bcc152ab1648ec3809f566f0e49ec132e41fd6c661b3c",
+      "bytes": 10854
     },
     "skills/pptd-deck-skill/reference/pptd.md": {
       "sha256": "03068da917aba6ca7c4a7092df61256b7b3424133335adc5b431afa214ba655d",
@@ -585,17 +589,25 @@
       "sha256": "196ef1d40fbe6d670e5d4e6e148f9f1ed06d2b54de337a431e884adb899622b9",
       "bytes": 4798
     },
+    "skills/pptd-deck-skill/reference/template-import.md": {
+      "sha256": "70b55e32a9491e92e1607e1d2ceb4efe6f27fbdb1b7e468fd1dadbc12bcaea74",
+      "bytes": 7455
+    },
     "skills/pptd-deck-skill/reference/windows.md": {
       "sha256": "027de5f3484b5450a66adb3b0b306ad0a5b0c7b1effa13f7427a9ad12876ff4e",
       "bytes": 4117
+    },
+    "skills/pptd-deck-skill/scripts/auto_fonts.py": {
+      "sha256": "c2abc4a4d6aaffdd3ff6ce1eaa55121952f6b7e04e3c3dc089a948629e788ecb",
+      "bytes": 7029
     },
     "skills/pptd-deck-skill/scripts/export_pptx.py": {
       "sha256": "bcac5503750c3729cda37b438e47c26683969024942755f40de4945144eba0b4",
       "bytes": 894
     },
     "skills/pptd-deck-skill/scripts/font_support.py": {
-      "sha256": "88cf62eb28fd5bad7e41ccf860e18d62a7cb41b68a669c14385f5f4326ae6528",
-      "bytes": 6537
+      "sha256": "ee2a338d10c66db7c7485823597ef1937e92cf267a5cbbc01152b94490599d5e",
+      "bytes": 6560
     },
     "skills/pptd-deck-skill/scripts/local-export/ICONS_NOTICE.md": {
       "sha256": "7b8c3b52eb48d7b2bdf26c83d23d18d7c9ddae5497f43c4fa3d01bed489f06cb",
@@ -622,16 +634,16 @@
       "bytes": 18282
     },
     "skills/pptd-deck-skill/scripts/local-export/native_cli.py": {
-      "sha256": "dc953383d8c1c6d0e3f3ba5d614c795e79edb504dbd3da90f59b7ff72d92f859",
-      "bytes": 3235
+      "sha256": "54420109758c37e87abe65fc3fdefe35b727fc1373f625f11b9146d862900ae9",
+      "bytes": 3575
     },
     "skills/pptd-deck-skill/scripts/local-export/native_common.py": {
       "sha256": "5fbb9c8690ccc8312dbda84a0a8561a5602e9e314da0314bf53f453b705df436",
       "bytes": 5603
     },
     "skills/pptd-deck-skill/scripts/local-export/native_editor/app.mjs": {
-      "sha256": "bc70d2c8d259a8b73c8aed66dbb6dfe92c6986d60e15ae9f72f2b13f77b15d27",
-      "bytes": 123784
+      "sha256": "1fb7f56fa412229d5d6b73baba1db2659dde399434ba7281879dfba79169a4a9",
+      "bytes": 124130
     },
     "skills/pptd-deck-skill/scripts/local-export/native_editor/charts.mjs": {
       "sha256": "80bb78b412372d50f0ea1696f686bb7654580cd2d049a35abf58fe199964b409",
@@ -686,12 +698,16 @@
       "bytes": 14382
     },
     "skills/pptd-deck-skill/scripts/local-export/native_editor.py": {
-      "sha256": "b5226be07d8f7a1aa4f68d1e35f6196a1ae04bce6c725faa68dc09526ce6470f",
-      "bytes": 15808
+      "sha256": "b6734f0720d08350cdd0e8f2f927babdaeda10d9b096186ccd510c23ba68bb12",
+      "bytes": 16202
     },
     "skills/pptd-deck-skill/scripts/local-export/native_effects.py": {
       "sha256": "fb6684e4c7e47e6daa90809e8abd2b57865d20e8c15fb50dd6ed81882220ef86",
       "bytes": 870
+    },
+    "skills/pptd-deck-skill/scripts/local-export/native_export_audit.py": {
+      "sha256": "fc2088f43d53152babdc30079dd58cd610c0f01442123ec5961b88e3e8f9a728",
+      "bytes": 7958
     },
     "skills/pptd-deck-skill/scripts/local-export/native_fill.py": {
       "sha256": "92cb688ec24f2b780cc4fef5e6f7c259e276e9177013d793ad08f35efc12788a",
@@ -702,8 +718,8 @@
       "bytes": 6297
     },
     "skills/pptd-deck-skill/scripts/local-export/native_fonts.py": {
-      "sha256": "3d5171a921eef252572017887457b59619a4a314daba119bc5a14d58c8482a9a",
-      "bytes": 3624
+      "sha256": "2825acf779dcffc0b76b3199762bfde262ff79dadb08a4ccbe5abf05b85bb4f7",
+      "bytes": 5132
     },
     "skills/pptd-deck-skill/scripts/local-export/native_math.py": {
       "sha256": "a2e1047778b8646cf7ca6505c2730f31c9e095e69ef28765b97f4977d360580c",
@@ -726,44 +742,52 @@
       "bytes": 2393
     },
     "skills/pptd-deck-skill/scripts/local-export/native_project.py": {
-      "sha256": "ad99838befbf64df2c8013e8e0798e9f719bcbd612042c28d1281c916f2f17d8",
-      "bytes": 24614
+      "sha256": "5ce7b845b9122af10e597e8fc6da2e3ce8c557210619beb8028b8cee61c98bb5",
+      "bytes": 25293
     },
     "skills/pptd-deck-skill/scripts/local-export/native_project_fonts.py": {
-      "sha256": "14c559c276fbc953ff425f95b935f3663e5f0c3629de00cb39bbe82a8073cf31",
-      "bytes": 15194
+      "sha256": "a360defae2e4dcf288360daa93ef70433338c8f2e55a4d887568268caba4e541",
+      "bytes": 17480
     },
     "skills/pptd-deck-skill/scripts/local-export/native_table.py": {
-      "sha256": "0407cae8140169b3f3b9389d25d4c0d3730b62c54b744d90e4437adf75740598",
-      "bytes": 8704
+      "sha256": "9322969fb8dcab58ca5cdb61b5e3d66b827a6d821b8883ca0c844333631bf9d9",
+      "bytes": 8691
     },
     "skills/pptd-deck-skill/scripts/local-export/native_text.py": {
       "sha256": "63aa85b969101a4450c732fcb288a0b23402d7cd383b586346c3820830b4a4b4",
       "bytes": 12147
     },
     "skills/pptd-deck-skill/scripts/local-export/native_validation.py": {
-      "sha256": "805d4cb32415e3ada83cd52c7649f986e825601ca3381efba06e98ee0868ad04",
-      "bytes": 6223
+      "sha256": "b9c70b9dd8eda3f01144bdffa068625d18abfa69064dfcc0755d62c2d774a6ee",
+      "bytes": 6774
     },
     "skills/pptd-deck-skill/scripts/local-export/native_workbook.py": {
       "sha256": "b7670e744744e0fc97115613420fd4a1842fad9bda80175195774a266b194f5f",
       "bytes": 2584
     },
     "skills/pptd-deck-skill/scripts/local-export/native_workspace.py": {
-      "sha256": "3e3e15b78fe2e2456ca4f55494bf05fe2ba83023198fe327f51db084acf7c73a",
-      "bytes": 9628
+      "sha256": "76cf937905a6efcf6d9d17ddeef9f6de0026a17eeec5d8b88f93c520d7102aa2",
+      "bytes": 11243
     },
     "skills/pptd-deck-skill/scripts/local-export/native_writer.py": {
-      "sha256": "4091f13a401b9aafbffe3a0e0fa82e3084e88757b2c82afead17b0026b927ad7",
-      "bytes": 18278
+      "sha256": "9f21605b0f9f53d3cd1ba4d4fbea32187ce3d6e7e4ef3d5e617698663ff019a4",
+      "bytes": 18262
     },
     "skills/pptd-deck-skill/scripts/pipeline.py": {
-      "sha256": "87bbdf2279461b92b352108c3e797fda1a761a0558b0293d318536a7cdad7569",
-      "bytes": 25012
+      "sha256": "2bff1d6c981c4ab6563e5a5f121e124863546893c007857002a527841566e0e4",
+      "bytes": 29534
     },
     "skills/pptd-deck-skill/scripts/render_native.py": {
       "sha256": "7048bf81d94ac964eae84012a1bf72df6e5f81fba8aa1ba204111cc956a57c65",
       "bytes": 21839
+    },
+    "skills/pptd-deck-skill/scripts/template_samples.py": {
+      "sha256": "917dbcd1847fb67e1e950cff9b16a3f0d976904e98f07fe3be13bdc5d2aa00fc",
+      "bytes": 17283
+    },
+    "skills/pptd-deck-skill/scripts/template_workflow.py": {
+      "sha256": "2a4e79cc391206d1a318cde3131fb563bf3a90449baf1334427c39bf512093ed",
+      "bytes": 21506
     },
     "skills/pptd-deck-skill/tests/fixtures/native/acceptance.pptd": {
       "sha256": "e61b786c90b44eb3935c8627778af6eec07a06e31ef7cef3b26a86090714cc1f",
@@ -845,6 +869,10 @@
       "sha256": "ac694392f776bf6c6ea18796e0c2e00267fe109509184ba3ce3857c217052c6f",
       "bytes": 256
     },
+    "skills/pptd-deck-skill/tests/test_generation_helpers.py": {
+      "sha256": "b3375f47973ae2f71ba6037834664c530e4148d082c18269b5e22eec8a38cde8",
+      "bytes": 11100
+    },
     "skills/pptd-deck-skill/tests/test_native_charts.py": {
       "sha256": "ccc8b775ed686cff74e7ccea0aa3c8392ed130ebda749b031dd2c57aa0c10084",
       "bytes": 7402
@@ -854,8 +882,8 @@
       "bytes": 6634
     },
     "skills/pptd-deck-skill/tests/test_native_editor.py": {
-      "sha256": "cfac9d482bdcf55565ada57d2fc00de1653262f41ebd2657d3058d7206dfe3af",
-      "bytes": 27005
+      "sha256": "4145c8ebdc42b6adb6176311d2d5e52c9bf848749b8f26a7e77a6975bf02a25c",
+      "bytes": 27951
     },
     "skills/pptd-deck-skill/tests/test_native_export.py": {
       "sha256": "beb06cac3cf43290b6cbb29bbaa9d79f41c706429b35e2ac5fa453c1792963b7",
@@ -866,8 +894,8 @@
       "bytes": 9271
     },
     "skills/pptd-deck-skill/tests/test_native_fonts.py": {
-      "sha256": "89c92dc9c773bf30948b6b2978abe0d65274a8646b5a0a68882eeb5d88b43c4f",
-      "bytes": 1809
+      "sha256": "a674fa2040e2a5b09f661fc1c81fbe9501fd2531c4f753c37ead5396ebe9419f",
+      "bytes": 1935
     },
     "skills/pptd-deck-skill/tests/test_native_math.py": {
       "sha256": "980e3330e73d14a9ac70132f4c8bbe26113f55fac408c9898af4e0a92e9c4d02",
@@ -882,16 +910,20 @@
       "bytes": 1450
     },
     "skills/pptd-deck-skill/tests/test_native_project_fonts.py": {
-      "sha256": "d00fd3aeaca5cae098848638e30dc662207db05c1a45e888e2282a8bb8262940",
-      "bytes": 11599
+      "sha256": "ea2be12afe5347a6a26938d0d6d749146a8cab78f747d8901524ef270da3d3dd",
+      "bytes": 16162
     },
     "skills/pptd-deck-skill/tests/test_native_render.py": {
       "sha256": "038b2cb815310d0cf4946005e48ad25ea3f140b3c7cfb11468bfda3772321570",
       "bytes": 1506
     },
     "skills/pptd-deck-skill/tests/test_pipeline.py": {
-      "sha256": "d4d7859163e78d5242cd08d74498192e8a7ecceca2b029f897a2dc6e7045abf3",
-      "bytes": 9873
+      "sha256": "a70f6defca6a9395ac332b54b930d6a11b220841a5bc1da96a0ed8d2fc41e061",
+      "bytes": 10349
+    },
+    "skills/pptd-deck-skill/tests/test_template_workflow.py": {
+      "sha256": "f12f0fac89537ca319ac3999f6c1142f1eecdb2f383382c011ed67c030a3e2c3",
+      "bytes": 13258
     },
     "test/native-charts-preview.test.js": {
       "sha256": "5f03aec3fccd3267043efd2d443351a95c75598e17f59ff59e180aff5a9f1f52",
@@ -934,8 +966,8 @@
       "bytes": 1839
     },
     "tools/build_native_distribution.py": {
-      "sha256": "48d7895a59c1e9f2fc439d38014c03b938272e14976becafeb355961c1b8ca31",
-      "bytes": 10034
+      "sha256": "0da940f79721e4fe140c0d07605ab19ffd94067b6e9d86c8d7102a99a3906a29",
+      "bytes": 10150
     },
     "tools/pptx_semantics.py": {
       "sha256": "e13c48053667af1376e968cc0c8398c187e4124b3821f54f8a804e833b85b175",
@@ -946,8 +978,8 @@
       "bytes": 466
     },
     "tools/smoke_native_install.py": {
-      "sha256": "5bec77b4216b700a5793a688fac1f171bc84e12facf921819146b3a1adfa9748",
-      "bytes": 6619
+      "sha256": "20d9f4659954110018eaef6a08cb37dce829b071b9febaf524d6e7cc588bf102",
+      "bytes": 8638
     },
     "tools/test_native.mjs": {
       "sha256": "f35ac4c18285a295673df9585c38d201d3226439abde2b727b069fc2e1177943",

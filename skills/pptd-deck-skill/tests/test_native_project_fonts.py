@@ -20,6 +20,7 @@ from native_workspace import project_archive, copy_project, import_folder
 from native_validation import verify_output
 from native_common import NS
 from native_font_catalog import project_font_config
+from native_cli import export as export_cli
 
 
 def test_font(family='Portable Test', *, bold=False, italic=False, rights=0, math=False):
@@ -115,13 +116,17 @@ class ProjectFontTests(unittest.TestCase):
         copied.save('one.page', 'elements: []\n', copied_loaded['pages'][0]['hash'], copied_loaded['manifestHash'])
         self.assertNotEqual((copied.root / 'one.page').read_bytes(), (self.root / 'one.page').read_bytes())
 
-    def test_complete_faces_embed_and_missing_bold_never_claims_success(self):
+    def test_complete_faces_embed_and_missing_bold_exports_with_partial_report(self):
         (self.root / 'OFL.txt').write_text('Complete test notice <copyright> & license', encoding='utf-8')
         self.add(test_font(), license_path='OFL.txt')
         loaded = self.project.load()
         before = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in self.root.glob('*') if p.is_file()}
-        with self.assertRaisesRegex(ValueError, 'Portable Test/bold'):
-            self.project.export({}, loaded['manifestHash'], embed_fonts=True)
+        partial, report = self.project.export({}, loaded['manifestHash'], embed_fonts=True, with_report=True)
+        self.assertEqual(report['fontEmbedding']['status'], 'partial')
+        self.assertEqual(report['fontEmbedding']['missingFaces'], [{'family': 'Portable Test', 'variant': 'bold'}])
+        with zipfile.ZipFile(io.BytesIO(partial)) as archive:
+            self.assertEqual(len([name for name in archive.namelist() if name.startswith('ppt/fonts/')]), 1)
+            self.assertIn(b'typeface="Portable Test"', archive.read('ppt/slides/slide1.xml'))
         self.add(test_font(bold=True), license_path='OFL.txt')
         loaded = self.project.load()
         blob = self.project.export({}, loaded['manifestHash'], embed_fonts=True)
@@ -130,6 +135,7 @@ class ProjectFontTests(unittest.TestCase):
         report = verify_output(output, expect_fonts=True)
         self.assertEqual(report['fontParts'], 2)
         self.assertEqual(report['embeddedFamilies'], ['Portable Test'])
+        self.assertEqual(report['fontEmbedding']['status'], 'complete')
         with zipfile.ZipFile(io.BytesIO(blob)) as archive:
             doc = ET.fromstring(archive.read('ppt/presentation.xml'))
             faces = doc.find('p:embeddedFontLst/p:embeddedFont', NS)
@@ -168,6 +174,67 @@ class ProjectFontTests(unittest.TestCase):
         config = project_font_config(self.project)
         self.assertEqual(set(config['families']), {'Portable Test'})
         self.assertEqual(config['math']['regular'], loaded['deck']['customFonts'][0]['src'])
+
+    def test_unavailable_family_and_math_fonts_remain_references(self):
+        self.add(test_font())
+        page = dict(elements=[
+            dict(elementId='local', elementType='text', bounds=[20,20,600,100], content=dict(text='Available', fontFamily='Portable Test')),
+            dict(elementId='office', elementType='text', bounds=[20,150,600,100],
+                 content=dict(text=r'Missing \(x^2\)', fontFamily='Office Only', italic=True)),
+        ])
+        loaded = self.project.load()
+        self.project.save('one.page', yaml.safe_dump(page), loaded['pages'][0]['hash'], loaded['manifestHash'])
+        output = self.root / 'partial.pptx'
+        result = export_cli(self.root, output, embed_fonts=True)
+        self.assertEqual(result['fontMode'], 'partial-embedded-project')
+        missing = {(entry['family'], entry['variant']) for entry in result['fontEmbedding']['missingFaces']}
+        self.assertEqual(missing, {('Office Only', 'italic'), ('Cambria Math', 'regular')})
+        with zipfile.ZipFile(output) as archive:
+            self.assertIn(b'typeface="Office Only"', archive.read('ppt/slides/slide1.xml'))
+            self.assertIn(b'typeface="Cambria Math"', archive.read('ppt/slides/slide1.xml'))
+        self.assertEqual(verify_output(output, expect_fonts=True)['fontParts'], 1)
+
+    def test_missing_declared_files_preserve_default_family_and_table_fonts(self):
+        self.add(test_font()); self.add(test_font(bold=True))
+        loaded = self.project.load()
+        source = dict(elements=[
+            dict(elementId='text', elementType='text', bounds=[20,20,600,100], content=dict(text='Default family')),
+            dict(elementId='table', elementType='table', bounds=[20,150,600,100], columnWidths=[1], rowHeights=[1], rows=[['Cell']]),
+        ])
+        self.project.save('one.page', yaml.safe_dump(source), loaded['pages'][0]['hash'], loaded['manifestHash'])
+        loaded = self.project.load()
+        before = (self.root / 'deck.pptd').read_bytes()
+        entries = loaded['deck']['customFonts']
+        (self.root / entries[0]['src']).unlink()
+        output = self.root / 'missing.pptx'
+        result = export_cli(self.root, output, embed_fonts=True)
+        self.assertEqual(result['fontEmbedding']['status'], 'partial')
+        self.assertEqual(result['fontEmbedding']['missingFaces'], [{'family': 'Portable Test', 'variant': 'regular'}])
+        (self.root / entries[1]['src']).unlink()
+        self.assertEqual(self.project.load()['fonts'], [])
+        blob, report = self.project.export({}, loaded['manifestHash'], embed_fonts=True, with_report=True)
+        self.assertEqual(report['fontEmbedding']['status'], 'none')
+        self.assertEqual(report['fontParts'], 0)
+        with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+            slide = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+            names = {node.get('typeface') for node in slide.findall('.//a:latin', NS)}
+            self.assertEqual(names, {'Portable Test'})
+            doc = ET.fromstring(archive.read('ppt/presentation.xml'))
+            self.assertIsNone(doc.find('p:embeddedFontLst', NS))
+            self.assertIsNone(doc.get('embedTrueTypeFonts'))
+        self.assertEqual(before, (self.root / 'deck.pptd').read_bytes())
+
+    def test_tolerant_export_still_rejects_corrupt_present_font_and_unsafe_missing_path(self):
+        result = self.add(test_font())
+        entry = result['customFonts'][0]
+        for src in ('../missing.ttf', '/missing.ttf', 'https://example.com/font.ttf'):
+            with self.subTest(src=src), self.assertRaises(ValueError):
+                project_fonts(self.root, [dict(entry, src=src)], allow_missing=True)
+        (self.root / entry['src']).write_bytes(b'corrupt present font')
+        output = self.root / 'existing.pptx'; output.write_bytes(b'previous export')
+        with self.assertRaises(ValueError):
+            export_cli(self.root, output, embed_fonts=True, force=True)
+        self.assertEqual(output.read_bytes(), b'previous export')
 
     def test_host_font_config_is_omitted_and_escaping_config_is_rejected(self):
         self.add(test_font())

@@ -14,7 +14,7 @@ from native_table import write_table
 from native_animation import timing
 from native_effects import shadow
 from native_chart import write_chart
-from native_project_fonts import project_fonts, embed_project_fonts
+from native_project_fonts import project_fonts, embed_project_fonts, declared_font_defaults
 
 PRESENTATION_TYPE = 'application/vnd.openxmlformats-officedocument.presentationml.'
 SHAPES = ('rect', 'roundRect', 'ellipse', 'triangle', 'diamond', 'parallelogram',
@@ -90,9 +90,9 @@ class Writer:
         self.package = Package()
         self.media = Media(root, self.package)
         self.transition = choice(transition, ('fade', 'none'), 'transition')
-        self.fonts = project_fonts(root, deck.get('customFonts'))
-        self.package.default_font = next((font.family for font in self.fonts if font.role == 'text' and font.weight == 400 and font.style == 'normal'), 'MiSans')
-        self.package.math_font = next((font.family for font in self.fonts if font.role == 'math' and font.variant == 'regular'), 'Cambria Math')
+        self.fonts = project_fonts(root, deck.get('customFonts'), allow_missing=True)
+        self.package.default_font, self.package.math_font = declared_font_defaults(deck.get('customFonts'), self.fonts)
+        self.package.has_project_text_font = any(entry.get('role', 'text') == 'text' for entry in deck.get('customFonts', []))
         self.embed_fonts = boolean(embed_fonts, 'embed_fonts')
 
     def draw_fill(self, parent, value, owner, bounds, opacity=1):

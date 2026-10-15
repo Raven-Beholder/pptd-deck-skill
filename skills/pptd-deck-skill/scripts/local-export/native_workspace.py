@@ -6,6 +6,7 @@ and an upload never overwrites the original directory.
 import base64
 import io
 import json
+import hashlib
 from pathlib import Path, PurePosixPath
 import tempfile
 import shutil
@@ -99,6 +100,28 @@ def project_archive(project, drafts, manifest_hash, hashes, theme=None):
         if config is not None:
             contents['fonts.json'] = config
             assets.update(font_assets)
+        template_hashes = {}
+        if (project.root / 'template.json').exists():
+            raw = project.read('template.json', TEXT_LIMIT)
+            template = json.loads(raw)
+            template_hashes = template.get('files', {})
+            if template.get('version') != 1 or not isinstance(template_hashes, dict) or not template_hashes:
+                raise ValueError('invalid template reference inventory')
+            if any(not isinstance(name, str) or not name.startswith('template/') for name in template_hashes):
+                raise ValueError('template reference assets must stay in template/')
+            contents['template.json'] = raw
+            assets.update(template_hashes)
+        if (project.root / 'template-samples.json').exists():
+            raw = project.read('template-samples.json', TEXT_LIMIT)
+            samples = json.loads(raw)
+            inventory = samples.get('files', {})
+            if samples.get('version') != 1 or not isinstance(inventory, dict) or not inventory:
+                raise ValueError('invalid template sample inventory')
+            if any(not isinstance(name, str) or not name.startswith('template/') for name in inventory):
+                raise ValueError('template sample assets must stay in template/')
+            template_hashes.update(inventory)
+            assets.update(inventory)
+            contents['template-samples.json'] = raw
         for record in current['pages']:
             text = drafts.get(record['path'], record['text'])
             assets.update(asset_paths(page_value(parse(text))))
@@ -110,6 +133,8 @@ def project_archive(project, drafts, manifest_hash, hashes, theme=None):
             if total >= PROJECT_LIMIT:
                 raise ValueError('project exceeds 100 MiB')
             data = project.read(path, min(FONT_LIMIT if path.lower().endswith(('.ttf', '.otf')) else 20 * TEXT_LIMIT, PROJECT_LIMIT - total))
+            if path in template_hashes and hashlib.sha256(data).hexdigest() != template_hashes[path]:
+                raise ValueError('template reference changed; restore it before copying')
             total += len(data)
             if total > PROJECT_LIMIT:
                 raise ValueError('project exceeds 100 MiB')

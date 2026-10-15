@@ -101,6 +101,12 @@ class PipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'numeric claims'):self.run_stage(pipeline.prepare)
     def test_none_transition(self):
         self.ready();a=self.args();a.transition='none';self.run_stage(pipeline.export,a);self.assertEqual(pipeline.read(self.root/'.pipeline/export.json')['packageValidation']['fadeTransitions'],0)
+    def test_requested_embedding_without_project_fonts_keeps_references(self):
+        self.ready();a=self.args();a.embed_fonts=True;self.run_stage(pipeline.export,a)
+        report=pipeline.read(self.root/'.pipeline/export.json')
+        self.assertEqual(report['fontMode'],'system-not-embedded')
+        self.assertEqual(report['fontEmbedding']['status'],'none')
+        self.assertEqual(report['fontEmbedding']['missingFaces'],[{'family':self.family,'variant':'regular'}])
     def renderer(self):return Renderer(self.root,self.deck,1,None,None,pipeline.read(self.root/'fonts.json'),self.root)
     def test_opacity_zero_and_image_border_capability(self):
         r=self.renderer();p={'elements':[{'elementId':'s','elementType':'shape','shapeName':'rect','bounds':[20,20,80,80],'fill':{'type':'solid','color':'#000000'},'opacity':0}]}
