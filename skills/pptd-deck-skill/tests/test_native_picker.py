@@ -1,5 +1,6 @@
-"""Platform commands and cancellation; no real system dialog in CI."""
+"""Platform commands and real AppleScript control flow, without system dialogs."""
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -43,6 +44,40 @@ class NativePickerTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, '有效'):native_picker.pick_folder('choose')
         with patch.object(native_picker.sys, 'platform', 'linux'), patch.dict(native_picker.os.environ, {}, clear=True):
             with self.assertRaisesRegex(ValueError, '桌面'):native_picker.pick_folder('choose')
+
+    @unittest.skipUnless(sys.platform == 'darwin', 'requires the macOS AppleScript interpreter')
+    def test_macos_front_application_target_is_text(self):
+        # Reading the front application needs no activation or folder dialog.
+        handlers = native_picker.MACOS_PICKER_SCRIPT.split('on run argv\n')[0]
+        script = handlers + 'on run argv\nreturn class of my previousApplicationPath()\nend run'
+        result = subprocess.run(['/usr/bin/osascript', '-e', script], capture_output=True,
+                                text=True, encoding='utf-8', timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), 'text')
+
+    @unittest.skipUnless(sys.platform == 'darwin', 'requires the macOS AppleScript interpreter')
+    def test_macos_focus_failure_preserves_selection_cancel_and_real_picker_errors(self):
+        # Execute the shipped control flow in osascript. Only the UI boundary
+        # is replaced; an injected -1728 exercises the reported failure.
+        script = re.sub(r'(?ms)^on previousApplicationPath\(\).*?^end previousApplicationPath$',
+                        'on previousApplicationPath()\nreturn "Fixture Application"\nend previousApplicationPath',
+                        native_picker.MACOS_PICKER_SCRIPT)
+        script = script.replace('tell application previousAppPath to activate',
+                                'error "Simulated focus failure" number -1728')
+        outcomes = [
+            ('return POSIX path of (POSIX file initialPath as alias)', self.folder.resolve(), None),
+            ('error number -128', None, None),
+            ('error "Simulated chooser permission error" number -1743', None, '-1743'),
+        ]
+        for body, expected, failure in outcomes:
+            candidate = re.sub(r'(?ms)^on chooseFolder\(promptText, initialPath\).*?^end chooseFolder$',
+                               'on chooseFolder(promptText, initialPath)\n' + body + '\nend chooseFolder', script)
+            with self.subTest(body=body), patch.object(native_picker, 'MACOS_PICKER_SCRIPT', candidate):
+                if failure:
+                    with self.assertRaisesRegex(ValueError, failure):
+                        native_picker.pick_folder('choose " $() `code` 中文', self.folder)
+                else:
+                    self.assertEqual(native_picker.pick_folder('choose " $() `code` 中文', self.folder), expected)
 
 
 if __name__ == '__main__':unittest.main()

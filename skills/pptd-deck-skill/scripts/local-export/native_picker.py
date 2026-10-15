@@ -10,32 +10,56 @@ import subprocess
 import sys
 
 
+MACOS_PICKER_SCRIPT = '''on previousApplicationPath()
+try
+  return path to frontmost application as text
+on error
+  return ""
+end try
+end previousApplicationPath
+
+on restoreApplication(previousAppPath)
+try
+  if previousAppPath is not "" then
+    tell application previousAppPath to activate
+  end if
+end try
+end restoreApplication
+
+on chooseFolder(promptText, initialPath)
+tell application "Finder"
+  activate
+  if initialPath is "" then
+    set selectedFolder to choose folder with prompt promptText
+  else
+    set selectedFolder to choose folder with prompt promptText default location (POSIX file initialPath)
+  end if
+end tell
+return POSIX path of selectedFolder
+end chooseFolder
+
+on run argv
+set previousAppPath to my previousApplicationPath()
+try
+  set selectedPath to my chooseFolder(item 1 of argv, item 2 of argv)
+on error errorMessage number errorNumber
+  my restoreApplication(previousAppPath)
+  if errorNumber is -128 then return ""
+  error errorMessage number errorNumber
+end try
+my restoreApplication(previousAppPath)
+return selectedPath
+end run'''
+
+
 def pick_folder(prompt, initial=None):
     """Return a selected existing directory, or None when the user cancels."""
     initial = str(initial) if initial and Path(initial).is_dir() else ''
     environment = dict(os.environ, PPTD_PICKER_PROMPT=prompt, PPTD_PICKER_INITIAL=initial)
     if sys.platform == 'darwin':
-        script = '''on run argv
-set previousApp to path to frontmost application
-try
-  set promptText to item 1 of argv
-  set initialPath to item 2 of argv
-  tell application "Finder"
-    activate
-    if initialPath is "" then
-      set selectedFolder to choose folder with prompt promptText
-    else
-      set selectedFolder to choose folder with prompt promptText default location (POSIX file initialPath)
-    end if
-  end tell
-  tell application previousApp to activate
-  return POSIX path of selectedFolder
-on error number -128
-  tell application previousApp to activate
-  return ""
-end try
-end run'''
-        command = ['/usr/bin/osascript', '-e', script, prompt, initial]
+        # Application targets need a text path, not the alias returned by
+        # `path to` by default. Restoring focus must never discard a selection.
+        command = ['/usr/bin/osascript', '-e', MACOS_PICKER_SCRIPT, prompt, initial]
     elif sys.platform == 'win32':
         script = '''[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 Add-Type -AssemblyName System.Windows.Forms

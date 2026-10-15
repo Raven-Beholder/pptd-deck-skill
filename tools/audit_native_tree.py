@@ -5,7 +5,7 @@ import json
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 BLOCKED={'.wasm','.woff','.woff2','.ttf','.otf','.ttc','.dll','.dylib','.exe'}
-SKIP={'.git','dist','node_modules','.venv','__pycache__'}
+SKIP={'.git','dist','node_modules','.venv','.uvcache','__pycache__'}
 def audit(root=ROOT):
     files={};errors=[]
     for path in sorted(root.rglob('*')):
