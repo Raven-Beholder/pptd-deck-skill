@@ -1,33 +1,20 @@
 # PPTD Deck Skill
 
-[中文](README.md)
+[中文](README.md) · [Quick start](#quick-start) · [Example project](examples/attention-is-all-you-need/README_EN.md) · [Documentation](#documentation)
 
-Create presentations with an AI agent and revise them in a web editor.
-The project includes a presentation skill, a PPTD editor and a local PPTX exporter.
-Default outputs are an editable project folder and a PPTX with fade transitions.
+PPTD Deck Skill gives AI agents the tools to create presentations. Provide a topic, document or paper to generate an editable PPTD project and a PPTX file. Use the companion web editor to refine the content and layout before presenting.
 
-Maintainer: Raven-Beholder.
+![Attention Is All You Need paper presentation: cover, architecture, equations and results](docs/showcase/attention-is-all-you-need/slides.webp)
 
-## Features
+Four layout previews from a Chinese presentation on *Attention Is All You Need*. [Download PPTX](examples/attention-is-all-you-need/deck.pptx) · [Download editable project](examples/attention-is-all-you-need/project.zip) · [View full example](examples/attention-is-all-you-need/README_EN.md)
 
-- Edit text, equations, shapes, images, tables and basic charts.
-- Update or delete theme text styles and colors.
-- Check fonts, layout and sources before export.
-- Preserve editable text, shapes, tables and Office Math in PPTX.
+## Quick start
 
-## Requirements
+### 1. Install the skill
 
-Install Git, [uv](https://docs.astral.sh/uv/getting-started/installation/) and Node.js 18+.
-uv manages Python 3.12 and installs dependencies in the project `.venv`.
-Download caches and managed Python may live in your user directory.
-This source installation needs no `npm install`.
-The skill installer copies files; prepare the Python environment first.
+Requires Git, [uv](https://docs.astral.sh/uv/getting-started/installation/) and Node.js 18+. uv prepares Python 3.12 and the project dependencies. No `npm install` is needed.
 
-## Installation
-
-These commands install from source. Access permission is required while the repository is private.
-
-### macOS and Linux
+macOS / Linux:
 
 ```sh
 git clone https://github.com/Raven-Beholder/pptd-deck-skill.git
@@ -36,9 +23,8 @@ uv sync --locked --python 3.12
 uv run --locked node bin/pptd-deck-skill.js install -y --target "$HOME/.codex/skills"
 ```
 
-### Windows
-
-Run in PowerShell:
+<details>
+<summary>Windows (PowerShell)</summary>
 
 ```powershell
 git clone https://github.com/Raven-Beholder/pptd-deck-skill.git
@@ -47,46 +33,69 @@ uv sync --locked --python 3.12
 uv run --locked node .\bin\pptd-deck-skill.js install -y --target "$env:USERPROFILE\.codex\skills"
 ```
 
-The installed folder is `pptd-deck-skill` inside the target directory.
-Reinstalling replaces that folder.
-Shared agents can use `~/.agents/skills`; Claude Code uses `~/.claude/skills`.
-Repeat `--target` to install into multiple directories.
+</details>
 
-`pyproject.toml` declares dependencies; `uv.lock` records versions and file hashes.
-`uv sync --locked` checks that they agree.
-Keep the environment available. Do not point `UV_PROJECT_ENVIRONMENT` at system Python.
-Without uv, create a Python 3.12+ virtual environment and install `requirements.txt`.
-Set `PYTHON` to its absolute interpreter path for the Node launcher.
+<details>
+<summary>Other agents and the Python environment</summary>
 
-## Usage
+Use `--target` to select your agent's skill directory. Repeat it to install into multiple directories. A shared location is `~/.agents/skills`; Claude Code uses `~/.claude/skills`. The installed folder is named `pptd-deck-skill`. Reinstalling replaces that folder.
 
-Ask your agent to read the installed `SKILL.md`, then provide a topic, audience and slide count.
-Use `theme.md` to select an existing theme.
-The agent should run scripts with the environment prepared at installation.
-Local personal skills do not sync automatically to cloud tasks.
+The installer copies skill files. Scripts still use the Python environment prepared in this repository. Keep the checkout and `.venv` available, and ask your agent to follow the environment instructions in `SKILL.md`. Locally installed skills do not sync automatically to cloud tasks.
 
-Start the editor from the repository:
+`pyproject.toml` declares dependencies; `uv.lock` pins versions. Download caches and managed Python may live in your user directory.
+
+</details>
+
+### 2. Create a presentation
+
+Ask your agent to use `pptd-deck-skill`, then describe what you need. For example, attach the PDF of [Attention Is All You Need](https://arxiv.org/abs/1706.03762v7) and enter:
+
+> 请把这篇论文做成一份适合组会汇报的中文 PPT，讲清核心方法、关键实验和局限，图示尽量直观。
+
+Translation: Turn this paper into a Chinese presentation for a lab meeting. Explain the core method, key experiments and limitations, with clear diagrams.
+
+The example above was generated from this prompt. Its 20 slides cover the method, experimental comparisons and discussion. You can also specify an audience, slide count or visual style, or provide an existing theme through `theme.md`.
+
+The outputs are a PPTX and an editable project folder. The [full example](examples/attention-is-all-you-need/README_EN.md) includes the original prompt, paper source and every slide.
+
+## Web editor
+
+The web editor runs locally and can open PPTD projects on its own. Select a slide or element to edit text, equations, shapes and layout, then save and export a PPTX.
+
+![PPTD web editor: slide navigation, canvas, text tools and properties](docs/showcase/attention-is-all-you-need/editor.webp)
+
+Open the example from the repository:
+
+```sh
+uv run --locked node bin/pptd-deck-skill.js serve examples/attention-is-all-you-need --open
+```
+
+Create a blank project:
 
 ```sh
 uv run --locked node bin/pptd-deck-skill.js serve --open
 ```
 
-This creates a blank project. To open an existing project:
+To open another project, pass its folder after `serve`. Keep the complete service URL and save or download your project before stopping the service.
 
-```sh
-uv run --locked node bin/pptd-deck-skill.js serve /absolute/path/to/project --open
-```
+## Features
 
-The folder must contain a PPTD manifest and local resources.
-Keep the complete service URL, including the session fragment.
-Save or download your project before stopping the service.
+- **Editable output**: keep text, shapes, tables and equations available for further changes.
+- **Equation typesetting**: use common LaTeX syntax and export editable Office Math objects.
+- **Theme styles**: set fonts, colors and text styles across the deck, or adjust individual elements.
+- **Checks and export**: check fonts, layout and source records, then generate a PPTX with fade transitions by default.
 
-The production workflow prepares, repairs, reviews and exports the project.
-Source or font changes require fresh checks.
-Before export, the agent provides an editor entry point for preview and revision.
-See the [pipeline guide](skills/pptd-deck-skill/reference/pipeline.md).
+## Documentation
 
-## Development and testing
+- [Authoring, review and export workflow](skills/pptd-deck-skill/reference/pipeline.md)
+- [PPTD file format](skills/pptd-deck-skill/reference/pptd.md)
+- [Native authoring support](skills/pptd-deck-skill/reference/native-authoring.md)
+- [Themes and design presets](theme_EN.md)
+- [Windows guide](skills/pptd-deck-skill/reference/windows.md)
+
+## Development
+
+Run in the repository's isolated environment:
 
 ```sh
 uv run --locked node tools/test_native.mjs
@@ -96,18 +105,16 @@ uv run --locked python tools/build_native_distribution.py --editor --output dist
 npm run pack:check
 ```
 
-CI runs on Linux, macOS and Windows.
-Builds use a file allowlist and record hashes and module dependencies.
-See the [icon preview](docs/native-icons-overview.svg).
+CI covers macOS, Windows and Linux. Builds use a file allowlist and record hashes and module dependencies. See the [icon preview](docs/native-icons-overview.svg).
 
-## Scope
+## Current support
 
-The release supports PPTD authoring, editing and PPTX export.
-PPTX import, font embedding and some complex effects are unavailable.
-Unsupported content produces an explicit error.
+PPTD authoring, editing and PPTX export are supported. PPTX import, font embedding and some complex effects are still unavailable. See the [native authoring guide](skills/pptd-deck-skill/reference/native-authoring.md) for details.
 
-Pillow checks approximate layout and equation spacing.
-Tests do not verify rendering in PowerPoint, WPS or Keynote.
-Windows drag interactions and Chinese IME behavior still need manual checks.
+Layout previews use Pillow and approximate equation spacing. They do not replace rendering checks in PowerPoint, WPS or Keynote. Windows browser drag interactions and Chinese IME behavior still need manual checks.
 
-Project license: [MIT](LICENSE). See the [notices](THIRD_PARTY_NOTICES.md) for the development reference and external dependencies.
+## License
+
+[MIT](LICENSE). See the [notices](THIRD_PARTY_NOTICES.md) for upstream copyright and external dependencies.
+
+Maintainer: Raven-Beholder.

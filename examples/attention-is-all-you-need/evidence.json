@@ -1,0 +1,1111 @@
+{
+  "sources": [
+    {
+      "id": "paper",
+      "title": "Attention Is All You Need",
+      "authors": [
+        "Ashish Vaswani",
+        "Noam Shazeer",
+        "Niki Parmar",
+        "Jakob Uszkoreit",
+        "Llion Jones",
+        "Aidan N. Gomez",
+        "Łukasz Kaiser",
+        "Illia Polosukhin"
+      ],
+      "year": 2017,
+      "venue": "NIPS 2017",
+      "version": "arXiv:1706.03762v7",
+      "url": "https://arxiv.org/abs/1706.03762v7",
+      "pdfUrl": "https://arxiv.org/pdf/1706.03762v7",
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "sourceBytes": "User-supplied PDF. PDF bytes are not redistributed."
+    }
+  ],
+  "pageFieldMeaning": "page denotes the presentation slide. sourcePage denotes the 1-based PDF page.",
+  "claims": [
+    {
+      "id": "contribution",
+      "source": "paper",
+      "page": 1,
+      "sourcePage": 1,
+      "location": "Abstract; §1; §7",
+      "statement": "Transformer 用 attention 替代序列对齐的循环与卷积，验证于翻译与英语句法分析。"
+    },
+    {
+      "id": "paths",
+      "source": "paper",
+      "page": 2,
+      "sourcePage": 6,
+      "location": "§4; Table 1",
+      "statement": "表1比较单层复杂度、串行步骤和位置间最长路径；self-attention 的串行步骤与最长路径均为 O(1)。"
+    },
+    {
+      "id": "architecture",
+      "source": "paper",
+      "page": 3,
+      "sourcePage": 3,
+      "location": "§3.1; Figure 1",
+      "statement": "编码器与解码器各 N=6 层；解码器额外包含编码器—解码器注意力。"
+    },
+    {
+      "id": "postln",
+      "source": "paper",
+      "page": 3,
+      "sourcePage": 3,
+      "location": "§3.1",
+      "statement": "原文每个子层为 LayerNorm(x + Sublayer(x))，属于后置归一化。"
+    },
+    {
+      "id": "attention",
+      "source": "paper",
+      "page": 4,
+      "sourcePage": 4,
+      "location": "§3.2.1; Equation (1)",
+      "statement": "缩放点积注意力为 softmax(QK^T/sqrt(d_k))V，权重作用于 V。"
+    },
+    {
+      "id": "scaling",
+      "source": "paper",
+      "page": 4,
+      "sourcePage": 4,
+      "location": "§3.2.1; footnote 4",
+      "statement": "脚注4在分量独立、均值0、方差1时推得点积方差 d_k；缩放动机是避免较大的点积把 softmax 推入小梯度区域。"
+    },
+    {
+      "id": "toy-mechanism",
+      "source": "paper",
+      "page": 5,
+      "sourcePage": 4,
+      "location": "Equation (1)",
+      "statement": "加权聚合机制来自式(1)；本页示例数值由演示者手工设定，不是论文实测。",
+      "evidenceType": "illustrative",
+      "toyInputs": {
+        "Q": [
+          1
+        ],
+        "K": [
+          2,
+          0,
+          1
+        ],
+        "V": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "dk": 1
+      },
+      "toyWeights": [
+        0.6652409557748218,
+        0.09003057317038046,
+        0.24472847105479764
+      ],
+      "toyOutput": [
+        0.9099694268296195,
+        0.3347590442251781
+      ]
+    },
+    {
+      "id": "mha",
+      "source": "paper",
+      "page": 6,
+      "sourcePage": 5,
+      "location": "§3.2.2; Figure 2",
+      "statement": "每头独立线性投影，输出拼接并经 W^O 投影；base 使用8个头，d_k=d_v=64。"
+    },
+    {
+      "id": "roles",
+      "source": "paper",
+      "page": 7,
+      "sourcePage": 5,
+      "location": "§3.2.3",
+      "statement": "Transformer 使用编码器自注意力、解码器带 mask 自注意力和编码器—解码器交叉注意力。"
+    },
+    {
+      "id": "autoregressive",
+      "source": "paper",
+      "page": 8,
+      "sourcePage": 3,
+      "location": "§3; §3.1; §3.2.3",
+      "statement": "模型在推理中自回归生成；右移目标加 mask 保证位置 i 的预测仅依赖此前已知输出。"
+    },
+    {
+      "id": "positional",
+      "source": "paper",
+      "page": 9,
+      "sourcePage": 6,
+      "location": "§3.5",
+      "statement": "位置编码与词嵌入相加；采用不同频率的正弦与余弦，长度外推为作者设计动机。"
+    },
+    {
+      "id": "ffn",
+      "source": "paper",
+      "page": 10,
+      "sourcePage": 5,
+      "location": "§3.3; Equation (2)",
+      "statement": "FFN 对每个位置分别应用两次线性变换与中间 ReLU，base 内层维度2048，输入输出维度512。"
+    },
+    {
+      "id": "de-data",
+      "source": "paper",
+      "page": 11,
+      "sourcePage": 7,
+      "location": "§5.1",
+      "statement": "WMT14英德数据约4.5百万句对，共享BPE词表约37000。",
+      "value": 4.5,
+      "unit": "million sentence pairs",
+      "dataset": "WMT14 English-German",
+      "split": "train"
+    },
+    {
+      "id": "fr-data",
+      "source": "paper",
+      "page": 11,
+      "sourcePage": 7,
+      "location": "§5.1",
+      "statement": "WMT14英法约36百万句对，词表32000 WordPiece。",
+      "value": 36,
+      "unit": "million sentence pairs",
+      "dataset": "WMT14 English-French",
+      "split": "train"
+    },
+    {
+      "id": "base-params",
+      "source": "paper",
+      "page": 11,
+      "sourcePage": 9,
+      "location": "Table 3 base",
+      "statement": "base参数量65M。",
+      "value": 65,
+      "unit": "million parameters",
+      "dataset": "WMT14 English-German",
+      "split": "training configuration",
+      "trainSteps": 100000,
+      "N": 6,
+      "dModel": 512,
+      "dFF": 2048,
+      "heads": 8
+    },
+    {
+      "id": "big-params",
+      "source": "paper",
+      "page": 11,
+      "sourcePage": 9,
+      "location": "Table 3 big",
+      "statement": "big参数量213M。",
+      "value": 213,
+      "unit": "million parameters",
+      "dataset": "WMT14 English-German",
+      "split": "training configuration",
+      "trainSteps": 300000,
+      "N": 6,
+      "dModel": 1024,
+      "dFF": 4096,
+      "heads": 16
+    },
+    {
+      "id": "hardware",
+      "source": "paper",
+      "page": 11,
+      "sourcePage": 7,
+      "location": "§5.2",
+      "statement": "base 100K步约12小时，big 300K步约3.5天，硬件均8张P100。"
+    },
+    {
+      "id": "optimizer",
+      "source": "paper",
+      "page": 12,
+      "sourcePage": 7,
+      "location": "§5.3; Equation (3)",
+      "statement": "Adam使用beta1=0.9、beta2=0.98、epsilon=1e-9，warmup为4000步。"
+    },
+    {
+      "id": "regularization",
+      "source": "paper",
+      "page": 12,
+      "sourcePage": 8,
+      "location": "§5.4",
+      "statement": "base dropout=0.1，标签平滑epsilon=0.1，论文指出后者损害PPL但提高BLEU。"
+    },
+    {
+      "id": "de-result-0",
+      "source": "paper",
+      "page": 13,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "GNMT + RL英德测试BLEU。",
+      "value": 24.6,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2014",
+      "model": "GNMT + RL",
+      "checkpointAveraging": "reported literature setup",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "de-result-1",
+      "source": "paper",
+      "page": 13,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "MoE英德测试BLEU。",
+      "value": 26.03,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2014",
+      "model": "MoE",
+      "checkpointAveraging": "reported literature setup",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "de-result-2",
+      "source": "paper",
+      "page": 13,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "ConvS2S Ensemble英德测试BLEU。",
+      "value": 26.36,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2014",
+      "model": "ConvS2S Ensemble",
+      "checkpointAveraging": "reported literature setup",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "de-result-3",
+      "source": "paper",
+      "page": 13,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "Transformer Base英德测试BLEU。",
+      "value": 27.3,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2014",
+      "model": "Transformer Base",
+      "checkpointAveraging": 5,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "de-result-4",
+      "source": "paper",
+      "page": 13,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "Transformer Big英德测试BLEU。",
+      "value": 28.4,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2014",
+      "model": "Transformer Big",
+      "checkpointAveraging": 20,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "fr-conv",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "ConvS2S的英法测试BLEU，按表2引用。",
+      "value": 40.46,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "ConvS2S",
+      "uncertainty": "not reported",
+      "sourceConflict": false
+    },
+    {
+      "id": "fr-conv-cost",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2; §6.1 cost estimate",
+      "statement": "ConvS2S的英法估算训练FLOPs。",
+      "value": 1.5e+20,
+      "unit": "training FLOPs",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "ConvS2S",
+      "estimateBasis": "training time × GPU count × estimated sustained single-precision FLOPs per GPU"
+    },
+    {
+      "id": "fr-moe",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "MoE的英法测试BLEU，按表2引用。",
+      "value": 40.56,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "MoE",
+      "uncertainty": "not reported",
+      "sourceConflict": false
+    },
+    {
+      "id": "fr-moe-cost",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2; §6.1 cost estimate",
+      "statement": "MoE的英法估算训练FLOPs。",
+      "value": 1.2e+20,
+      "unit": "training FLOPs",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "MoE",
+      "estimateBasis": "training time × GPU count × estimated sustained single-precision FLOPs per GPU"
+    },
+    {
+      "id": "fr-big",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "Transformer Big的英法测试BLEU，按表2引用。",
+      "value": 41.8,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "Transformer Big",
+      "uncertainty": "not reported",
+      "sourceConflict": true
+    },
+    {
+      "id": "fr-big-cost",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2; §6.1 cost estimate",
+      "statement": "Transformer Big的英法估算训练FLOPs。",
+      "value": 2.3e+19,
+      "unit": "training FLOPs",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "model": "Transformer Big",
+      "estimateBasis": "training time × GPU count × estimated sustained single-precision FLOPs per GPU"
+    },
+    {
+      "id": "fr-prose",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "§6.1 paragraph 2",
+      "statement": "§6.1正文的Transformer big英法BLEU为41.0，与表2/摘要41.8不一致。",
+      "value": 41.0,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014",
+      "conflictsWith": "fr-big",
+      "resolution": "unresolved; Table 2 values are used with a visible caveat"
+    },
+    {
+      "id": "fr-base",
+      "source": "paper",
+      "page": 14,
+      "sourcePage": 8,
+      "location": "Table 2",
+      "statement": "base英法BLEU为38.1。",
+      "value": 38.1,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014"
+    },
+    {
+      "id": "heads-1",
+      "source": "paper",
+      "page": 15,
+      "sourcePage": 9,
+      "location": "Table 3 (A)",
+      "statement": "1头开发集BLEU。",
+      "value": 24.9,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "heads": 1,
+      "dk": 512,
+      "dv": 512,
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "heads-4",
+      "source": "paper",
+      "page": 15,
+      "sourcePage": 9,
+      "location": "Table 3 (A)",
+      "statement": "4头开发集BLEU。",
+      "value": 25.5,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "heads": 4,
+      "dk": 128,
+      "dv": 128,
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "heads-8",
+      "source": "paper",
+      "page": 15,
+      "sourcePage": 9,
+      "location": "Table 3 (A)",
+      "statement": "8头开发集BLEU。",
+      "value": 25.8,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "heads": 8,
+      "dk": 64,
+      "dv": 64,
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "heads-16",
+      "source": "paper",
+      "page": 15,
+      "sourcePage": 9,
+      "location": "Table 3 (A)",
+      "statement": "16头开发集BLEU。",
+      "value": 25.8,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "heads": 16,
+      "dk": 32,
+      "dv": 32,
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "heads-32",
+      "source": "paper",
+      "page": 15,
+      "sourcePage": 9,
+      "location": "Table 3 (A)",
+      "statement": "32头开发集BLEU。",
+      "value": 25.4,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "heads": 32,
+      "dk": 16,
+      "dv": 16,
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "abl-base",
+      "source": "paper",
+      "page": 16,
+      "sourcePage": 9,
+      "location": "Table 3 base",
+      "statement": "Base开发集BLEU。",
+      "value": 25.8,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "abl-2layers",
+      "source": "paper",
+      "page": 16,
+      "sourcePage": 9,
+      "location": "Table 3 (C), N=2",
+      "statement": "2层开发集BLEU。",
+      "value": 23.7,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "abl-drop0",
+      "source": "paper",
+      "page": 16,
+      "sourcePage": 9,
+      "location": "Table 3 (D), Pdrop=0",
+      "statement": "dropout=0开发集BLEU。",
+      "value": 24.6,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "abl-ffn4096",
+      "source": "paper",
+      "page": 16,
+      "sourcePage": 9,
+      "location": "Table 3 (C), dff=4096",
+      "statement": "FFN=4096开发集BLEU。",
+      "value": 26.2,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "abl-learnedpos",
+      "source": "paper",
+      "page": 16,
+      "sourcePage": 9,
+      "location": "Table 3 (E)",
+      "statement": "学习位置开发集BLEU。",
+      "value": 25.7,
+      "unit": "BLEU",
+      "dataset": "WMT14 English-German",
+      "split": "newstest2013",
+      "trainSteps": 100000,
+      "checkpointAveraging": false,
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-rnn",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Vinyals & Kaiser et al.的句法分析F1。",
+      "value": 88.3,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "WSJ only, discriminative",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-petrov",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Petrov et al.的句法分析F1。",
+      "value": 90.4,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "WSJ only, discriminative",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-dyer",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Dyer et al.的句法分析F1。",
+      "value": 91.7,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "WSJ only, discriminative",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-tf-wsj",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Transformer 4 layers的句法分析F1。",
+      "value": 91.3,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "WSJ only, discriminative",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-rnn-semi",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Vinyals & Kaiser et al.的句法分析F1。",
+      "value": 92.1,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "semi-supervised",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-tf-semi",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Transformer 4 layers的句法分析F1。",
+      "value": 92.7,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "semi-supervised",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-multi",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Luong et al.的句法分析F1。",
+      "value": 93.0,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "multi-task",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parse-generative",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 10,
+      "location": "Table 4",
+      "statement": "Dyer et al.的句法分析F1。",
+      "value": 93.3,
+      "unit": "F1",
+      "dataset": "Penn Treebank WSJ",
+      "split": "Section 23",
+      "trainingSetting": "generative",
+      "uncertainty": "not reported"
+    },
+    {
+      "id": "parsing-data",
+      "source": "paper",
+      "page": 17,
+      "sourcePage": 9,
+      "location": "§6.3",
+      "statement": "4层dmodel1024；WSJ-only约40K训练句；半监督约17M句。"
+    },
+    {
+      "id": "longsequence",
+      "source": "paper",
+      "page": 18,
+      "sourcePage": 6,
+      "location": "Table 1; §4; §7",
+      "statement": "全局self-attention单层复杂度O(n^2d)，作者提出未来研究受限局部注意力。"
+    },
+    {
+      "id": "generationscope",
+      "source": "paper",
+      "page": 18,
+      "sourcePage": 10,
+      "location": "§3; §7",
+      "statement": "作者把减少生成串行化列为未来方向；当前解码自回归。"
+    },
+    {
+      "id": "evaluation-boundary",
+      "source": "paper",
+      "page": 18,
+      "sourcePage": 9,
+      "location": "Tables 2–4; §6",
+      "statement": "表2—4未报告置信区间或多随机种子方差，表3未包括完全替换attention的同预算对照。",
+      "evidenceType": "reporting-scope assessment"
+    },
+    {
+      "id": "interpretation-boundary",
+      "source": "paper",
+      "page": 18,
+      "sourcePage": 13,
+      "location": "Appendix Figures 3–5",
+      "statement": "附录注意力分布为可解释性的观察例子，论文未提供这些关系的因果干预实验。",
+      "evidenceType": "reporting-scope assessment"
+    },
+    {
+      "id": "summary",
+      "source": "paper",
+      "page": 19,
+      "sourcePage": 10,
+      "location": "§1; §4; §6; §7",
+      "statement": "论文贡献与结果总结来自§1/4/6/7，讨论的同预算对照为汇报者提出的研究建议。",
+      "evidenceType": "synthesis and explicitly proposed discussion"
+    },
+    {
+      "id": "evaluation-protocol",
+      "source": "paper",
+      "page": 20,
+      "sourcePage": 8,
+      "location": "§6.1; §6.2; Table 3 caption",
+      "statement": "表2在newstest2014，表3在newstest2013；base平均最后5个、big最后20个检查点，表3不做检查点平均。"
+    },
+    {
+      "id": "dropout-big",
+      "source": "paper",
+      "page": 20,
+      "sourcePage": 8,
+      "location": "§6.1; Table 3",
+      "statement": "Big英德配置dropout0.3，英法实验使用0.1；表3PPL为BPE wordpiece级。",
+      "evidenceType": "reproduction context"
+    }
+  ],
+  "comparisons": [
+    {
+      "left": "de-result-4",
+      "right": "de-result-2",
+      "operation": "subtract",
+      "result": 2.04
+    },
+    {
+      "left": "fr-big",
+      "right": "fr-moe",
+      "operation": "subtract",
+      "result": 1.24
+    },
+    {
+      "left": "fr-moe-cost",
+      "right": "fr-big-cost",
+      "operation": "subtract",
+      "result": 9.7e+19
+    },
+    {
+      "left": "heads-1",
+      "right": "heads-8",
+      "operation": "subtract",
+      "result": -0.9
+    },
+    {
+      "left": "heads-4",
+      "right": "heads-8",
+      "operation": "subtract",
+      "result": -0.3
+    },
+    {
+      "left": "heads-16",
+      "right": "heads-8",
+      "operation": "subtract",
+      "result": 0
+    },
+    {
+      "left": "heads-32",
+      "right": "heads-8",
+      "operation": "subtract",
+      "result": -0.4
+    },
+    {
+      "left": "abl-2layers",
+      "right": "abl-base",
+      "operation": "subtract",
+      "result": -2.1
+    },
+    {
+      "left": "abl-drop0",
+      "right": "abl-base",
+      "operation": "subtract",
+      "result": -1.2
+    },
+    {
+      "left": "abl-ffn4096",
+      "right": "abl-base",
+      "operation": "subtract",
+      "result": 0.4
+    },
+    {
+      "left": "abl-learnedpos",
+      "right": "abl-base",
+      "operation": "subtract",
+      "result": -0.1
+    },
+    {
+      "left": "parse-tf-wsj",
+      "right": "parse-petrov",
+      "operation": "subtract",
+      "result": 0.9
+    },
+    {
+      "left": "parse-tf-wsj",
+      "right": "parse-dyer",
+      "operation": "subtract",
+      "result": -0.4
+    },
+    {
+      "left": "parse-tf-semi",
+      "right": "parse-rnn-semi",
+      "operation": "subtract",
+      "result": 0.6
+    }
+  ],
+  "derivedCalculations": [
+    {
+      "id": "fr-cost-ratio",
+      "slide": 14,
+      "numerator": "fr-moe-cost",
+      "denominator": "fr-big-cost",
+      "operation": "divide",
+      "result": 5.217391304347826,
+      "display": "约5.2倍",
+      "unit": "ratio",
+      "dataset": "WMT14 English-French",
+      "split": "newstest2014"
+    }
+  ],
+  "conflicts": [
+    {
+      "claims": [
+        "fr-big",
+        "fr-prose"
+      ],
+      "issue": "EN-FR Transformer big BLEU differs between Table 2/Abstract (41.8) and §6.1 (41.0).",
+      "handling": "Visible caveat on slide 14; no inferred correction."
+    }
+  ],
+  "uncertainty": "The paper does not report multi-seed variance or confidence intervals for Tables 2–4.",
+  "slides": [
+    {
+      "slide": 1,
+      "title": "Attention Is All You Need",
+      "paperPages": [
+        1
+      ],
+      "locations": "标题、摘要",
+      "source": "paper",
+      "interpretation": "开场先界定本文的研究对象：2017 年的编码器—解码器 Transformer。论文问题是在不使用序列对齐的循环与卷积的条件下，是否仍能做好序列转导。主讲部分约 20 分钟，最后一页可供复现讨论。"
+    },
+    {
+      "slide": 2,
+      "title": "RNN 的序列依赖限制训练并行性",
+      "paperPages": [
+        2,
+        6
+      ],
+      "locations": "§1–2、§4、表1",
+      "source": "paper",
+      "interpretation": "循环模型沿输入位置依次计算隐藏状态。自注意力把所有查询同时打包成矩阵，因此一层内所需串行步骤为常数。这里比较的是单层依赖结构，不能据此认为自回归推理可以一次生成所有词。"
+    },
+    {
+      "slide": 3,
+      "title": "编码器与自回归解码器构成 Transformer",
+      "paperPages": [
+        2,
+        3
+      ],
+      "locations": "§3–3.1、图1",
+      "source": "paper",
+      "interpretation": "先沿左路介绍输入表示，再沿右路解释如何预测下一个目标词。每个编码层有两个子层，每个解码层有三个。图是原论文图1的简化解释图，省略逐条残差支路，但每个子层都采用残差加法后接 LayerNorm。交叉注意力的 K/V 来自整个编码器的最终输出。"
+    },
+    {
+      "slide": 4,
+      "title": "Attention 把匹配分数变成加权和",
+      "paperPages": [
+        4
+      ],
+      "locations": "§3.2.1、式(1)、图2",
+      "source": "paper",
+      "interpretation": "Q 表示当前要读取什么，K 决定哪些信息匹配，V 是要聚合的内容。softmax 对每个查询对应的一行分数归一化。缩放项来自一个简化假设：分量独立且均值0、方差1时，点积方差随 d_k 增大。作者认为缩放可缓解 softmax 梯度过小。"
+    },
+    {
+      "slide": 5,
+      "title": "一个查询直接汇总不同位置的内容",
+      "paperPages": [
+        4
+      ],
+      "locations": "§3.2.1 的教学示例",
+      "source": "paper",
+      "interpretation": "本页数字是用于讲清计算过程的手工教学示例，并非模型的真实注意力输出。令 Q=[1]、K=[2,0,1]^T、d_k=1，各位置 V 是二维向量。三项权重约为0.665、0.090、0.245，结果约为(0.910,0.335)。词标签只用于识别位置，不能把这种任意设定解释成语言模型学到的语义。"
+    },
+    {
+      "slide": 6,
+      "title": "多头在不同子空间并行读取信息",
+      "paperPages": [
+        4,
+        5
+      ],
+      "locations": "§3.2.2、图2",
+      "source": "paper",
+      "interpretation": "每个头都有独立学习的 Q/K/V 投影。降低每个头的维度后并行计算，连接各头输出，再通过 W^O 映射回模型维度。不同头可能学到不同关系，但它们的职责并不是事先规定的。图中的三个头只代表8个头中的若干。"
+    },
+    {
+      "slide": 7,
+      "title": "三种 Attention 改变信息来源与可见范围",
+      "paperPages": [
+        5
+      ],
+      "locations": "§3.2.3",
+      "source": "paper",
+      "interpretation": "三个模块使用同一个计算函数，区别在 Q/K/V 的来源与 mask。编码器自注意力读整段输入。解码器自注意力只能读当前和此前的右移目标位置。交叉注意力由解码器查询源序列，不施加目标端因果 mask。"
+    },
+    {
+      "slide": 8,
+      "title": "因果 Mask 支持并行训练，生成仍按词推进",
+      "paperPages": [
+        2,
+        3,
+        5
+      ],
+      "locations": "§3、§3.1、§3.2.3",
+      "source": "paper",
+      "interpretation": "训练时可将完整的真实目标序列右移，所有查询同时计算，通过因果 mask 防止泄漏后续目标。推理时只有已生成的目标前缀，所以每一步必须等待此前结果。下面的中文句子是教学例子，不是论文实验样本。"
+    },
+    {
+      "slide": 9,
+      "title": "位置编码为无循环模型补上顺序信息",
+      "paperPages": [
+        6,
+        9
+      ],
+      "locations": "§3.5、表3(E)",
+      "source": "paper",
+      "interpretation": "自注意力本身不提供序列位置，所以论文把位置编码加到词嵌入上。偶数维用正弦，奇数维用余弦，频率随维度变化。作者提出该设计可能允许长于训练长度的外推，但未给出直接的长序列外推实验。右图示意词向量与位置向量的加法，不展示实际向量数值。"
+    },
+    {
+      "slide": 10,
+      "title": "FFN 与残差归一化完成每层的变换",
+      "paperPages": [
+        3,
+        5
+      ],
+      "locations": "§3.1、§3.3–3.4、式(2)",
+      "source": "paper",
+      "interpretation": "Attention 在位置之间混合信息。FFN 对各位置分别应用相同参数，其内层采用 ReLU。原论文是 Add 后再 Norm 的顺序，即 post-LN，区别于后来的 pre-LN 变体。图中维度是 base 配置。编码器和解码器子层都使用残差连接。"
+    },
+    {
+      "slide": 11,
+      "title": "模型规模与训练预算同时发生变化",
+      "paperPages": [
+        7,
+        9
+      ],
+      "locations": "§5.1–5.2、表3",
+      "source": "paper",
+      "interpretation": "翻译采用两种规模差异明显的数据集。base 和 big 的参数规模与训练步数都不同，所以它们之间的效果差不能视作只增加某一模块的因果证据。两个模型均在8张 P100 上训练。参数数是表3报告的英德配置。"
+    },
+    {
+      "slide": 12,
+      "title": "Warmup 与正则化构成训练配方",
+      "paperPages": [
+        7,
+        8
+      ],
+      "locations": "§5.3–5.4、式(3)",
+      "source": "paper",
+      "interpretation": "学习率先随步数线性增长，再按步数的负二分之一次幂下降。曲线按式(3)计算并归一化到峰值，不是测量到的训练损失。dropout 放在子层输出及 embedding+position 上。label smoothing 使模型更不确定，原文说明它会损害困惑度但改善 BLEU。"
+    },
+    {
+      "slide": 13,
+      "title": "英德 Big 高于既有最佳集成 2.04 BLEU",
+      "paperPages": [
+        8
+      ],
+      "locations": "§6.1、表2",
+      "source": "paper",
+      "interpretation": "这是 WMT14 英德 newstest2014 测试集。最强既有集成 ConvS2S ensemble 是26.36，Transformer big 是28.4，相差2.04 BLEU。base为27.3。Transformer采用单模型检查点参数平均：base最后5个，big最后20个，这与多个独立模型的预测集成不同。图的横轴从0起。论文未报告这些BLEU的随机种子方差。"
+    },
+    {
+      "slide": 14,
+      "title": "英法表 2 显示质量与估算成本的优势",
+      "paperPages": [
+        1,
+        8
+      ],
+      "locations": "§6.1、表2、摘要",
+      "source": "paper",
+      "interpretation": "本页只比较表2中的单模型结果。Transformer big训练FLOPs约为此前最高单模型MoE的1/5.2。FLOPs并非在同一硬件上实测，而是作者用训练时间、GPU数与估计吞吐推算。重要的原文冲突：表2和摘要是41.8，§6.1正文是41.0。保留这处差异，不能声称已核实哪一处应被修正。即使取41.0也超过表2中的既有单模型40.56，但不再超过表中最佳既有集成41.29。"
+    },
+    {
+      "slide": 15,
+      "title": "多头有效，头数增加并不保证更好",
+      "paperPages": [
+        9
+      ],
+      "locations": "§6.2、表3(A)",
+      "source": "paper",
+      "interpretation": "本页是英德开发集 newstest2013，不是测试集 newstest2014。只改变头数及每头维度，并保持计算量近似不变。1头比8头低0.9 BLEU；16头与8头同为25.8；32头降为25.4。不要把这些分数与测试表2混用。论文无检查点平均，也未报告多随机种子的方差。"
+    },
+    {
+      "slide": 16,
+      "title": "容量与正则化的影响更明显",
+      "paperPages": [
+        9
+      ],
+      "locations": "§6.2、表3(C–E)",
+      "source": "paper",
+      "interpretation": "这里抽取表3中单项变体，不把整个表复制到一页。少层数与去掉dropout都有较明显下降，增大FFN有提升，学习位置编码与固定正弦的差距仅0.1 BLEU。一次单项变体没有给出种子误差条，所以0.1分差不宜解释成正弦严格优于学习位置。"
+    },
+    {
+      "slide": 17,
+      "title": "句法分析显示迁移能力，优势存在边界",
+      "paperPages": [
+        9,
+        10
+      ],
+      "locations": "§6.3、表4",
+      "source": "paper",
+      "interpretation": "英语成分句法分析输出结构化序列，长度比输入更长，是对翻译外能力的验证。比较要区分 WSJ-only 判别式、半监督、多任务和生成式设置。Transformer WSJ-only 为91.3，高于 Berkeley Parser90.4，但低于Dyer判别式91.7。半监督92.7高于已有半监督92.1。多任务93.0、生成式93.3来自不同设定，所以不能拿来做同预算因果比较。"
+    },
+    {
+      "slide": 18,
+      "title": "架构有效，仍有四类证据边界",
+      "paperPages": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        13,
+        14,
+        15
+      ],
+      "locations": "§4、§6–7、附录",
+      "source": "paper",
+      "interpretation": "将局限分成论文已明示的计算与生成问题，以及从实验报告范围做出的审慎评价。长序列成本和生成串行由模型结构可直接得出；局部注意力与减轻串行生成是作者未来方向。未报告误差条、未做完全移除attention的同预算对照是对表2—4的范围描述，并不是复现实验发现。附录注意力关系只能算观察证据，缺少干预验证。"
+    },
+    {
+      "slide": 19,
+      "title": "贡献、证据与下一步问题",
+      "paperPages": [
+        2,
+        6,
+        8,
+        9,
+        10
+      ],
+      "locations": "§1、§4、§6–7",
+      "source": "paper",
+      "interpretation": "收束三个结论，然后把组会讨论落在一个可设计的实验上：固定参数规模和训练FLOPs，替换或者限制注意力，分别观察长度、依赖距离、质量与生成速度。讨论问题是汇报者提出的研究建议，论文没有实施这些实验。"
+    },
+    {
+      "slide": 20,
+      "title": "复现时统一评测口径与检查点策略",
+      "paperPages": [
+        7,
+        8,
+        9
+      ],
+      "locations": "§5–6、表2–3",
+      "source": "paper",
+      "interpretation": "备查页可用于回答复现问题。表2是测试集结果，并使用最后若干检查点的参数平均；表3是开发集变体且没有检查点平均。论文用开发集选择beam与length penalty。big英法dropout为0.1，英德配置是0.3。表2估算训练FLOPs不能替代当代同硬件计时；本文未提供复现实验。"
+    }
+  ]
+}

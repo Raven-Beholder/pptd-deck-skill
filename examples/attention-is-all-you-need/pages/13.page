@@ -1,0 +1,565 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '这是 WMT14 英德 newstest2014 测试集。最强既有集成 ConvS2S ensemble 是26.36，Transformer big 是28.4，相差2.04 BLEU。base为27.3。Transformer采用单模型检查点参数平均：base最后5个，big最后20个，这与多个独立模型的预测集成不同。图的横轴从0起。论文未报告这些BLEU的随机种子方差。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§6.1、表2，PDF 第 8 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 英德 Big 高于既有最佳集成 2.04 BLEU
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=8">Vaswani et al., 2017 / arXiv v7</a>  §6.1、表2  论文 p.8
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '13'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: delta
+  elementType: text
+  bounds:
+  - 46
+  - 142
+  - 215
+  - 100
+  content:
+    text: '+2.04'
+    fontSize: 52
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: delta-caption
+  elementType: text
+  bounds:
+  - 46
+  - 246
+  - 232
+  - 99
+  content:
+    text: 'BLEU 分
+
+      相对 ConvS2S Ensemble
+
+      26.36 → 28.4'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: test-protocol
+  elementType: text
+  bounds:
+  - 46
+  - 379
+  - 232
+  - 99
+  content:
+    text: 'WMT14 英德
+
+      newstest2014
+
+      Beam = 4，α = 0.6'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: bleu-grid-0
+  elementType: line
+  bounds:
+  - 516.0
+  - 145
+  - 0.2
+  - 279
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: bleu-tick-0
+  elementType: text
+  bounds:
+  - 501.0
+  - 432
+  - 40
+  - 29
+  content:
+    text: '0'
+    fontSize: 14
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: bleu-grid-10
+  elementType: line
+  bounds:
+  - 623.0
+  - 145
+  - 0.2
+  - 279
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: bleu-tick-10
+  elementType: text
+  bounds:
+  - 608.0
+  - 432
+  - 40
+  - 29
+  content:
+    text: '10'
+    fontSize: 14
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: bleu-grid-20
+  elementType: line
+  bounds:
+  - 730.0
+  - 145
+  - 0.2
+  - 279
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: bleu-tick-20
+  elementType: text
+  bounds:
+  - 715.0
+  - 432
+  - 40
+  - 29
+  content:
+    text: '20'
+    fontSize: 14
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: bleu-grid-30
+  elementType: line
+  bounds:
+  - 837.0
+  - 145
+  - 0.2
+  - 279
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: bleu-tick-30
+  elementType: text
+  bounds:
+  - 822.0
+  - 432
+  - 40
+  - 29
+  content:
+    text: '30'
+    fontSize: 14
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: model-0
+  elementType: text
+  bounds:
+  - 296
+  - 156
+  - 205
+  - 40
+  content:
+    text: GNMT + RL
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: bleu-bar-0
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 516
+  - 152
+  - 263.22
+  - 31
+  fill:
+    type: solid
+    color: '#A9AAAC'
+- elementId: bleu-value-0
+  elementType: text
+  bounds:
+  - 788.22
+  - 150
+  - 65
+  - 40
+  content:
+    text: '24.6'
+    fontSize: 19
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: model-1
+  elementType: text
+  bounds:
+  - 296
+  - 209
+  - 205
+  - 40
+  content:
+    text: MoE
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: bleu-bar-1
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 516
+  - 205
+  - 278.521
+  - 31
+  fill:
+    type: solid
+    color: '#A9AAAC'
+- elementId: bleu-value-1
+  elementType: text
+  bounds:
+  - 803.521
+  - 203
+  - 65
+  - 40
+  content:
+    text: '26.03'
+    fontSize: 19
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: model-2
+  elementType: text
+  bounds:
+  - 296
+  - 262
+  - 205
+  - 40
+  content:
+    text: ConvS2S Ensemble
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: bleu-bar-2
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 516
+  - 258
+  - 282.05199999999996
+  - 31
+  fill:
+    type: solid
+    color: '#A9AAAC'
+- elementId: bleu-value-2
+  elementType: text
+  bounds:
+  - 807.0519999999999
+  - 256
+  - 65
+  - 40
+  content:
+    text: '26.36'
+    fontSize: 19
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: model-3
+  elementType: text
+  bounds:
+  - 296
+  - 315
+  - 205
+  - 40
+  content:
+    text: Transformer Base
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: bleu-bar-3
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 516
+  - 311
+  - 292.11
+  - 31
+  fill:
+    type: solid
+    color: $accent
+- elementId: bleu-value-3
+  elementType: text
+  bounds:
+  - 817.11
+  - 309
+  - 65
+  - 40
+  content:
+    text: '27.3'
+    fontSize: 19
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: model-4
+  elementType: text
+  bounds:
+  - 296
+  - 368
+  - 205
+  - 40
+  content:
+    text: Transformer Big
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: bleu-bar-4
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 516
+  - 364
+  - 303.88
+  - 31
+  fill:
+    type: solid
+    color: $primary
+- elementId: bleu-value-4
+  elementType: text
+  bounds:
+  - 828.88
+  - 362
+  - 65
+  - 40
+  content:
+    text: '28.4'
+    fontSize: 19
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: bleu-axis
+  elementType: text
+  bounds:
+  - 630
+  - 460
+  - 207
+  - 28
+  content:
+    text: BLEU，越高越好
+    fontSize: 14
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true

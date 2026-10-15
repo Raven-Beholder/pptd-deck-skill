@@ -1,0 +1,518 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '本页只比较表2中的单模型结果。Transformer big训练FLOPs约为此前最高单模型MoE的1/5.2。FLOPs并非在同一硬件上实测，而是作者用训练时间、GPU数与估计吞吐推算。重要的原文冲突：表2和摘要是41.8，§6.1正文是41.0。保留这处差异，不能声称已核实哪一处应被修正。即使取41.0也超过表2中的既有单模型40.56，但不再超过表中最佳既有集成41.29。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§6.1、表2、摘要，PDF 第 1,8 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 英法表 2 显示质量与估算成本的优势
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=1">Vaswani et al., 2017 / arXiv v7</a>  §6.1、表2、摘要  论文 p.1,8
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '14'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: fr-protocol
+  elementType: text
+  bounds:
+  - 46
+  - 103
+  - 609
+  - 27
+  content:
+    text: WMT14 英法，newstest2014，单模型
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-top
+  elementType: line
+  bounds:
+  - 46
+  - 130
+  - 609
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: fr-results-0-0
+  elementType: text
+  bounds:
+  - 54
+  - 138
+  - 264
+  - 46
+  content:
+    text: 单模型
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-0-1
+  elementType: text
+  bounds:
+  - 334
+  - 138
+  - 106
+  - 46
+  content:
+    text: BLEU
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-0-2
+  elementType: text
+  bounds:
+  - 456
+  - 138
+  - 191
+  - 46
+  content:
+    text: 训练 FLOPs
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-header
+  elementType: line
+  bounds:
+  - 46
+  - 185
+  - 609
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: fr-results-1-0
+  elementType: text
+  bounds:
+  - 54
+  - 193
+  - 264
+  - 46
+  content:
+    text: ConvS2S
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-1-1
+  elementType: text
+  bounds:
+  - 334
+  - 193
+  - 106
+  - 46
+  content:
+    text: '40.46'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-1-2
+  elementType: text
+  bounds:
+  - 456
+  - 193
+  - 191
+  - 46
+  content:
+    text: 1.5 × 10²⁰
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-rule-1
+  elementType: line
+  bounds:
+  - 46
+  - 240
+  - 609
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: fr-results-2-0
+  elementType: text
+  bounds:
+  - 54
+  - 248
+  - 264
+  - 46
+  content:
+    text: MoE
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-2-1
+  elementType: text
+  bounds:
+  - 334
+  - 248
+  - 106
+  - 46
+  content:
+    text: '40.56'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-2-2
+  elementType: text
+  bounds:
+  - 456
+  - 248
+  - 191
+  - 46
+  content:
+    text: 1.2 × 10²⁰
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-rule-2
+  elementType: line
+  bounds:
+  - 46
+  - 295
+  - 609
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: fr-results-hi-3
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 46
+  - 295
+  - 609
+  - 55
+  fill:
+    type: solid
+    color: $soft
+- elementId: fr-results-3-0
+  elementType: text
+  bounds:
+  - 54
+  - 303
+  - 264
+  - 46
+  content:
+    text: Transformer Big
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-3-1
+  elementType: text
+  bounds:
+  - 334
+  - 303
+  - 106
+  - 46
+  content:
+    text: 41.8 †
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-3-2
+  elementType: text
+  bounds:
+  - 456
+  - 303
+  - 191
+  - 46
+  content:
+    text: 2.3 × 10¹⁹
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-results-bottom
+  elementType: line
+  bounds:
+  - 46
+  - 350
+  - 609
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: fr-cost
+  elementType: text
+  bounds:
+  - 698
+  - 140
+  - 216
+  - 96
+  content:
+    text: 约 5.2 倍
+    fontSize: 33
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-cost-note
+  elementType: text
+  bounds:
+  - 698
+  - 246
+  - 216
+  - 110
+  content:
+    text: 'MoE 的估算训练成本
+
+      ÷ Transformer Big
+
+      均为英法单模型'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-conflict
+  elementType: text
+  bounds:
+  - 46
+  - 386
+  - 868
+  - 60
+  content:
+    text: † 表 2 与摘要为 41.8，§6.1 正文为 41.0。本页按表 2 展示，保留原文冲突。
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-caveat
+  elementType: text
+  bounds:
+  - 46
+  - 455
+  - 868
+  - 33
+  content:
+    text: FLOPs 为跨文献估算，非同硬件实测。Base 英法为 38.1 BLEU。未报告置信区间。
+    fontSize: 15
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

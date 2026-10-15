@@ -1,0 +1,43 @@
+{
+  "id": "wine-red-data",
+  "source": "skills/pptd-deck-skill/reference/design_system/academic/wine-red-data/design.md",
+  "size": [
+    960,
+    540
+  ],
+  "colors": {
+    "primary": "#820000",
+    "accent": "#E69138",
+    "ink": "#252525",
+    "muted": "#6D6D6D",
+    "rule": "#D7D7D7",
+    "light": "#F3F3F3",
+    "white": "#FFFFFF",
+    "paper": "#FAF9F7",
+    "soft": "#F4E8E6"
+  },
+  "textStyles": {
+    "title": {
+      "fontSize": 30,
+      "fontFamily": "Arial Unicode MS",
+      "bold": true,
+      "color": "$primary"
+    },
+    "body": {
+      "fontSize": 20,
+      "fontFamily": "Arial Unicode MS",
+      "lineHeight": 1.2,
+      "color": "$ink"
+    },
+    "caption": {
+      "fontSize": 11,
+      "fontFamily": "Arial Unicode MS",
+      "color": "$muted"
+    }
+  },
+  "layout": {
+    "margin": 46,
+    "sourceLineY": 506
+  },
+  "adaptation": "浅灰白底、酒红标题、橙色语义强调；纯原生可编辑解释图与数据展陈。"
+}

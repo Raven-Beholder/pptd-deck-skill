@@ -1,0 +1,714 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '这里抽取表3中单项变体，不把整个表复制到一页。少层数与去掉dropout都有较明显下降，增大FFN有提升，学习位置编码与固定正弦的差距仅0.1 BLEU。一次单项变体没有给出种子误差条，所以0.1分差不宜解释成正弦严格优于学习位置。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§6.2、表3(C–E)，PDF 第 9 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 容量与正则化的影响更明显
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=9">Vaswani et al., 2017 / arXiv v7</a>  §6.2、表3(C–E)  论文 p.9
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '16'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: ablation-protocol
+  elementType: text
+  bounds:
+  - 46
+  - 104
+  - 868
+  - 27
+  content:
+    text: WMT14 英德，newstest2013，100K 步，无检查点平均
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-top
+  elementType: line
+  bounds:
+  - 46
+  - 133
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-0-0
+  elementType: text
+  bounds:
+  - 54
+  - 141
+  - 398
+  - 39
+  content:
+    text: 变化
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-0-1
+  elementType: text
+  bounds:
+  - 468
+  - 141
+  - 102
+  - 39
+  content:
+    text: BLEU
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-0-2
+  elementType: text
+  bounds:
+  - 586
+  - 141
+  - 124
+  - 39
+  content:
+    text: 相对 Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-0-3
+  elementType: text
+  bounds:
+  - 726
+  - 141
+  - 180
+  - 39
+  content:
+    text: 控制条件
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-header
+  elementType: line
+  bounds:
+  - 46
+  - 181
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-hi-1
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 46
+  - 181
+  - 868
+  - 48
+  fill:
+    type: solid
+    color: $soft
+- elementId: ablations-1-0
+  elementType: text
+  bounds:
+  - 54
+  - 189
+  - 398
+  - 39
+  content:
+    text: Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-1-1
+  elementType: text
+  bounds:
+  - 468
+  - 189
+  - 102
+  - 39
+  content:
+    text: '25.8'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-1-2
+  elementType: text
+  bounds:
+  - 586
+  - 189
+  - 124
+  - 39
+  content:
+    text: '0.0'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-1-3
+  elementType: text
+  bounds:
+  - 726
+  - 189
+  - 180
+  - 39
+  content:
+    text: 基准
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-rule-1
+  elementType: line
+  bounds:
+  - 46
+  - 229
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-2-0
+  elementType: text
+  bounds:
+  - 54
+  - 237
+  - 398
+  - 39
+  content:
+    text: 编码器 / 解码器各 2 层
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-2-1
+  elementType: text
+  bounds:
+  - 468
+  - 237
+  - 102
+  - 39
+  content:
+    text: '23.7'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-2-2
+  elementType: text
+  bounds:
+  - 586
+  - 237
+  - 124
+  - 39
+  content:
+    text: −2.1
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-2-3
+  elementType: text
+  bounds:
+  - 726
+  - 237
+  - 180
+  - 39
+  content:
+    text: 其余同 Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-rule-2
+  elementType: line
+  bounds:
+  - 46
+  - 277
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-3-0
+  elementType: text
+  bounds:
+  - 54
+  - 285
+  - 398
+  - 39
+  content:
+    text: 去掉 dropout
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-3-1
+  elementType: text
+  bounds:
+  - 468
+  - 285
+  - 102
+  - 39
+  content:
+    text: '24.6'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-3-2
+  elementType: text
+  bounds:
+  - 586
+  - 285
+  - 124
+  - 39
+  content:
+    text: −1.2
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-3-3
+  elementType: text
+  bounds:
+  - 726
+  - 285
+  - 180
+  - 39
+  content:
+    text: 其余同 Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-rule-3
+  elementType: line
+  bounds:
+  - 46
+  - 325
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-4-0
+  elementType: text
+  bounds:
+  - 54
+  - 333
+  - 398
+  - 39
+  content:
+    text: FFN 内层 2048 改为 4096
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-4-1
+  elementType: text
+  bounds:
+  - 468
+  - 333
+  - 102
+  - 39
+  content:
+    text: '26.2'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-4-2
+  elementType: text
+  bounds:
+  - 586
+  - 333
+  - 124
+  - 39
+  content:
+    text: '+0.4'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-4-3
+  elementType: text
+  bounds:
+  - 726
+  - 333
+  - 180
+  - 39
+  content:
+    text: 其余同 Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-rule-4
+  elementType: line
+  bounds:
+  - 46
+  - 373
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablations-5-0
+  elementType: text
+  bounds:
+  - 54
+  - 381
+  - 398
+  - 39
+  content:
+    text: 学习位置编码替代正弦编码
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-5-1
+  elementType: text
+  bounds:
+  - 468
+  - 381
+  - 102
+  - 39
+  content:
+    text: '25.7'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-5-2
+  elementType: text
+  bounds:
+  - 586
+  - 381
+  - 124
+  - 39
+  content:
+    text: −0.1
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-5-3
+  elementType: text
+  bounds:
+  - 726
+  - 381
+  - 180
+  - 39
+  content:
+    text: 其余同 Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: ablations-bottom
+  elementType: line
+  bounds:
+  - 46
+  - 421
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: ablation-takeaway
+  elementType: text
+  bounds:
+  - 46
+  - 444
+  - 868
+  - 47
+  content:
+    text: 微小差异缺少方差依据，不能据此判定位置编码方案的普遍优劣。
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

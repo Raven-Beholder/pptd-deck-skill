@@ -1,0 +1,750 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '本页是英德开发集 newstest2013，不是测试集 newstest2014。只改变头数及每头维度，并保持计算量近似不变。1头比8头低0.9 BLEU；16头与8头同为25.8；32头降为25.4。不要把这些分数与测试表2混用。论文无检查点平均，也未报告多随机种子的方差。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§6.2、表3(A)，PDF 第 9 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 多头有效，头数增加并不保证更好
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=9">Vaswani et al., 2017 / arXiv v7</a>  §6.2、表3(A)  论文 p.9
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '15'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: head-result
+  elementType: text
+  bounds:
+  - 46
+  - 122
+  - 272
+  - 72
+  content:
+    text: '1 头降低 0.9 BLEU。
+
+      32 头也低于 8 头。'
+    fontSize: 23
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-context
+  elementType: text
+  bounds:
+  - 46
+  - 257
+  - 272
+  - 167
+  content:
+    text: '头数 h 增加时，
+
+      每头维度同步减小。
+
+
+      比较保持计算量近似不变。'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-top
+  elementType: line
+  bounds:
+  - 364
+  - 128
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-0-0
+  elementType: text
+  bounds:
+  - 372
+  - 136
+  - 76
+  - 39
+  content:
+    text: 头数
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-0-1
+  elementType: text
+  bounds:
+  - 464
+  - 136
+  - 110
+  - 39
+  content:
+    text: 每头维度
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-0-2
+  elementType: text
+  bounds:
+  - 590
+  - 136
+  - 90
+  - 39
+  content:
+    text: BLEU
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-0-3
+  elementType: text
+  bounds:
+  - 696
+  - 136
+  - 210
+  - 39
+  content:
+    text: 相对 8 头 ΔBLEU
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-header
+  elementType: line
+  bounds:
+  - 364
+  - 176
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-1-0
+  elementType: text
+  bounds:
+  - 372
+  - 184
+  - 76
+  - 39
+  content:
+    text: '1'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-1-1
+  elementType: text
+  bounds:
+  - 464
+  - 184
+  - 110
+  - 39
+  content:
+    text: '512'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-1-2
+  elementType: text
+  bounds:
+  - 590
+  - 184
+  - 90
+  - 39
+  content:
+    text: '24.9'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-1-3
+  elementType: text
+  bounds:
+  - 696
+  - 184
+  - 210
+  - 39
+  content:
+    text: '-0.9'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-rule-1
+  elementType: line
+  bounds:
+  - 364
+  - 224
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-2-0
+  elementType: text
+  bounds:
+  - 372
+  - 232
+  - 76
+  - 39
+  content:
+    text: '4'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-2-1
+  elementType: text
+  bounds:
+  - 464
+  - 232
+  - 110
+  - 39
+  content:
+    text: '128'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-2-2
+  elementType: text
+  bounds:
+  - 590
+  - 232
+  - 90
+  - 39
+  content:
+    text: '25.5'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-2-3
+  elementType: text
+  bounds:
+  - 696
+  - 232
+  - 210
+  - 39
+  content:
+    text: '-0.3'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-rule-2
+  elementType: line
+  bounds:
+  - 364
+  - 272
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-hi-3
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 364
+  - 272
+  - 550
+  - 48
+  fill:
+    type: solid
+    color: $soft
+- elementId: head-table-3-0
+  elementType: text
+  bounds:
+  - 372
+  - 280
+  - 76
+  - 39
+  content:
+    text: '8'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-3-1
+  elementType: text
+  bounds:
+  - 464
+  - 280
+  - 110
+  - 39
+  content:
+    text: '64'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-3-2
+  elementType: text
+  bounds:
+  - 590
+  - 280
+  - 90
+  - 39
+  content:
+    text: '25.8'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-3-3
+  elementType: text
+  bounds:
+  - 696
+  - 280
+  - 210
+  - 39
+  content:
+    text: '0.0'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-rule-3
+  elementType: line
+  bounds:
+  - 364
+  - 320
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-hi-4
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 364
+  - 320
+  - 550
+  - 48
+  fill:
+    type: solid
+    color: $soft
+- elementId: head-table-4-0
+  elementType: text
+  bounds:
+  - 372
+  - 328
+  - 76
+  - 39
+  content:
+    text: '16'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-4-1
+  elementType: text
+  bounds:
+  - 464
+  - 328
+  - 110
+  - 39
+  content:
+    text: '32'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-4-2
+  elementType: text
+  bounds:
+  - 590
+  - 328
+  - 90
+  - 39
+  content:
+    text: '25.8'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-4-3
+  elementType: text
+  bounds:
+  - 696
+  - 328
+  - 210
+  - 39
+  content:
+    text: '0.0'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-rule-4
+  elementType: line
+  bounds:
+  - 364
+  - 368
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: head-table-5-0
+  elementType: text
+  bounds:
+  - 372
+  - 376
+  - 76
+  - 39
+  content:
+    text: '32'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-5-1
+  elementType: text
+  bounds:
+  - 464
+  - 376
+  - 110
+  - 39
+  content:
+    text: '16'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-5-2
+  elementType: text
+  bounds:
+  - 590
+  - 376
+  - 90
+  - 39
+  content:
+    text: '25.4'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-5-3
+  elementType: text
+  bounds:
+  - 696
+  - 376
+  - 210
+  - 39
+  content:
+    text: '-0.4'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: head-table-bottom
+  elementType: line
+  bounds:
+  - 364
+  - 416
+  - 550
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: dev-caveat
+  elementType: text
+  bounds:
+  - 46
+  - 443
+  - 868
+  - 46
+  content:
+    text: newstest2013 开发集，100K 步，无检查点平均。未报告随机种子方差。
+    fontSize: 17
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

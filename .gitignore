@@ -10,6 +10,8 @@ __pycache__/
 # Packaged artifacts
 *.tgz
 *.zip
+!examples/attention-is-all-you-need/project.zip
+examples/attention-is-all-you-need/.pipeline/
 
 # Local skill install metadata
 _user_meta.json

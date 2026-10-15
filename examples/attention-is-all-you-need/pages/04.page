@@ -1,0 +1,338 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: 'Q 表示当前要读取什么，K 决定哪些信息匹配，V 是要聚合的内容。softmax 对每个查询对应的一行分数归一化。缩放项来自一个简化假设：分量独立且均值0、方差1时，点积方差随 d_k 增大。作者认为缩放可缓解 softmax
+  梯度过小。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§3.2.1、式(1)、图2，PDF 第 4 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: Attention 把匹配分数变成加权和
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=4">Vaswani et al., 2017 / arXiv v7</a>  §3.2.1、式(1)、图2  论文 p.4
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '04'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: formula
+  elementType: text
+  bounds:
+  - 46
+  - 114
+  - 868
+  - 98
+  content:
+    text: \(\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V\)
+    fontSize: 27
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: score-box
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 46
+  - 272
+  - 236
+  - 66
+  fill:
+    type: solid
+    color: $light
+  border:
+    width: 1
+    color: $rule
+    style: solid
+- elementId: score-label
+  elementType: text
+  bounds:
+  - 54
+  - 280
+  - 220
+  - 56
+  content:
+    text: '1  计算匹配分数
+
+      Q 与 K 做点积'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: weights-box
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 348
+  - 272
+  - 236
+  - 66
+  fill:
+    type: solid
+    color: $soft
+  border:
+    width: 1
+    color: $rule
+    style: solid
+- elementId: weights-label
+  elementType: text
+  bounds:
+  - 356
+  - 280
+  - 220
+  - 56
+  content:
+    text: '2  缩放并归一化
+
+      每行得到权重'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: read-box
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 650
+  - 272
+  - 264
+  - 66
+  fill:
+    type: solid
+    color: $light
+  border:
+    width: 1
+    color: $rule
+    style: solid
+- elementId: read-label
+  elementType: text
+  bounds:
+  - 658
+  - 280
+  - 248
+  - 56
+  content:
+    text: '3  按权重聚合
+
+      读取 V 中的内容'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: step12
+  elementType: line
+  bounds:
+  - 286
+  - 305
+  - 56
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1.5
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - arrow
+- elementId: step23
+  elementType: line
+  bounds:
+  - 588
+  - 305
+  - 56
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1.5
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - arrow
+- elementId: qkv-key
+  elementType: text
+  bounds:
+  - 46
+  - 215
+  - 868
+  - 38
+  content:
+    text: Q：查询     K：匹配线索     V：被读取的内容
+    fontSize: 21
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: scale-caption
+  elementType: text
+  bounds:
+  - 46
+  - 376
+  - 293
+  - 40
+  content:
+    text: 缩放避免点积分数过大
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: scale-explanation
+  elementType: text
+  bounds:
+  - 46
+  - 430
+  - 293
+  - 43
+  content:
+    text: 缓解 softmax 梯度过小。
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: scale-equation
+  elementType: text
+  bounds:
+  - 367
+  - 371
+  - 547
+  - 96
+  content:
+    text: '独立、零均值、单位方差假设下：
+
+      \(\operatorname{Var}(q\cdot k)=d_k\)'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

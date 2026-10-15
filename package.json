@@ -28,6 +28,7 @@
     "theme.md",
     "theme_EN.md",
     "docs/",
+    "examples/attention-is-all-you-need/",
     "tools/build_native_distribution.py",
     "tools/audit_native_tree.py",
     "pyproject.toml",

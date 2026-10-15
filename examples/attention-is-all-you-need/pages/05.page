@@ -1,0 +1,572 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '本页数字是用于讲清计算过程的手工教学示例，并非模型的真实注意力输出。令 Q=[1]、K=[2,0,1]^T、d_k=1，各位置 V 是二维向量。三项权重约为0.665、0.090、0.245，结果约为(0.910,0.335)。词标签只用于识别位置，不能把这种任意设定解释成语言模型学到的语义。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§3.2.1 的教学示例，PDF 第 4 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 一个查询直接汇总不同位置的内容
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=4">Vaswani et al., 2017 / arXiv v7</a>  §3.2.1 的教学示例  论文 p.4
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '05'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: toy-notice
+  elementType: text
+  bounds:
+  - 46
+  - 109
+  - 868
+  - 33
+  content:
+    text: 手工教学数值，非论文实验或模型输出
+    fontSize: 17
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: query
+  elementType: text
+  bounds:
+  - 46
+  - 166
+  - 205
+  - 117
+  content:
+    text: '查询 Q=[1]
+
+      \(d_k=1\)
+
+      读取三个位置'
+    fontSize: 21
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-top
+  elementType: line
+  bounds:
+  - 290
+  - 151
+  - 624
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: toy-0-0
+  elementType: text
+  bounds:
+  - 298
+  - 159
+  - 128
+  - 40
+  content:
+    text: 位置
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-0-1
+  elementType: text
+  bounds:
+  - 442
+  - 159
+  - 146
+  - 40
+  content:
+    text: K
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-0-2
+  elementType: text
+  bounds:
+  - 604
+  - 159
+  - 146
+  - 40
+  content:
+    text: V
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-0-3
+  elementType: text
+  bounds:
+  - 766
+  - 159
+  - 140
+  - 40
+  content:
+    text: 权重
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-header
+  elementType: line
+  bounds:
+  - 290
+  - 200
+  - 624
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: toy-hi-1
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 290
+  - 200
+  - 624
+  - 49
+  fill:
+    type: solid
+    color: $soft
+- elementId: toy-1-0
+  elementType: text
+  bounds:
+  - 298
+  - 208
+  - 128
+  - 40
+  content:
+    text: 猫
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-1-1
+  elementType: text
+  bounds:
+  - 442
+  - 208
+  - 146
+  - 40
+  content:
+    text: '2'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-1-2
+  elementType: text
+  bounds:
+  - 604
+  - 208
+  - 146
+  - 40
+  content:
+    text: (1, 0)
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-1-3
+  elementType: text
+  bounds:
+  - 766
+  - 208
+  - 140
+  - 40
+  content:
+    text: '0.665'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-rule-1
+  elementType: line
+  bounds:
+  - 290
+  - 249
+  - 624
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: toy-2-0
+  elementType: text
+  bounds:
+  - 298
+  - 257
+  - 128
+  - 40
+  content:
+    text: 喝
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-2-1
+  elementType: text
+  bounds:
+  - 442
+  - 257
+  - 146
+  - 40
+  content:
+    text: '0'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-2-2
+  elementType: text
+  bounds:
+  - 604
+  - 257
+  - 146
+  - 40
+  content:
+    text: (0, 1)
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-2-3
+  elementType: text
+  bounds:
+  - 766
+  - 257
+  - 140
+  - 40
+  content:
+    text: '0.090'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-rule-2
+  elementType: line
+  bounds:
+  - 290
+  - 298
+  - 624
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: toy-3-0
+  elementType: text
+  bounds:
+  - 298
+  - 306
+  - 128
+  - 40
+  content:
+    text: 奶
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-3-1
+  elementType: text
+  bounds:
+  - 442
+  - 306
+  - 146
+  - 40
+  content:
+    text: '1'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-3-2
+  elementType: text
+  bounds:
+  - 604
+  - 306
+  - 146
+  - 40
+  content:
+    text: (1, 1)
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-3-3
+  elementType: text
+  bounds:
+  - 766
+  - 306
+  - 140
+  - 40
+  content:
+    text: '0.245'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: toy-bottom
+  elementType: line
+  bounds:
+  - 290
+  - 347
+  - 624
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: weights-formula
+  elementType: text
+  bounds:
+  - 46
+  - 377
+  - 868
+  - 58
+  content:
+    text: \(\alpha=\operatorname{softmax}([2,0,1])\approx[0.665,0.090,0.245]\)
+    fontSize: 25
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: result
+  elementType: text
+  bounds:
+  - 46
+  - 437
+  - 868
+  - 50
+  content:
+    text: 输出：\(0.665(1,0)+0.090(0,1)+0.245(1,1)\approx(0.910,0.335)\)
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

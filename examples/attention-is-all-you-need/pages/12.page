@@ -1,0 +1,1847 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '学习率先随步数线性增长，再按步数的负二分之一次幂下降。曲线按式(3)计算并归一化到峰值，不是测量到的训练损失。dropout 放在子层输出及 embedding+position 上。label smoothing 使模型更不确定，原文说明它会损害困惑度但改善
+  BLEU。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§5.3–5.4、式(3)，PDF 第 7,8 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: Warmup 与正则化构成训练配方
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=7">Vaswani et al., 2017 / arXiv v7</a>  §5.3–5.4、式(3)  论文 p.7,8
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '12'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: lr-formula
+  elementType: text
+  bounds:
+  - 46
+  - 119
+  - 868
+  - 94
+  content:
+    text: \(lrate=d_{model}^{-0.5}\min(step^{-0.5},step\cdot warmup^{-1.5})\)
+    fontSize: 27
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: warmup-caption
+  elementType: text
+  bounds:
+  - 46
+  - 218
+  - 449
+  - 42
+  content:
+    text: 前 4000 步升高，随后按步数平方根衰减
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: lr-x
+  elementType: line
+  bounds:
+  - 74
+  - 458
+  - 405
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $muted
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-y
+  elementType: line
+  bounds:
+  - 74
+  - 293
+  - 0.2
+  - 165
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 0,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $muted
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-1
+  elementType: line
+  bounds:
+  - 74.02025
+  - 447.6875
+  - 5.042249999999996
+  - 10.271250000000009
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-2
+  elementType: line
+  bounds:
+  - 79.0625
+  - 437.375
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-3
+  elementType: line
+  bounds:
+  - 84.125
+  - 427.0625
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-4
+  elementType: line
+  bounds:
+  - 89.1875
+  - 416.75
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-5
+  elementType: line
+  bounds:
+  - 94.25
+  - 406.4375
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-6
+  elementType: line
+  bounds:
+  - 99.3125
+  - 396.125
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-7
+  elementType: line
+  bounds:
+  - 104.375
+  - 385.8125
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-8
+  elementType: line
+  bounds:
+  - 109.4375
+  - 375.5
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-9
+  elementType: line
+  bounds:
+  - 114.5
+  - 365.1875
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-10
+  elementType: line
+  bounds:
+  - 119.5625
+  - 354.875
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-11
+  elementType: line
+  bounds:
+  - 124.625
+  - 344.5625
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-12
+  elementType: line
+  bounds:
+  - 129.6875
+  - 334.25
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-13
+  elementType: line
+  bounds:
+  - 134.75
+  - 323.9375
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-14
+  elementType: line
+  bounds:
+  - 139.8125
+  - 313.625
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-15
+  elementType: line
+  bounds:
+  - 144.875
+  - 303.3125
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-16
+  elementType: line
+  bounds:
+  - 149.9375
+  - 293.0
+  - 5.0625
+  - 10.3125
+  viewBox:
+  - 1
+  - 1
+  points: 0,1 1,0
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-17
+  elementType: line
+  bounds:
+  - 155.0
+  - 293.0
+  - 5.0625
+  - 4.926487476020213
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-18
+  elementType: line
+  bounds:
+  - 160.0625
+  - 297.9264874760202
+  - 5.0625
+  - 4.510020662939326
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-19
+  elementType: line
+  bounds:
+  - 165.125
+  - 302.43650813895954
+  - 5.0625
+  - 4.149107506469704
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-20
+  elementType: line
+  bounds:
+  - 170.1875
+  - 306.58561564542924
+  - 5.0625
+  - 3.8338978395846652
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-21
+  elementType: line
+  bounds:
+  - 175.25
+  - 310.4195134850139
+  - 5.0625
+  - 3.556678959231135
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-22
+  elementType: line
+  bounds:
+  - 180.3125
+  - 313.97619244424504
+  - 5.0625
+  - 3.3113347610520805
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-23
+  elementType: line
+  bounds:
+  - 185.375
+  - 317.2875272052971
+  - 5.0625
+  - 3.0929595170335347
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-24
+  elementType: line
+  bounds:
+  - 190.4375
+  - 320.38048672233066
+  - 5.0625
+  - 2.8975774245945445
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-25
+  elementType: line
+  bounds:
+  - 195.5
+  - 323.2780641469252
+  - 5.0625
+  - 2.721935853074797
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-26
+  elementType: line
+  bounds:
+  - 200.5625
+  - 326.0
+  - 5.0625
+  - 2.563350808798532
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-27
+  elementType: line
+  bounds:
+  - 205.625
+  - 328.56335080879853
+  - 5.0625
+  - 2.419589969483809
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-28
+  elementType: line
+  bounds:
+  - 210.6875
+  - 330.98294077828234
+  - 5.0625
+  - 2.2887831286726623
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-29
+  elementType: line
+  bounds:
+  - 215.75
+  - 333.271723906955
+  - 5.0625
+  - 2.1693528961907873
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-30
+  elementType: line
+  bounds:
+  - 220.8125
+  - 335.4410768031458
+  - 5.0625
+  - 2.059960545717672
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-31
+  elementType: line
+  bounds:
+  - 225.875
+  - 337.50103734886346
+  - 5.0625
+  - 1.9594633134651076
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-32
+  elementType: line
+  bounds:
+  - 230.9375
+  - 339.46050066232857
+  - 5.0625
+  - 1.8668804418910554
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-33
+  elementType: line
+  bounds:
+  - 236.0
+  - 341.3273811042196
+  - 5.0625
+  - 1.781365965019802
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-34
+  elementType: line
+  bounds:
+  - 241.0625
+  - 343.1087470692394
+  - 5.0625
+  - 1.702186736704732
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-35
+  elementType: line
+  bounds:
+  - 246.125
+  - 344.81093380594416
+  - 5.0625
+  - 1.6287045698916813
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-36
+  elementType: line
+  bounds:
+  - 251.1875
+  - 346.43963837583584
+  - 5.0625
+  - 1.560361624164159
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-37
+  elementType: line
+  bounds:
+  - 256.25
+  - 348.0
+  - 5.0625
+  - 1.4966683784641646
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-38
+  elementType: line
+  bounds:
+  - 261.3125
+  - 349.49666837846416
+  - 5.0625
+  - 1.4371936752325496
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-39
+  elementType: line
+  bounds:
+  - 266.375
+  - 350.9338620536967
+  - 5.0625
+  - 1.3815564349457645
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-40
+  elementType: line
+  bounds:
+  - 271.4375
+  - 352.3154184886425
+  - 5.0625
+  - 1.3294187258010197
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-41
+  elementType: line
+  bounds:
+  - 276.5
+  - 353.6448372144435
+  - 5.0625
+  - 1.2804799390764856
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-42
+  elementType: line
+  bounds:
+  - 281.5625
+  - 354.92531715352
+  - 5.0625
+  - 1.234471871499352
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-43
+  elementType: line
+  bounds:
+  - 286.625
+  - 356.15978902501934
+  - 5.0625
+  - 1.191154555461594
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-44
+  elementType: line
+  bounds:
+  - 291.6875
+  - 357.35094358048093
+  - 5.0625
+  - 1.1503127088570864
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-45
+  elementType: line
+  bounds:
+  - 296.75
+  - 358.501256289338
+  - 5.0625
+  - 1.111752700671218
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-46
+  elementType: line
+  bounds:
+  - 301.8125
+  - 359.61300899000923
+  - 5.0625
+  - 1.0752999477586513
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-47
+  elementType: line
+  bounds:
+  - 306.875
+  - 360.6883089377679
+  - 5.0625
+  - 1.040796673621685
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-48
+  elementType: line
+  bounds:
+  - 311.9375
+  - 361.72910561138957
+  - 5.0625
+  - 1.0080999723222135
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-49
+  elementType: line
+  bounds:
+  - 317.0
+  - 362.7372055837118
+  - 5.0625
+  - 0.9770801305739383
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-50
+  elementType: line
+  bounds:
+  - 322.0625
+  - 363.7142857142857
+  - 5.0625
+  - 0.9476191690899896
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-51
+  elementType: line
+  bounds:
+  - 327.125
+  - 364.6619048833757
+  - 5.0625
+  - 0.9196095707756626
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-52
+  elementType: line
+  bounds:
+  - 332.1875
+  - 365.5815144541514
+  - 5.0625
+  - 0.8929531686858354
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-53
+  elementType: line
+  bounds:
+  - 337.25
+  - 366.4744676228372
+  - 5.0625
+  - 0.8675601710280034
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-54
+  elementType: line
+  bounds:
+  - 342.3125
+  - 367.3420277938652
+  - 5.0625
+  - 0.843348304084941
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-55
+  elementType: line
+  bounds:
+  - 347.375
+  - 368.18537609795015
+  - 5.0625
+  - 0.8202420569019182
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-56
+  elementType: line
+  bounds:
+  - 352.4375
+  - 369.0056181548521
+  - 5.0625
+  - 0.7981720140478501
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-57
+  elementType: line
+  bounds:
+  - 357.5
+  - 369.8037901688999
+  - 5.0625
+  - 0.7770742648071973
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-58
+  elementType: line
+  bounds:
+  - 362.5625
+  - 370.5808644337071
+  - 5.0625
+  - 0.7568898788759952
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-59
+  elementType: line
+  bounds:
+  - 367.625
+  - 371.3377543125831
+  - 5.0625
+  - 0.7375644400731289
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-60
+  elementType: line
+  bounds:
+  - 372.6875
+  - 372.07531875265624
+  - 5.0625
+  - 0.719047630780608
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-61
+  elementType: line
+  bounds:
+  - 377.75
+  - 372.79436638343685
+  - 5.0625
+  - 0.7012928608518223
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-62
+  elementType: line
+  bounds:
+  - 382.8125
+  - 373.4956592442887
+  - 5.0625
+  - 0.6842569355856085
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-63
+  elementType: line
+  bounds:
+  - 387.875
+  - 374.1799161798743
+  - 5.0625
+  - 0.6678997580957002
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-64
+  elementType: line
+  bounds:
+  - 392.9375
+  - 374.84781593797
+  - 5.0625
+  - 0.6521840620300168
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-65
+  elementType: line
+  bounds:
+  - 398.0
+  - 375.5
+  - 5.0625
+  - 0.637075171122433
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-66
+  elementType: line
+  bounds:
+  - 403.0625
+  - 376.13707517112243
+  - 5.0625
+  - 0.6225407825179445
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-67
+  elementType: line
+  bounds:
+  - 408.125
+  - 376.7596159536404
+  - 5.0625
+  - 0.6085507711981677
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-68
+  elementType: line
+  bounds:
+  - 413.1875
+  - 377.36816672483855
+  - 5.0625
+  - 0.5950770131715899
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-69
+  elementType: line
+  bounds:
+  - 418.25
+  - 377.96324373801014
+  - 5.0625
+  - 0.5820932253821525
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-70
+  elementType: line
+  bounds:
+  - 423.3125
+  - 378.5453369633923
+  - 5.0625
+  - 0.5695748205377527
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-71
+  elementType: line
+  bounds:
+  - 428.375
+  - 379.11491178393004
+  - 5.0625
+  - 0.5574987752756329
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-72
+  elementType: line
+  bounds:
+  - 433.4375
+  - 379.6724105592057
+  - 5.0625
+  - 0.5458435102740964
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-73
+  elementType: line
+  bounds:
+  - 438.5
+  - 380.21825406947977
+  - 5.0625
+  - 0.5345887810740351
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-74
+  elementType: line
+  bounds:
+  - 443.5625
+  - 380.7528428505538
+  - 5.0625
+  - 0.5237155785254686
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-75
+  elementType: line
+  bounds:
+  - 448.625
+  - 381.2765584290793
+  - 5.0625
+  - 0.513206037890086
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-76
+  elementType: line
+  bounds:
+  - 453.6875
+  - 381.78976446696936
+  - 5.0625
+  - 0.5030433557452625
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-77
+  elementType: line
+  bounds:
+  - 458.75
+  - 382.2928078227146
+  - 5.0625
+  - 0.4932117139243246
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-78
+  elementType: line
+  bounds:
+  - 463.8125
+  - 382.78601953663895
+  - 5.0625
+  - 0.4836962098177082
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-79
+  elementType: line
+  bounds:
+  - 468.875
+  - 383.26971574645665
+  - 5.0625
+  - 0.47448279242576064
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-segment-80
+  elementType: line
+  bounds:
+  - 473.9375
+  - 383.7441985388824
+  - 5.0625
+  - 0.46555820362453915
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,1
+  curve: sharp
+  border:
+    width: 2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: lr-tick-0
+  elementType: text
+  bounds:
+  - 50.0
+  - 463
+  - 54
+  - 24
+  content:
+    text: 0k
+    fontSize: 12
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: lr-tick-4000
+  elementType: text
+  bounds:
+  - 131.0
+  - 463
+  - 54
+  - 24
+  content:
+    text: 4k
+    fontSize: 12
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: lr-tick-10000
+  elementType: text
+  bounds:
+  - 252.5
+  - 463
+  - 54
+  - 24
+  content:
+    text: 10k
+    fontSize: 12
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: lr-tick-20000
+  elementType: text
+  bounds:
+  - 455.0
+  - 463
+  - 54
+  - 24
+  content:
+    text: 20k
+    fontSize: 12
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: lr-y-name
+  elementType: text
+  bounds:
+  - 46
+  - 268
+  - 449
+  - 23
+  content:
+    text: 相对学习率，峰值为 1。横轴为训练步数。
+    fontSize: 13
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: optimizer
+  elementType: text
+  bounds:
+  - 553
+  - 220
+  - 361
+  - 79
+  content:
+    text: 'Adam
+
+      β₁=0.9，β₂=0.98，ε=10⁻⁹'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: dropout
+  elementType: text
+  bounds:
+  - 553
+  - 331
+  - 361
+  - 68
+  content:
+    text: 'Base dropout = 0.1
+
+      标签平滑 ε = 0.1'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: regularization
+  elementType: text
+  bounds:
+  - 553
+  - 422
+  - 361
+  - 66
+  content:
+    text: '配方中的正则化与优化策略，
+
+      同样影响最终实验结果。'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

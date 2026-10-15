@@ -1,0 +1,376 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '自注意力本身不提供序列位置，所以论文把位置编码加到词嵌入上。偶数维用正弦，奇数维用余弦，频率随维度变化。作者提出该设计可能允许长于训练长度的外推，但未给出直接的长序列外推实验。右图示意词向量与位置向量的加法，不展示实际向量数值。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§3.5、表3(E)，PDF 第 6,9 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 位置编码为无循环模型补上顺序信息
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=6">Vaswani et al., 2017 / arXiv v7</a>  §3.5、表3(E)  论文 p.6,9
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: 09
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: pe-formulas
+  elementType: text
+  bounds:
+  - 46
+  - 126
+  - 575
+  - 168
+  content:
+    text: '\(PE(pos,2i)=\sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)\)
+
+
+      \(PE(pos,2i+1)=\cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)\)'
+    fontSize: 24
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-notes
+  elementType: text
+  bounds:
+  - 46
+  - 335
+  - 575
+  - 137
+  content:
+    text: 'pos 是词的位置，i 是维度编号。
+
+      位置编码与词嵌入维度相同，可直接相加。
+
+
+      长序列外推是设计动机，仍需额外验证。'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-label
+  elementType: text
+  bounds:
+  - 658
+  - 124
+  - 256
+  - 52
+  content:
+    text: 同一个词，处于不同位置
+    fontSize: 21
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-word-0-box
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 669
+  - 203
+  - 223
+  - 43
+  fill:
+    type: solid
+    color: $light
+  border:
+    width: 1
+    color: $rule
+    style: solid
+- elementId: pe-word-0-label
+  elementType: text
+  bounds:
+  - 677
+  - 211
+  - 207
+  - 33
+  content:
+    text: 词嵌入：猫
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: pe-plus-0
+  elementType: text
+  bounds:
+  - 700
+  - 250
+  - 35
+  - 34
+  content:
+    text: +
+    fontSize: 24
+    fontFamily: Arial Unicode MS
+    color: $accent
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-pos-0
+  elementType: text
+  bounds:
+  - 739
+  - 251
+  - 170
+  - 41
+  content:
+    text: 位置 1 的向量
+    fontSize: 17
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-arrow-0
+  elementType: line
+  bounds:
+  - 780
+  - 291
+  - 0.2
+  - 19
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 1.2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - arrow
+- elementId: pe-sum-0
+  elementType: text
+  bounds:
+  - 668
+  - 312
+  - 236
+  - 41
+  content:
+    text: 带位置的输入表示
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: pe-word-1-box
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 669
+  - 339
+  - 223
+  - 43
+  fill:
+    type: solid
+    color: $light
+  border:
+    width: 1
+    color: $rule
+    style: solid
+- elementId: pe-word-1-label
+  elementType: text
+  bounds:
+  - 677
+  - 347
+  - 207
+  - 33
+  content:
+    text: 词嵌入：猫
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true
+- elementId: pe-plus-1
+  elementType: text
+  bounds:
+  - 700
+  - 386
+  - 35
+  - 34
+  content:
+    text: +
+    fontSize: 24
+    fontFamily: Arial Unicode MS
+    color: $accent
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-pos-1
+  elementType: text
+  bounds:
+  - 739
+  - 387
+  - 170
+  - 41
+  content:
+    text: 位置 2 的向量
+    fontSize: 17
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: pe-arrow-1
+  elementType: line
+  bounds:
+  - 780
+  - 427
+  - 0.2
+  - 19
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 0,1
+  curve: sharp
+  border:
+    width: 1.2
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - arrow
+- elementId: pe-sum-1
+  elementType: text
+  bounds:
+  - 668
+  - 448
+  - 236
+  - 41
+  content:
+    text: 带位置的输入表示
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - center
+    - top
+    wrap: true

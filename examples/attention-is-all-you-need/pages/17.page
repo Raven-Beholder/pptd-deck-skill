@@ -1,0 +1,716 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '英语成分句法分析输出结构化序列，长度比输入更长，是对翻译外能力的验证。比较要区分 WSJ-only 判别式、半监督、多任务和生成式设置。Transformer WSJ-only 为91.3，高于 Berkeley Parser90.4，但低于Dyer判别式91.7。半监督92.7高于已有半监督92.1。多任务93.0、生成式93.3来自不同设定，所以不能拿来做同预算因果比较。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§6.3、表4，PDF 第 9,10 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 句法分析显示迁移能力，优势存在边界
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=9">Vaswani et al., 2017 / arXiv v7</a>  §6.3、表4  论文 p.9,10
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '17'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: parsing-top
+  elementType: line
+  bounds:
+  - 46
+  - 130
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-0-0
+  elementType: text
+  bounds:
+  - 54
+  - 138
+  - 308
+  - 33
+  content:
+    text: 模型
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-0-1
+  elementType: text
+  bounds:
+  - 378
+  - 138
+  - 126
+  - 33
+  content:
+    text: 训练设定
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-0-2
+  elementType: text
+  bounds:
+  - 520
+  - 138
+  - 110
+  - 33
+  content:
+    text: WSJ23 F1
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-header
+  elementType: line
+  bounds:
+  - 46
+  - 172
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-1-0
+  elementType: text
+  bounds:
+  - 54
+  - 180
+  - 308
+  - 33
+  content:
+    text: Vinyals / Kaiser 等
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-1-1
+  elementType: text
+  bounds:
+  - 378
+  - 180
+  - 126
+  - 33
+  content:
+    text: WSJ only
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-1-2
+  elementType: text
+  bounds:
+  - 520
+  - 180
+  - 110
+  - 33
+  content:
+    text: '88.3'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-rule-1
+  elementType: line
+  bounds:
+  - 46
+  - 214
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-2-0
+  elementType: text
+  bounds:
+  - 54
+  - 222
+  - 308
+  - 33
+  content:
+    text: Petrov 等
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-2-1
+  elementType: text
+  bounds:
+  - 378
+  - 222
+  - 126
+  - 33
+  content:
+    text: WSJ only
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-2-2
+  elementType: text
+  bounds:
+  - 520
+  - 222
+  - 110
+  - 33
+  content:
+    text: '90.4'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-rule-2
+  elementType: line
+  bounds:
+  - 46
+  - 256
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-3-0
+  elementType: text
+  bounds:
+  - 54
+  - 264
+  - 308
+  - 33
+  content:
+    text: Dyer 等
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-3-1
+  elementType: text
+  bounds:
+  - 378
+  - 264
+  - 126
+  - 33
+  content:
+    text: WSJ only
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-3-2
+  elementType: text
+  bounds:
+  - 520
+  - 264
+  - 110
+  - 33
+  content:
+    text: '91.7'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-rule-3
+  elementType: line
+  bounds:
+  - 46
+  - 298
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-hi-4
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 46
+  - 298
+  - 592
+  - 42
+  fill:
+    type: solid
+    color: $soft
+- elementId: parsing-4-0
+  elementType: text
+  bounds:
+  - 54
+  - 306
+  - 308
+  - 33
+  content:
+    text: Transformer 4 层
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-4-1
+  elementType: text
+  bounds:
+  - 378
+  - 306
+  - 126
+  - 33
+  content:
+    text: WSJ only
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-4-2
+  elementType: text
+  bounds:
+  - 520
+  - 306
+  - 110
+  - 33
+  content:
+    text: '91.3'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-rule-4
+  elementType: line
+  bounds:
+  - 46
+  - 340
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-5-0
+  elementType: text
+  bounds:
+  - 54
+  - 348
+  - 308
+  - 33
+  content:
+    text: Vinyals / Kaiser 等
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-5-1
+  elementType: text
+  bounds:
+  - 378
+  - 348
+  - 126
+  - 33
+  content:
+    text: 半监督
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-5-2
+  elementType: text
+  bounds:
+  - 520
+  - 348
+  - 110
+  - 33
+  content:
+    text: '92.1'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-rule-5
+  elementType: line
+  bounds:
+  - 46
+  - 382
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parsing-hi-6
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 46
+  - 382
+  - 592
+  - 42
+  fill:
+    type: solid
+    color: $soft
+- elementId: parsing-6-0
+  elementType: text
+  bounds:
+  - 54
+  - 390
+  - 308
+  - 33
+  content:
+    text: Transformer 4 层
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-6-1
+  elementType: text
+  bounds:
+  - 378
+  - 390
+  - 126
+  - 33
+  content:
+    text: 半监督
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-6-2
+  elementType: text
+  bounds:
+  - 520
+  - 390
+  - 110
+  - 33
+  content:
+    text: '92.7'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parsing-bottom
+  elementType: line
+  bounds:
+  - 46
+  - 424
+  - 592
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: parse-config
+  elementType: text
+  bounds:
+  - 680
+  - 130
+  - 234
+  - 123
+  content:
+    text: '4 层 Transformer
+
+      模型维度 1024
+
+      WSJ 训练约 4 万句'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parse-semi
+  elementType: text
+  bounds:
+  - 680
+  - 287
+  - 234
+  - 91
+  content:
+    text: '半监督额外数据
+
+      约 1700 万句'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: parse-boundary
+  elementType: text
+  bounds:
+  - 680
+  - 411
+  - 234
+  - 73
+  content:
+    text: '多任务 93.0、生成式 93.3
+
+      属于不同实验设定。'
+    fontSize: 16
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

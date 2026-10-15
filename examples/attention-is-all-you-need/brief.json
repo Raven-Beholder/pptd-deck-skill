@@ -1,0 +1,34 @@
+{
+  "topic": "Attention Is All You Need",
+  "language": "zh-CN",
+  "audience": "具备深度学习基础的研究生组会",
+  "request": "请把这篇论文做成一份适合组会汇报的中文 PPT，讲清核心方法、关键实验和局限，图示尽量直观。",
+  "pages": 20,
+  "mainPages": 19,
+  "appendixPages": 1,
+  "estimatedSpeakingMinutes": [
+    20,
+    25
+  ],
+  "requiresSources": true,
+  "minimumBodyFontSize": 18,
+  "design": {
+    "preset": "wine-red-data",
+    "canvas": [
+      960,
+      540
+    ],
+    "bodyFontFamily": "Arial Unicode MS",
+    "equationFormat": "editable Office Math",
+    "diagrams": "native editable shapes and text",
+    "charts": "editable shape-based evidence graphics",
+    "transition": "fade"
+  },
+  "assumptions": [
+    "听众了解基本神经网络与矩阵乘法。",
+    "不扩展到后续大语言模型或 Transformer 变体。",
+    "论文未报告的误差条与显著性不推断。"
+  ],
+  "sourceVersion": "arXiv:1706.03762v7",
+  "maintainer": "Raven-Beholder"
+}

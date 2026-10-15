@@ -1,0 +1,319 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '收束三个结论，然后把组会讨论落在一个可设计的实验上：固定参数规模和训练FLOPs，替换或者限制注意力，分别观察长度、依赖距离、质量与生成速度。讨论问题是汇报者提出的研究建议，论文没有实施这些实验。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§1、§4、§6–7，PDF 第 2,6,8,9,10 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 贡献、证据与下一步问题
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=2">Vaswani et al., 2017 / arXiv v7</a>  §1、§4、§6–7  论文 p.2,6,8,9,10
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '19'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: close-num-0
+  elementType: text
+  bounds:
+  - 46
+  - 132
+  - 49
+  - 55
+  content:
+    text: '1'
+    fontSize: 34
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-label-0
+  elementType: text
+  bounds:
+  - 110
+  - 136
+  - 192
+  - 43
+  content:
+    text: 架构贡献
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-body-0
+  elementType: text
+  bounds:
+  - 318
+  - 135
+  - 596
+  - 65
+  content:
+    text: 用全局信息交互替代循环依赖，缩短训练中的信息路径。
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-num-1
+  elementType: text
+  bounds:
+  - 46
+  - 219
+  - 49
+  - 55
+  content:
+    text: '2'
+    fontSize: 34
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-label-1
+  elementType: text
+  bounds:
+  - 110
+  - 223
+  - 192
+  - 43
+  content:
+    text: 实验支持
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-body-1
+  elementType: text
+  bounds:
+  - 318
+  - 222
+  - 596
+  - 65
+  content:
+    text: 英德 +2.04 BLEU，英法成本更低，句法分析可迁移。
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-num-2
+  elementType: text
+  bounds:
+  - 46
+  - 306
+  - 49
+  - 55
+  content:
+    text: '3'
+    fontSize: 34
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-label-2
+  elementType: text
+  bounds:
+  - 110
+  - 310
+  - 192
+  - 43
+  content:
+    text: 结论边界
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: close-body-2
+  elementType: text
+  bounds:
+  - 318
+  - 309
+  - 596
+  - 65
+  content:
+    text: 长序列成本、串行生成和组件归因仍需要进一步验证。
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: discussion-rule
+  elementType: line
+  bounds:
+  - 46
+  - 408
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $primary
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: discussion-label
+  elementType: text
+  bounds:
+  - 46
+  - 429
+  - 184
+  - 44
+  content:
+    text: 组会讨论
+    fontSize: 23
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: discussion
+  elementType: text
+  bounds:
+  - 266
+  - 427
+  - 648
+  - 62
+  content:
+    text: 固定参数量与训练 FLOPs，怎样检验 Attention 的必要性？
+    fontSize: 24
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

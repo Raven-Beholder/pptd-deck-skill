@@ -1,0 +1,504 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '备查页可用于回答复现问题。表2是测试集结果，并使用最后若干检查点的参数平均；表3是开发集变体且没有检查点平均。论文用开发集选择beam与length penalty。big英法dropout为0.1，英德配置是0.3。表2估算训练FLOPs不能替代当代同硬件计时；本文未提供复现实验。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§5–6、表2–3，PDF 第 7,8,9 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   备查
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 复现时统一评测口径与检查点策略
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=7">Vaswani et al., 2017 / arXiv v7</a>  §5–6、表2–3  论文 p.7,8,9
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '20'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: reproduction-top
+  elementType: line
+  bounds:
+  - 46
+  - 125
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: reproduction-0-0
+  elementType: text
+  bounds:
+  - 54
+  - 133
+  - 209
+  - 49
+  content:
+    text: 核对项
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-0-1
+  elementType: text
+  bounds:
+  - 279
+  - 133
+  - 306
+  - 49
+  content:
+    text: 表 2：翻译主结果
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-0-2
+  elementType: text
+  bounds:
+  - 601
+  - 133
+  - 305
+  - 49
+  content:
+    text: 表 3：模型变体
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-header
+  elementType: line
+  bounds:
+  - 46
+  - 183
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: reproduction-1-0
+  elementType: text
+  bounds:
+  - 54
+  - 191
+  - 209
+  - 49
+  content:
+    text: 评测分割
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-1-1
+  elementType: text
+  bounds:
+  - 279
+  - 191
+  - 306
+  - 49
+  content:
+    text: newstest2014 测试集
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-1-2
+  elementType: text
+  bounds:
+  - 601
+  - 191
+  - 305
+  - 49
+  content:
+    text: newstest2013 开发集
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-rule-1
+  elementType: line
+  bounds:
+  - 46
+  - 241
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: reproduction-2-0
+  elementType: text
+  bounds:
+  - 54
+  - 249
+  - 209
+  - 49
+  content:
+    text: 检查点参数平均
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-2-1
+  elementType: text
+  bounds:
+  - 279
+  - 249
+  - 306
+  - 49
+  content:
+    text: Base 最后 5 个，Big 最后 20 个
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-2-2
+  elementType: text
+  bounds:
+  - 601
+  - 249
+  - 305
+  - 49
+  content:
+    text: 无检查点平均
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-rule-2
+  elementType: line
+  bounds:
+  - 46
+  - 299
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: reproduction-3-0
+  elementType: text
+  bounds:
+  - 54
+  - 307
+  - 209
+  - 49
+  content:
+    text: 搜索策略
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-3-1
+  elementType: text
+  bounds:
+  - 279
+  - 307
+  - 306
+  - 49
+  content:
+    text: Beam 4，长度惩罚 α=0.6
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-3-2
+  elementType: text
+  bounds:
+  - 601
+  - 307
+  - 305
+  - 49
+  content:
+    text: 同前，且无检查点平均
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-rule-3
+  elementType: line
+  bounds:
+  - 46
+  - 357
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: reproduction-4-0
+  elementType: text
+  bounds:
+  - 54
+  - 365
+  - 209
+  - 49
+  content:
+    text: 适用结论
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-4-1
+  elementType: text
+  bounds:
+  - 279
+  - 365
+  - 306
+  - 49
+  content:
+    text: 与既有系统的整体比较
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-4-2
+  elementType: text
+  bounds:
+  - 601
+  - 365
+  - 305
+  - 49
+  content:
+    text: 组件或配置变化的内部比较
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: reproduction-bottom
+  elementType: line
+  bounds:
+  - 46
+  - 415
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: repro-drop
+  elementType: text
+  bounds:
+  - 46
+  - 443
+  - 868
+  - 48
+  content:
+    text: Big dropout：英德 0.3，英法 0.1。不要混用 PPL 的词元定义与逐词指标。
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

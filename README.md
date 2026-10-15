@@ -1,34 +1,20 @@
 # PPTD Deck Skill
 
-[English](README_EN.md)
+[English](README_EN.md) · [快速开始](#快速开始) · [示例项目](examples/attention-is-all-you-need/README.md) · [使用文档](#文档)
 
-用 AI agent 制作演示文稿，并在网页编辑器中修改内容。
-项目提供制作 skill、PPTD 编辑器和本地 PPTX 导出器。
-默认交付可编辑的项目目录和带淡入转场的 PPTX。
+PPTD Deck Skill 是一套面向 AI agent 的 PPT 制作工具。提供主题、文档或论文，agent 会生成可编辑的 PPTD 项目和 PPTX 文件。你可以在配套的网页编辑器中继续修改内容与排版，再导出用于汇报的演示文稿。
 
-维护者：Raven-Beholder。
+![Attention Is All You Need 论文导读：封面、架构、公式与实验结果](docs/showcase/attention-is-all-you-need/slides.webp)
 
-## 功能
+《Attention Is All You Need》中文论文导读，选取 4 页布局预览。 [下载 PPTX](examples/attention-is-all-you-need/deck.pptx) · [下载可编辑项目](examples/attention-is-all-you-need/project.zip) · [查看完整示例](examples/attention-is-all-you-need/README.md)
 
-- 编辑文字、公式、图形、图片、表格和基础图表。
-- 修改或删除主题中的文字样式和颜色。
-- 检查字体、布局和来源，修复后再导出。
-- 保留 PPTX 中可编辑的文字、图形、表格和数学公式。
+## 快速开始
 
-## 环境要求
+### 1. 安装 skill
 
-安装 Git、[uv](https://docs.astral.sh/uv/getting-started/installation/) 和 Node.js 18+。
-uv 管理 Python 3.12，将依赖安装到项目的 `.venv`。
-下载缓存和 Python 运行时可能保存在用户目录。
+需要 Git、[uv](https://docs.astral.sh/uv/getting-started/installation/) 和 Node.js 18+。uv 会准备 Python 3.12 和项目依赖，无需运行 `npm install`。
 
-当前使用源码安装，不需要运行 `npm install`。
-安装 skill 只复制文件；请先准备 Python 环境。
-
-## 安装
-
-以下命令用于源码安装。仓库公开前，需要对应的访问权限。
-
-### macOS 和 Linux
+macOS / Linux：
 
 ```sh
 git clone https://github.com/Raven-Beholder/pptd-deck-skill.git
@@ -37,9 +23,8 @@ uv sync --locked --python 3.12
 uv run --locked node bin/pptd-deck-skill.js install -y --target "$HOME/.codex/skills"
 ```
 
-### Windows
-
-在 PowerShell 中运行：
+<details>
+<summary>Windows（PowerShell）</summary>
 
 ```powershell
 git clone https://github.com/Raven-Beholder/pptd-deck-skill.git
@@ -48,47 +33,67 @@ uv sync --locked --python 3.12
 uv run --locked node .\bin\pptd-deck-skill.js install -y --target "$env:USERPROFILE\.codex\skills"
 ```
 
-安装目录为目标目录下的 `pptd-deck-skill`。
-重新安装会替换已有的同名 skill。
-其他 agent 可以使用 `~/.agents/skills`；Claude Code 使用 `~/.claude/skills`。
-通过 `--target` 指定目标目录，可以重复指定。
+</details>
 
-`pyproject.toml` 声明依赖，`uv.lock` 锁定版本和文件哈希。
-`uv sync --locked` 会检查二者是否一致。
-请保留项目环境，避免将 `UV_PROJECT_ENVIRONMENT` 指向系统 Python。
+<details>
+<summary>其他 agent 与安装环境</summary>
 
-不用 uv 时，可用 Python 3.12+ 创建虚拟环境，再安装 `requirements.txt`。
-将 `PYTHON` 设置为该环境解释器的绝对路径，供 Node 启动器使用。
+通过 `--target` 指定 agent 的 skill 目录，也可以重复指定多个目录。共享目录通常为 `~/.agents/skills`，Claude Code 使用 `~/.claude/skills`。安装后的文件夹名为 `pptd-deck-skill`，重新安装会替换同名 skill。
 
-## 使用
+安装器只复制 skill 文件，运行脚本仍需使用本仓库准备的 Python 环境。请保留仓库与 `.venv`，让 agent 按 `SKILL.md` 中的说明复用该环境。本机安装的 skill 不会自动同步到云端。
 
-让 agent 读取安装目录中的 `SKILL.md`，再描述主题、受众和页数。
-已有主题可通过 `theme.md` 指定。
-运行脚本时，agent 应复用安装时的 Python 环境。
-本机个人 skill 不会自动同步到云端。
+`pyproject.toml` 声明依赖，`uv.lock` 锁定版本。下载缓存和 Python 运行时可能保存在用户目录。
 
-在仓库目录中启动编辑器：
+</details>
+
+### 2. 让 agent 制作 PPT
+
+让 agent 使用 `pptd-deck-skill`，然后描述需求。比如上传 [Attention Is All You Need](https://arxiv.org/abs/1706.03762v7) 的 PDF，输入：
+
+> 请把这篇论文做成一份适合组会汇报的中文 PPT，讲清核心方法、关键实验和局限，图示尽量直观。
+
+上面的示例由这条提示词生成，共 20 页，包含方法讲解、实验对比和讨论。你也可以指定受众、页数或喜欢的风格。已有主题可以通过 `theme.md` 提供。
+
+完成后会得到 PPTX 和可编辑的项目目录。[完整示例](examples/attention-is-all-you-need/README.md) 中保留了原始提示词、论文来源和全部页面。
+
+## 网页编辑器
+
+网页编辑器在本地运行，可以独立打开 PPTD 项目。选择页面或元素，即可修改文字、公式、图形与排版，保存后继续导出 PPTX。
+
+![PPTD 网页编辑器：页面导航、画布、文字工具与属性面板](docs/showcase/attention-is-all-you-need/editor.webp)
+
+在仓库目录中打开示例：
+
+```sh
+uv run --locked node bin/pptd-deck-skill.js serve examples/attention-is-all-you-need --open
+```
+
+创建空白项目：
 
 ```sh
 uv run --locked node bin/pptd-deck-skill.js serve --open
 ```
 
-该命令创建空白项目。打开已有项目：
+打开其他项目时，在 `serve` 后传入项目目录。请保留服务输出的完整链接，并在停止服务前保存或下载项目。
 
-```sh
-uv run --locked node bin/pptd-deck-skill.js serve /absolute/path/to/project --open
-```
+## 功能
 
-已有目录应包含 PPTD 清单和本地资源。
-保留服务输出的完整地址，包括会话片段。
-停止服务前，保存或下载项目。
+- **可编辑的成品**：保留文字、图形、表格和数学公式，方便继续修改。
+- **公式排版**：支持常用 LaTeX 语法，导出为可编辑的 Office Math 对象。
+- **主题样式**：统一设置字体、颜色和文字样式，也可以调整单个元素。
+- **检查与导出**：检查字体、布局和来源记录，生成默认带淡入转场的 PPTX。
 
-制作流程依次执行准备、修复、检查和导出。
-修改源文件或字体后，需要重新检查。
-导出前，agent 会提供网页版编辑器的预览和返工入口。
-详见 [pipeline 指南](skills/pptd-deck-skill/reference/pipeline.md)。
+## 文档
 
-## 开发与测试
+- [制作、检查与导出流程](skills/pptd-deck-skill/reference/pipeline.md)
+- [PPTD 文件格式](skills/pptd-deck-skill/reference/pptd.md)
+- [原生制作支持范围](skills/pptd-deck-skill/reference/native-authoring.md)
+- [主题与设计预设](theme.md)
+- [Windows 使用说明](skills/pptd-deck-skill/reference/windows.md)
+
+## 开发
+
+在仓库的隔离环境中运行：
 
 ```sh
 uv run --locked node tools/test_native.mjs
@@ -98,18 +103,16 @@ uv run --locked python tools/build_native_distribution.py --editor --output dist
 npm run pack:check
 ```
 
-CI 在 Linux、macOS 和 Windows 上运行测试。
-构建使用文件白名单，并记录文件哈希和模块依赖。
-图标示例见 [预览](docs/native-icons-overview.svg)。
+CI 覆盖 macOS、Windows 和 Linux。构建使用文件白名单，并记录文件哈希和模块依赖。图标示例见 [预览](docs/native-icons-overview.svg)。
 
-## 使用范围
+## 当前支持情况
 
-当前版本支持 PPTD 制作、编辑和 PPTX 导出。
-尚不支持 PPTX 导入、字体嵌入和部分复杂特效。
-不支持的内容会明确报错。
+支持 PPTD 制作、编辑和 PPTX 导出。PPTX 导入、字体嵌入和部分复杂特效尚未支持；具体范围见 [原生制作指南](skills/pptd-deck-skill/reference/native-authoring.md)。
 
-布局检查使用 Pillow，公式间距为近似值。
-测试不代表 PowerPoint、WPS 或 Keynote 的实际渲染验收。
-Windows 的浏览器拖拽和中文输入法仍需人工检查。
+布局预览使用 Pillow，公式间距为近似值，不能代替 PowerPoint、WPS 或 Keynote 中的实际渲染检查。Windows 的浏览器拖拽与中文输入法仍需人工检查。
 
-项目许可证：[MIT](LICENSE)。来源和第三方依赖见 [告知文件](THIRD_PARTY_NOTICES.md)。
+## 许可证
+
+[MIT](LICENSE)。上游版权与第三方依赖见 [告知文件](THIRD_PARTY_NOTICES.md)。
+
+维护者：Raven-Beholder。

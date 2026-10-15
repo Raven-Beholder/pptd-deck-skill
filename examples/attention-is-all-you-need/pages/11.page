@@ -1,0 +1,723 @@
+pageType: content
+background:
+  type: solid
+  color: $paper
+notes: '翻译采用两种规模差异明显的数据集。base 和 big 的参数规模与训练步数都不同，所以它们之间的效果差不能视作只增加某一模块的因果证据。两个模型均在8张 P100 上训练。参数数是表3报告的英德配置。
+
+
+  来源：https://arxiv.org/abs/1706.03762v7
+
+  论文位置：§5.1–5.2、表3，PDF 第 7,9 页。'
+elements:
+- elementId: running
+  elementType: text
+  bounds:
+  - 46
+  - 16
+  - 868
+  - 20
+  content:
+    text: ATTENTION IS ALL YOU NEED   组会汇报
+    fontSize: 10
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: title
+  elementType: text
+  bounds:
+  - 46
+  - 43
+  - 868
+  - 58
+  content:
+    text: 模型规模与训练预算同时发生变化
+    fontSize: 30
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: footer-rule
+  elementType: line
+  bounds:
+  - 46
+  - 494
+  - 868
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.7
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: source
+  elementType: text
+  bounds:
+  - 46
+  - 506
+  - 826
+  - 24
+  content:
+    text: <a href="https://arxiv.org/pdf/1706.03762v7#page=7">Vaswani et al., 2017 / arXiv v7</a>  §5.1–5.2、表3  论文 p.7,9
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: number
+  elementType: text
+  bounds:
+  - 880
+  - 506
+  - 34
+  - 24
+  content:
+    text: '11'
+    fontSize: 11
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - right
+    - top
+    wrap: true
+- elementId: data-title
+  elementType: text
+  bounds:
+  - 46
+  - 122
+  - 305
+  - 40
+  content:
+    text: 翻译数据
+    fontSize: 22
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: de-data
+  elementType: text
+  bounds:
+  - 46
+  - 183
+  - 305
+  - 98
+  content:
+    text: 'WMT14 英德
+
+      约 450 万句对
+
+      共享 BPE 词表约 3.7 万'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: fr-data
+  elementType: text
+  bounds:
+  - 46
+  - 322
+  - 305
+  - 98
+  content:
+    text: 'WMT14 英法
+
+      约 3600 万句对
+
+      WordPiece 词表 3.2 万'
+    fontSize: 20
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-top
+  elementType: line
+  bounds:
+  - 388
+  - 122
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 1
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-0-0
+  elementType: text
+  bounds:
+  - 396
+  - 130
+  - 192
+  - 34
+  content:
+    text: 配置
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-0-1
+  elementType: text
+  bounds:
+  - 604
+  - 130
+  - 134
+  - 34
+  content:
+    text: Base
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-0-2
+  elementType: text
+  bounds:
+  - 754
+  - 130
+  - 152
+  - 34
+  content:
+    text: Big
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-header
+  elementType: line
+  bounds:
+  - 388
+  - 165
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-1-0
+  elementType: text
+  bounds:
+  - 396
+  - 173
+  - 192
+  - 34
+  content:
+    text: 层数 N
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-1-1
+  elementType: text
+  bounds:
+  - 604
+  - 173
+  - 134
+  - 34
+  content:
+    text: '6'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-1-2
+  elementType: text
+  bounds:
+  - 754
+  - 173
+  - 152
+  - 34
+  content:
+    text: '6'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-rule-1
+  elementType: line
+  bounds:
+  - 388
+  - 208
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-2-0
+  elementType: text
+  bounds:
+  - 396
+  - 216
+  - 192
+  - 34
+  content:
+    text: 模型 / FFN 维度
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-2-1
+  elementType: text
+  bounds:
+  - 604
+  - 216
+  - 134
+  - 34
+  content:
+    text: 512 / 2048
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-2-2
+  elementType: text
+  bounds:
+  - 754
+  - 216
+  - 152
+  - 34
+  content:
+    text: 1024 / 4096
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-rule-2
+  elementType: line
+  bounds:
+  - 388
+  - 251
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-3-0
+  elementType: text
+  bounds:
+  - 396
+  - 259
+  - 192
+  - 34
+  content:
+    text: 头数
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-3-1
+  elementType: text
+  bounds:
+  - 604
+  - 259
+  - 134
+  - 34
+  content:
+    text: '8'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-3-2
+  elementType: text
+  bounds:
+  - 754
+  - 259
+  - 152
+  - 34
+  content:
+    text: '16'
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-rule-3
+  elementType: line
+  bounds:
+  - 388
+  - 294
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-4-0
+  elementType: text
+  bounds:
+  - 396
+  - 302
+  - 192
+  - 34
+  content:
+    text: 参数量
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-4-1
+  elementType: text
+  bounds:
+  - 604
+  - 302
+  - 134
+  - 34
+  content:
+    text: 65 M
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-4-2
+  elementType: text
+  bounds:
+  - 754
+  - 302
+  - 152
+  - 34
+  content:
+    text: 213 M
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-rule-4
+  elementType: line
+  bounds:
+  - 388
+  - 337
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-5-0
+  elementType: text
+  bounds:
+  - 396
+  - 345
+  - 192
+  - 34
+  content:
+    text: 训练步数
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-5-1
+  elementType: text
+  bounds:
+  - 604
+  - 345
+  - 134
+  - 34
+  content:
+    text: 100 K
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-5-2
+  elementType: text
+  bounds:
+  - 754
+  - 345
+  - 152
+  - 34
+  content:
+    text: 300 K
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $ink
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-rule-5
+  elementType: line
+  bounds:
+  - 388
+  - 380
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.5
+    color: $rule
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: configs-hi-6
+  elementType: shape
+  shapeName: rect
+  bounds:
+  - 388
+  - 380
+  - 526
+  - 43
+  fill:
+    type: solid
+    color: $soft
+- elementId: configs-6-0
+  elementType: text
+  bounds:
+  - 396
+  - 388
+  - 192
+  - 34
+  content:
+    text: 训练时间
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-6-1
+  elementType: text
+  bounds:
+  - 604
+  - 388
+  - 134
+  - 34
+  content:
+    text: 12 小时
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-6-2
+  elementType: text
+  bounds:
+  - 754
+  - 388
+  - 152
+  - 34
+  content:
+    text: 3.5 天
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $primary
+    bold: true
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true
+- elementId: configs-bottom
+  elementType: line
+  bounds:
+  - 388
+  - 423
+  - 526
+  - 0.2
+  viewBox:
+  - 1
+  - 1
+  points: 0,0 1,0
+  curve: sharp
+  border:
+    width: 0.8
+    color: $ink
+    style: solid
+  arrow:
+  - null
+  - null
+- elementId: hardware
+  elementType: text
+  bounds:
+  - 46
+  - 444
+  - 868
+  - 43
+  content:
+    text: 硬件：8 张 NVIDIA P100。批次约含 2.5 万源词元和 2.5 万目标词元。
+    fontSize: 18
+    fontFamily: Arial Unicode MS
+    color: $muted
+    bold: false
+    lineHeight: 1.2
+    align:
+    - left
+    - top
+    wrap: true

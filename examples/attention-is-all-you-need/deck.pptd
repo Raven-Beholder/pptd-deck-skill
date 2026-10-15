@@ -1,0 +1,52 @@
+version: v2
+title: Attention Is All You Need：中文组会汇报
+size:
+- 960
+- 540
+theme:
+  colors:
+    primary: '#820000'
+    accent: '#E69138'
+    ink: '#252525'
+    muted: '#6D6D6D'
+    rule: '#D7D7D7'
+    light: '#F3F3F3'
+    white: '#FFFFFF'
+    paper: '#FAF9F7'
+    soft: '#F4E8E6'
+  textStyles:
+    title:
+      fontSize: 30
+      fontFamily: Arial Unicode MS
+      bold: true
+      color: $primary
+    body:
+      fontSize: 20
+      fontFamily: Arial Unicode MS
+      lineHeight: 1.2
+      color: $ink
+    caption:
+      fontSize: 11
+      fontFamily: Arial Unicode MS
+      color: $muted
+pages:
+- pages/01.page
+- pages/02.page
+- pages/03.page
+- pages/04.page
+- pages/05.page
+- pages/06.page
+- pages/07.page
+- pages/08.page
+- pages/09.page
+- pages/10.page
+- pages/11.page
+- pages/12.page
+- pages/13.page
+- pages/14.page
+- pages/15.page
+- pages/16.page
+- pages/17.page
+- pages/18.page
+- pages/19.page
+- pages/20.page

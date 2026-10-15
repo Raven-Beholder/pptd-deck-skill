@@ -14,8 +14,8 @@
       "bytes": 1473
     },
     ".gitignore": {
-      "sha256": "9ef773824e6f5a0464b81c05ebe1338115118828d59d719caf869a8247476657",
-      "bytes": 223
+      "sha256": "0dad3e3eb763495f8fa4bc7a5923fd9fa3cda6a9b5098632c649c82924ee997b",
+      "bytes": 317
     },
     "AGENTS.md": {
       "sha256": "e08710fde06083b406cd0b37f52e3cc0d287b270cab5b1d56e48e69d0473d308",
@@ -26,12 +26,12 @@
       "bytes": 1073
     },
     "README.md": {
-      "sha256": "176b7dad00941c47e32b4a0d2ef4b1a74154e1e228ff20e0406c4c826cfa98c6",
-      "bytes": 4019
+      "sha256": "5d230726b2146e6d03d4389a498eae7b574a5c8590187716f832af3db10cad6b",
+      "bytes": 5455
     },
     "README_EN.md": {
-      "sha256": "866db09869a1f80b1550879a1f041a68fda843a47d0a71669946027d92521f25",
-      "bytes": 4149
+      "sha256": "c458eb618028ddc95b1db76f537452b8a9ec8536d723d666656f14a250e1acb1",
+      "bytes": 5876
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "f6ffa12db629f528ecd169a3e0eb01cd7db5f1aeb877b305e7810ad4e1249c39",
@@ -45,13 +45,237 @@
       "sha256": "9522d12b65b714b61a8d4a6da3a1a131cdfc34738a8f9d99044deb6a1d50ae3c",
       "bytes": 20331
     },
+    "docs/showcase/attention-is-all-you-need/README.md": {
+      "sha256": "db09ad0ccdfbce8c9150a223f720d9bc79226f972fbc06ba19cabf1ab206338c",
+      "bytes": 1012
+    },
+    "docs/showcase/attention-is-all-you-need/editor.webp": {
+      "sha256": "48c4ec24ee4bdaf396ddd2e8a7eed158978ab5dd615c73e6b1760ebc9e53e036",
+      "bytes": 298988
+    },
+    "docs/showcase/attention-is-all-you-need/slides.webp": {
+      "sha256": "d4e36eba54980ba682ba8ede68981266122ae0ec8ec57a23faecaf08af17a476",
+      "bytes": 191776
+    },
     "example/dji-pocket4/DJI Osmo Pocket 4 \u4ea7\u54c1\u6df1\u5ea6\u89e3\u8bfb.pptx": {
       "sha256": "38ab9b78b00dc0ee5b58f663a5b4e0f24a4a09f0199a8af4952b1a0d91e91731",
       "bytes": 6894919
     },
+    "examples/attention-is-all-you-need/README.md": {
+      "sha256": "7d6381cb64341abc798f6dee9efe9ef2a60af753e548cf1d2173e423901e2a1a",
+      "bytes": 2885
+    },
+    "examples/attention-is-all-you-need/README_EN.md": {
+      "sha256": "f78698cb6c3bd713e21c4a1d33958192d8e6eac1d4621429384659278cfc0c65",
+      "bytes": 3315
+    },
+    "examples/attention-is-all-you-need/SOURCES.md": {
+      "sha256": "4681bdaff1fb933e8855e1ebc3d0560bcc10579380f948b4b6cda7e9a546fa0a",
+      "bytes": 9202
+    },
+    "examples/attention-is-all-you-need/USAGE.md": {
+      "sha256": "b03df3473047acda268c22607f13c7b5cabd3e3d164c629dea52fccf208168c7",
+      "bytes": 1676
+    },
+    "examples/attention-is-all-you-need/brief.json": {
+      "sha256": "e35cc648a1cf457eac983f137818a730877a3519a9719e3a809e2dde0bd9e7e9",
+      "bytes": 1030
+    },
+    "examples/attention-is-all-you-need/deck.pptd": {
+      "sha256": "97db84f3f90774d295258e5e24d036a20e8f94a617dbf41e50feaa784c0264ef",
+      "bytes": 925
+    },
+    "examples/attention-is-all-you-need/deck.pptx": {
+      "sha256": "39b2a1dd47d49e424dffdddd5ff375ea0c76b53525ae91298fe219d44769a28a",
+      "bytes": 90254
+    },
+    "examples/attention-is-all-you-need/evidence.json": {
+      "sha256": "0a40f3273a92601b692af36f552192a9be19d01ab48bd51503bfefc14c8b068b",
+      "bytes": 35591
+    },
+    "examples/attention-is-all-you-need/pages/01.page": {
+      "sha256": "47b7d2edb62864c13ca56e3aa872ce97bf40ea33b9189be633750af624b22200",
+      "bytes": 7650
+    },
+    "examples/attention-is-all-you-need/pages/02.page": {
+      "sha256": "8e013946f62e1089e5be1395e9aae7dc24895b68b7062632814f343c91b7fd53",
+      "bytes": 13170
+    },
+    "examples/attention-is-all-you-need/pages/03.page": {
+      "sha256": "82045567e98ee36bfbe509973e3c3639f068631be27e6703dc1784df14256027",
+      "bytes": 9642
+    },
+    "examples/attention-is-all-you-need/pages/04.page": {
+      "sha256": "f8b207553bf496ebfe3e21d64175f9894ed62cff0f39c4953946d35f85da6265",
+      "bytes": 5511
+    },
+    "examples/attention-is-all-you-need/pages/05.page": {
+      "sha256": "89c4a267f19391d86253ec1931da60057bac7118071f85855a85a1093017aa6e",
+      "bytes": 8646
+    },
+    "examples/attention-is-all-you-need/pages/06.page": {
+      "sha256": "c1f44f332a4d423b55511cc79a79145c08f9134619d0b2d352ef98bbdf38c797",
+      "bytes": 7984
+    },
+    "examples/attention-is-all-you-need/pages/07.page": {
+      "sha256": "ec48941b27b4a5c70b095adf15f639624f1db35a53d0653b70d1dc68b1d58ff8",
+      "bytes": 14689
+    },
+    "examples/attention-is-all-you-need/pages/08.page": {
+      "sha256": "60df14b6a6648a57cab3a726f7093b71a4b343b2f3bb0fe2cd70aa25db0228e7",
+      "bytes": 10902
+    },
+    "examples/attention-is-all-you-need/pages/09.page": {
+      "sha256": "4f3d585feaa2378a731ed99c7c21a777640301fc36bee7c8a4d4f133478e8ae7",
+      "bytes": 6141
+    },
+    "examples/attention-is-all-you-need/pages/10.page": {
+      "sha256": "09005e0673a2b6a96eb3df3e4bc2f38d467f7978d58a34274b51651cbd42de93",
+      "bytes": 7705
+    },
+    "examples/attention-is-all-you-need/pages/11.page": {
+      "sha256": "113734bd04a4a09da0e4d415e7c6f5508db5d6d61ba85d95cfb54cdba4c4cff7",
+      "bytes": 10709
+    },
+    "examples/attention-is-all-you-need/pages/12.page": {
+      "sha256": "c1b2c150fc70c55d4138330f76e5d3f90d7a6d074f0916ee1996b10aa8182a80",
+      "bytes": 26421
+    },
+    "examples/attention-is-all-you-need/pages/13.page": {
+      "sha256": "8334893dd5fc36a5d76d70e729f5e7fd59586f11d761b65cd593b301b6f0ced6",
+      "bytes": 8595
+    },
+    "examples/attention-is-all-you-need/pages/14.page": {
+      "sha256": "9382e67d227b096ec5d83502ba05a109e92c5a00809903eadd6310a8206c642a",
+      "bytes": 8255
+    },
+    "examples/attention-is-all-you-need/pages/15.page": {
+      "sha256": "76a239125e877955232ce5f6f46a12b434139d44309e2ab2c0212494e656820a",
+      "bytes": 11280
+    },
+    "examples/attention-is-all-you-need/pages/16.page": {
+      "sha256": "4aab5aa207d6d6bb15c229d537a04619ea7886336e39bf7a4cc6e84d38563659",
+      "bytes": 10858
+    },
+    "examples/attention-is-all-you-need/pages/17.page": {
+      "sha256": "3a4093a2af57c520d566ad3905e0f2024012e288a7064c9beb5d178490348f1d",
+      "bytes": 10746
+    },
+    "examples/attention-is-all-you-need/pages/18.page": {
+      "sha256": "050519602cbf45f8290ad030a8b9ca1c51774773a1e3f2354cbd453cc733b8b3",
+      "bytes": 7421
+    },
+    "examples/attention-is-all-you-need/pages/19.page": {
+      "sha256": "d17b45e9695d0b104c26e9738a50f90419298d774ebcd4f7a1aaf2708d5dfe50",
+      "bytes": 5350
+    },
+    "examples/attention-is-all-you-need/pages/20.page": {
+      "sha256": "26f46f4f05867bd75a2c7871351ed23ca9722b001d17eda6a86937aa5784c69a",
+      "bytes": 7986
+    },
+    "examples/attention-is-all-you-need/previews/01.png": {
+      "sha256": "6b76d6982ab312887ee6d78bbfab86542514464f7d2690eca790ad6b99c171ba",
+      "bytes": 93384
+    },
+    "examples/attention-is-all-you-need/previews/02.png": {
+      "sha256": "3674d8c9759aa146fc33b7206a9d912a5ea99ba2f4a8552ab7e791bdfc1dc22f",
+      "bytes": 125025
+    },
+    "examples/attention-is-all-you-need/previews/03.png": {
+      "sha256": "1ab7bbaf75644c583ae7de476ae8830fcf63b686012a895e4462d52116d485ad",
+      "bytes": 133674
+    },
+    "examples/attention-is-all-you-need/previews/04.png": {
+      "sha256": "48e6eaf753a25c1e9efdd60c6c17234ba1acf1dcfce2baf584c31792d61587ad",
+      "bytes": 151785
+    },
+    "examples/attention-is-all-you-need/previews/05.png": {
+      "sha256": "250a512c1f10ab8027a65261b533a20f9d6ae21fcd7e9d99c1dfb0605a0b0b7d",
+      "bytes": 115103
+    },
+    "examples/attention-is-all-you-need/previews/06.png": {
+      "sha256": "432af269a2ac13f85e0855d34ea600e819b2e977e4438590482a06a5861e7821",
+      "bytes": 139154
+    },
+    "examples/attention-is-all-you-need/previews/07.png": {
+      "sha256": "ea0a8f006d8d3b1da9875cd85c55772c61ae66a57c6123728b06e560a51e5c2e",
+      "bytes": 125576
+    },
+    "examples/attention-is-all-you-need/previews/08.png": {
+      "sha256": "36a8b630c2118437ca3eac002a1e784eff97ce6193d6fd90b3ca936b9097a601",
+      "bytes": 140929
+    },
+    "examples/attention-is-all-you-need/previews/09.png": {
+      "sha256": "8be6803802095ab99c9e1894d524f2c96dbea85f2779bb7b000d03029298bb35",
+      "bytes": 143806
+    },
+    "examples/attention-is-all-you-need/previews/10.png": {
+      "sha256": "0e345462f6c4e43e39df17d68e014b3541f3148ba2c005175e4cd72b15ebbe84",
+      "bytes": 117158
+    },
+    "examples/attention-is-all-you-need/previews/11.png": {
+      "sha256": "fa4e1636a7161f2cc1827c52fb3e8d89e8b684c92f8ca0cb35c3e522b3fc24ac",
+      "bytes": 149792
+    },
+    "examples/attention-is-all-you-need/previews/12.png": {
+      "sha256": "cf8224f45518c545154e96a916bfca82d6fc0e4c12319e3c3b0cfa12ab1df80a",
+      "bytes": 122485
+    },
+    "examples/attention-is-all-you-need/previews/13.png": {
+      "sha256": "bacdb29d8489bd194bd6042cdee59c850dff5e748b3d8c5ca6550808db51e860",
+      "bytes": 110954
+    },
+    "examples/attention-is-all-you-need/previews/14.png": {
+      "sha256": "25552e17929f465f1a3aefe322bfc44c388a0b7c6c113f66ba8875524826d9ba",
+      "bytes": 152190
+    },
+    "examples/attention-is-all-you-need/previews/15.png": {
+      "sha256": "bc24f7f4e86a9d9df1974c94b30447b08e7068e85001e08628c1cd4fd81a2ca5",
+      "bytes": 137516
+    },
+    "examples/attention-is-all-you-need/previews/16.png": {
+      "sha256": "e83c5752b0cb7d893c7370653678e616a009731b31f5a2a6228fd7a9aa39ac0c",
+      "bytes": 143375
+    },
+    "examples/attention-is-all-you-need/previews/17.png": {
+      "sha256": "fe064ada347f45032e1274a6e8940987ea4be9f0153f34d8f48d7c7f083a6f24",
+      "bytes": 159283
+    },
+    "examples/attention-is-all-you-need/previews/18.png": {
+      "sha256": "db770a4add13f996b5043d50e25c19df80169e0a7cf4a21eb3e6b3fe6a6ea23f",
+      "bytes": 166257
+    },
+    "examples/attention-is-all-you-need/previews/19.png": {
+      "sha256": "b4da8a540ccceed3f58c7320ab2adc948203d19cde0df1732a6b4e8ab7b9204a",
+      "bytes": 146383
+    },
+    "examples/attention-is-all-you-need/previews/20.png": {
+      "sha256": "27d8fc12839770bf9668cf23a1ddbf9d7fb7270a2dfe45180cef3d89c4bce479",
+      "bytes": 145776
+    },
+    "examples/attention-is-all-you-need/previews/INDEX.md": {
+      "sha256": "664e78077c2437aef1f9e1032310ac6b002ed5b958b067a71814ea34c3d125dc",
+      "bytes": 1300
+    },
+    "examples/attention-is-all-you-need/previews/overview.jpg": {
+      "sha256": "a73f62fe1c0787b4f9500ff614b4a259cb728ed302ed05026be24d769463c747",
+      "bytes": 519474
+    },
+    "examples/attention-is-all-you-need/project.zip": {
+      "sha256": "e95259ec49a04598283ff9c81016c8f652c2a7b834b7a324c2d29051551e05e5",
+      "bytes": 3081353
+    },
+    "examples/attention-is-all-you-need/prompt.txt": {
+      "sha256": "64bbb84139483bc70f98d7115150397be7cab7561f8df8fabf9ffd4d709ede75",
+      "bytes": 131
+    },
+    "examples/attention-is-all-you-need/theme.json": {
+      "sha256": "b5e10fbb9b25d30bb6022e0ef94f1bbd92c2659b236a1292d4cd351c3106a58f",
+      "bytes": 958
+    },
     "package.json": {
-      "sha256": "b7a5585f4b5484e7214a8583eaab4d6b24771ad8c711f6d058785b8e59438efa",
-      "bytes": 1406
+      "sha256": "c454b33c58c3c9c60baece2370ff1269ed7830ccde0a07254be4d5407c32f9d8",
+      "bytes": 1449
     },
     "pyproject.toml": {
       "sha256": "153c473b139c102d1f0b087b738d70752091f29edac97d2c9f1e389d4e8d2412",
