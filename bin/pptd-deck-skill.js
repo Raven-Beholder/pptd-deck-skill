@@ -5,8 +5,8 @@ import {dirname,join,resolve,basename} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawn,spawnSync} from 'node:child_process';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const args=process.argv.slice(2);const command=['install','serve','export'].includes(args[0])?args.shift():'install';
-let targets=[],port=55174,project,output,open=false,all=false,force=false;
+const args=process.argv.slice(2);const command=['install','serve','export','fonts'].includes(args[0])?args.shift():'install';
+let targets=[],port=55174,project,output,open=false,all=false,force=false,embedFonts=false;
 function python() {
   for(const [name,prefix] of process.env.PYTHON?[[process.env.PYTHON,[]]]:process.platform==='win32'?[['python',[]],['py',['-3']],['python3',[]]]:[['python3',[]],['python',[]]]) {
     const result=spawnSync(name,[...prefix,'-c','import sys; print(sys.executable)'],{encoding:'utf8',env:{...process.env,PYTHONUTF8:'1'}});
@@ -27,9 +27,15 @@ function install(target) {
 }
 async function main() {
   if(Number(process.versions.node.split('.')[0])<18)throw new Error('Node 18+ required');
+  if(command==='fonts') {
+    const script=join(root,'skills/pptd-deck-skill/scripts/local-export/native_font_catalog.py');
+    const result=spawnSync(python(),[script,...args],{env:{...process.env,PYTHONUTF8:'1'},stdio:'inherit'});
+    if(result.error)throw result.error;
+    process.exitCode=result.status??1;return;
+  }
   while(args.length) {
     const arg=args.shift();
-    if(arg==='--help'||arg==='-h'){console.log('PPTD Deck Skill\ninstall [-y] [--target DIRECTORY] [--all]\nserve [PROJECT] [--port PORT] [--open]\nexport PROJECT --output FILE.pptx\nPython 3.12+ + PyYAML; Pillow for layout QA. --open opens the native web editor.');return;}
+    if(arg==='--help'||arg==='-h'){console.log('PPTD Deck Skill\ninstall [-y] [--target DIRECTORY] [--all]\nserve [PROJECT] [--port PORT] [--open]\nexport PROJECT --output FILE.pptx [--embed-fonts]\nfonts list\nfonts add PROJECT --family ID [--family ID] [--write-config]\nPython 3.12+ + PyYAML; Pillow for layout QA. --open opens the native web editor.');return;}
     if(arg==='--version'||arg==='-V'){console.log(JSON.parse(readFileSync(join(root,'package.json'),'utf8')).version);return;}
     if(['--target','--port','--output'].includes(arg)) {
       const value=args.shift();if(!value||value.startsWith('--'))throw new Error(`${arg} requires a value`);
@@ -37,6 +43,7 @@ async function main() {
     }
     if(['--yes','-y'].includes(arg))continue;
     if(arg==='--force'){force=true;continue;}
+    if(arg==='--embed-fonts'){embedFonts=true;continue;}
     if(arg==='--all'){all=true;continue;}if(arg==='--open'){open=true;continue;}
     if(!arg.startsWith('-')&&!project&&command!=='install'){project=resolve(arg);continue;}throw new Error('Unknown argument: '+arg);
   }
@@ -48,7 +55,7 @@ async function main() {
   if(!Number.isInteger(port)||port<0||port>65535)throw new Error('port must be 0..65535');
   if(command==='export'&&(!project||!output))throw new Error('export requires PROJECT and --output');
   const script=join(root,'skills/pptd-deck-skill/scripts/local-export',command==='serve'?'native_editor.py':'native_cli.py');
-  const values=command==='serve'?[...(project?[project]:[]),'--port',String(port)]:[project,'--output',output,...(force?['--force']:[])];
+  const values=command==='serve'?[...(project?[project]:[]),'--port',String(port)]:[project,'--output',output,...(force?['--force']:[]),...(embedFonts?['--embed-fonts']:[])];
   const child=spawn(python(),[script,...values],{env:{...process.env,PYTHONUTF8:'1'},stdio:['inherit','pipe','inherit']});
   let opened=false;
   child.stdout.on('data',buffer=>{

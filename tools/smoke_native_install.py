@@ -40,6 +40,8 @@ def main():
         run(['node',str(ROOT/'bin/pptd-deck-skill.js'),'install','--target',str(target),'-y'])
         skill=target/'pptd-deck-skill'
         assert not (skill/'runtime').exists() and not list(skill.rglob('*.wasm'))
+        catalog=run(['node',str(ROOT/'bin/pptd-deck-skill.js'),'fonts','list'])
+        assert len(json.loads(catalog.stdout)['families'])==16
         project=work/'deck 内容';pipeline=skill/'scripts/pipeline.py'
         run([sys.executable,str(pipeline),'init','--project',str(project),'--topic','Unicode 路径 test','--pages','1','--body-font',str(body),'--math-font',str(math_font),'--math-font-index',str(math_index),'--family',family])
         manifest=project/'deck.pptd';page=project/'pages/01.page';value=yaml.safe_load(page.read_text(encoding='utf-8'))
@@ -62,6 +64,7 @@ def main():
                 req=urllib.request.Request(base+path,data=json.dumps(data,ensure_ascii=False).encode('utf-8') if data is not None else None,headers=h)
                 with urllib.request.urlopen(req,timeout=10) as response:return json.load(response)
             loaded=request('/api/project');first=loaded['pages'][0]
+            assert len(request('/api/font-catalog')['families'])==16
             request('/api/save',{'path':first['path'],'text':expected.decode('utf-8'),'hash':first['hash'],'manifestHash':loaded['manifestHash']})
             assert page.read_bytes()==expected
         finally:
@@ -80,6 +83,6 @@ def main():
         failure=run([sys.executable,str(pipeline),'export',str(manifest),'--output',str(project/'stale.pptx')],expected=2)
         assert json.loads(failure.stdout)['status']=='needs_repair' and not (project/'stale.pptx').exists()
         # Installed entrypoint must work without the source checkout or legacy tools.
-        result={'platform':platform.system(),'python':platform.python_version(),'cjkFontPresent':cjk,'family':family,'unicodePaths':True,'utf8SaveRoundTrip':True,'installedNativeExport':True,'installedEditorSave':True,'pipelineExport':True,'staleQARejected':True,'packageValidation':report,'officeRenderVerified':False,'browserGUIVerified':False}
+        result={'platform':platform.system(),'python':platform.python_version(),'cjkFontPresent':cjk,'family':family,'unicodePaths':True,'utf8SaveRoundTrip':True,'installedNativeExport':True,'installedEditorSave':True,'installedFontCatalog':True,'pipelineExport':True,'staleQARejected':True,'packageValidation':report,'officeRenderVerified':False,'browserGUIVerified':False}
     out=ROOT/'docs/audit/platform-smoke.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result))
 if __name__=='__main__':main()

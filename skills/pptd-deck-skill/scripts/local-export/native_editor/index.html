@@ -9,7 +9,9 @@
   <body>
     <div class="projectbar">
       <div class="brand">PPTD Studio <span>LOCAL</span></div>
-      <button id="open-project" class="primary">打开 PPTD 文件夹</button
+      <button id="open-project" class="primary">打开原文件夹</button
+      ><button id="open-project-copy">打开为副本</button
+      ><button id="manage-project">项目管理</button
       ><span id="project-path"></span><span class="local-label">本地项目</span>
     </div>
     <header class="documentbar">
@@ -446,7 +448,7 @@
         />
       </div>
       <p id="export-font-note" class="hint export-note">
-        暂不支持嵌入字体，PPT 保留字体名称。
+        请在项目管理中添加项目字体，才能嵌入 PPT。
       </p>
       <div class="export-row">
         <label for="export-transition">切换动画</label
@@ -488,20 +490,34 @@
       aria-label="打开本地 PPTD 项目"
     >
       <div class="dialog-heading">
-        <h2>打开本地项目</h2>
+        <h2>项目管理</h2>
         <button data-close="project-dialog" aria-label="关闭打开项目">×</button>
       </div>
-      <p>打开文件夹中的 .pptd、页面和图片资源。</p>
-      <label
-        >本地项目绝对路径<input
-          id="local-project-path"
-          placeholder="/Users/…/project/deck.pptd" /></label
-      ><button id="open-path" class="primary">打开并编辑原文件夹</button>
-      <div class="dialog-divider">或选择文件夹</div>
-      <button id="choose-project-folder">选择 PPTD 文件夹</button
+      <p id="project-location"></p>
+      <button id="choose-project-original" class="primary">选择原文件夹</button>
+      <button id="choose-project-copy">选择文件夹并建立副本</button>
+      <p class="hint">打开原件后保存会写回原文件夹。打开为副本时，先选择源文件夹，再选择副本的保存位置。</p>
+      <button id="save-project-copy">另存副本到文件夹…</button>
+      <div class="dialog-divider">项目字体</div>
+      <div class="project-font-choice">
+        <select id="recommended-font" aria-label="推荐开源字体">
+          <option value="source-han-sans">思源黑体 · 简体中文</option>
+          <option value="source-han-serif">思源宋体 · 简体中文</option>
+          <option value="inter">Inter · 英文正文</option>
+          <option value="jetbrains-mono">JetBrains Mono · 代码</option>
+        </select>
+        <button id="add-font-family">加入项目</button>
+      </div>
+      <p class="hint">推荐字体采用 OFL-1.1。首次添加从官方来源下载，并保留版权与许可告知；之后可随项目离线使用。</p>
+      <button id="import-fonts">添加字体文件…</button>
+      <input id="font-files" type="file" accept=".ttf,.otf" multiple hidden />
+      <p id="project-fonts" class="hint"></p>
+      <p class="hint">字体随项目保存在 fonts/ 中。仅添加允许随项目分发和编辑嵌入的字体。</p>
+      <div class="dialog-divider">临时副本与下载</div>
+      <button id="choose-project-folder">导入文件夹为临时副本</button
       ><input id="project-folder" type="file" webkitdirectory multiple hidden />
       <p class="hint">
-        选择文件夹会建立本地工作副本；使用“下载项目”带走全部修改。路径打开方式直接保存原文件。
+        临时副本首次保存时会选择保存位置。也可下载项目保留修改。
       </p>
       <button id="download-project">下载当前 PPTD 项目</button
       ><button id="save-all">保存全部页面与主题</button

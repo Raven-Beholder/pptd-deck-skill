@@ -152,7 +152,7 @@ def category(value):
     return str(int(value)) if float(value).is_integer() else str(value)
 
 
-def model(element, theme):
+def model(element, theme, *, default_font='MiSans'):
     fields(element, 'elementId elementType bounds rotation opacity flip data series seriesDefaults xAxis yAxis '
            'barWidth barGap categoryGap title legend dataLabels fontFamily fill border shadow', 'chart')
     bounds = vector(element.get('bounds'), 4, 'chart.bounds')
@@ -333,7 +333,7 @@ def model(element, theme):
     result['legend'] = legend
     if 'title' in element:
         result['title'] = title(element['title'])
-    result['fontFamily'] = font_family(element.get('fontFamily', 'MiSans'))
+    result['fontFamily'] = font_family(element.get('fontFamily', default_font))
     result['fontSize'] = max(10, min(18, bounds[3] / 24))
     result['titleFontSize'] = max(14, min(28, bounds[3] / 16))
     result['nullHandling'] = next((s['nullHandling'] for s in series if s['type'] == 'line' and 'nullHandling' in s), 'gap')

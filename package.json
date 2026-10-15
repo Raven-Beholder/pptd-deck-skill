@@ -19,6 +19,7 @@
     "skills/pptd-deck-skill/scripts/*.py",
     "skills/pptd-deck-skill/scripts/local-export/*.py",
     "skills/pptd-deck-skill/scripts/local-export/*.md",
+    "skills/pptd-deck-skill/scripts/local-export/font-catalog.json",
     "skills/pptd-deck-skill/scripts/local-export/native_editor/",
     "README.md",
     "README_EN.md",

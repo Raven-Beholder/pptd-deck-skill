@@ -7,7 +7,7 @@ from native_common import NativeExportError, fields
 from native_table import cell_style, grid, ratios, resolve_table_style
 
 
-def table(element, theme):
+def table(element, theme, *, default_font=None):
     fields(element, 'elementId elementType bounds columnWidths rowHeights rows style fill', 'table')
     widths = ratios(element.get('columnWidths'), 'columnWidths')
     heights = ratios(element.get('rowHeights'), 'rowHeights')
@@ -24,12 +24,12 @@ def table(element, theme):
                 continue
             anchors.append(dict(row=r, column=c, rowSpan=down, colSpan=across,
                                 sourceIndex=source_index, text=source.get('text', ''),
-                                style=cell_style(element, styles, source, r, c, len(heights), len(widths), theme)))
+                                style=cell_style(element, styles, source, r, c, len(heights), len(widths), theme, default_font=default_font)))
             source_index += 1
     return dict(kind='table', widths=widths, heights=heights, cells=anchors)
 
 
-def preview(page, theme):
+def preview(page, theme, *, default_font=None):
     result = {}
     for element in page['elements']:
         kind = element['elementType']
@@ -37,9 +37,9 @@ def preview(page, theme):
             continue
         try:
             if kind == 'table':
-                result[element['elementId']] = table(element, theme)
+                result[element['elementId']] = table(element, theme, default_font=default_font)
             else:
-                chart = model(element, theme)
+                chart = model(element, theme, default_font=default_font or 'MiSans')
                 if len(chart['series']) * len(chart['data']['rows']) > 2000:
                     raise NativeExportError('图表预览最多支持 2000 个数据点；源码和导出数据保留。')
                 result[element['elementId']] = dict(kind='chart', model=chart)

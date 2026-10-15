@@ -7,12 +7,14 @@
   "utf8SaveRoundTrip": true,
   "installedNativeExport": true,
   "installedEditorSave": true,
+  "installedFontCatalog": true,
   "pipelineExport": true,
   "staleQARejected": true,
   "packageValidation": {
     "slides": 1,
     "fadeTransitions": 1,
     "fontParts": 0,
+    "embeddedFamilies": [],
     "fontValidation": "not-embedded",
     "relationshipValidation": "passed",
     "bytes": 5379

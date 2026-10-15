@@ -12,9 +12,10 @@ def ratios(values, where):
         raise NativeExportError(f'{where}: expected nonempty array')
     for value in values:
         number(value, where, 0.000001, 1)
-    if not math.isclose(sum(values), 1, abs_tol=1e-6):
-        raise NativeExportError(f'{where}: ratios must sum to 1')
-    return values
+    # Older projects contain rounded proportions whose sum differs from one.
+    # Fit the declared bounds without changing the source or relative sizes.
+    total = math.fsum(values)
+    return [value / total for value in values]
 
 
 def grid(rows, height, width):
@@ -26,6 +27,10 @@ def grid(rows, height, width):
             raise NativeExportError('table row must be an array')
         column = 0
         for cell in row:
+            # Legacy shorthand is equivalent to a text-only cell. Keep this
+            # normalization local so opening/exporting never rewrites the page.
+            if isinstance(cell, str):
+                cell = {'text': cell}
             while (r, column) in occupied:
                 column += 1
             if column >= width:
@@ -70,9 +75,9 @@ def resolve_table_style(element, theme):
     return style
 
 
-def cell_style(element, table_style, cell, row, column, nrows, ncols, theme):
+def cell_style(element, table_style, cell, row, column, nrows, ncols, theme, *, default_font=None):
     # Empirical legacy defaults; explicitly documented in the compatibility spec.
-    style = dict(fontSize=16, fontFamily='Times New Roman', color='#333333',
+    style = dict(fontSize=16, fontFamily=default_font or 'Times New Roman', color='#333333',
                  lineHeight=1, align=['center', 'middle'], border=None, fill=element.get('fill'))
     style.update(table_style.get('cellStyle', {}))
     body = table_style.get('bodyStyles', [])
@@ -145,7 +150,8 @@ def write_table(writer, tree, element, index, owner, bounds, math_mode=True):
                 if r > ar:
                     attrs['vMerge'] = '1'
             cell = node('a:tc', row, **attrs)
-            style = cell_style(element, table_style, source if anchor else {}, r, c, len(heights), len(widths), writer.theme)
+            style = cell_style(element, table_style, source if anchor else {}, r, c, len(heights), len(widths), writer.theme,
+                               default_font=writer.package.default_font if any(font.role == 'text' for font in writer.fonts) else None)
             content = {key: value for key, value in style.items() if key in (STYLE_FIELDS + ' align').split()}
             content['text'] = source.get('text', '') if anchor else ''
             text_body(cell, content, writer.theme, writer.package, owner, body_tag='a:txBody', math_mode=math_mode)

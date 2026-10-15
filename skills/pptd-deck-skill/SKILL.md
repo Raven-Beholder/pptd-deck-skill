@@ -1,11 +1,11 @@
 ---
 name: pptd-deck-skill
-description: Create, edit, replicate, read and export presentations as editable PPTD projects and local PPTX files. Use installed fonts and fade transitions by default. Supports a browser-free native production pipeline and a local web editor for preview and rework.
+description: Create, edit, replicate, read and export presentations as editable PPTD projects and local PPTX files. Prefer portable OFL project fonts and fade transitions. Supports a browser-free native production pipeline and a local web editor for preview and rework.
 ---
 
 # PPTD Deck Skill
 
-Deliver both the complete editable PPTD project (manifest, pages and local assets) and matching PPTX, unless the user requests another output. Use installed fonts first; embed only when requested and supported by the selected exporter. Link delivered files with absolute local paths.
+Deliver both the complete editable PPTD project (manifest, pages, local assets and declared fonts) and matching PPTX, unless the user requests another output. Preserve the user's font choices when editing. For new portable projects, prefer the verified OFL catalog and retain full license notices. Installed fonts remain an option when portability is unnecessary. Embed project fonts in PPTX when requested. Link delivered files with absolute local paths.
 
 Use the directory containing this file as `SKILL_DIR`. Do not assume a fixed installation path. Read [reference/pptd.md](reference/pptd.md) before authoring.
 
@@ -14,7 +14,8 @@ Use the dependency environment selected at installation, not an arbitrary system
 ## Select the route
 
 - **New native deck or native-compatible edits:** use [reference/pipeline.md](reference/pipeline.md) and `scripts/pipeline.py`. This route uses Python, PyYAML and Pillow, without opening or controlling a browser. Read [reference/native-authoring.md](reference/native-authoring.md) for the supported PPTD subset.
-- **Existing PPTX conversion, embedded fonts or unsupported native features:** this native-only release does not provide those capabilities. Inspect the input and preserve unsupported fields; explain the exact limitation and continue independent work. Do not download a vendor runtime or silently discard content.
+- **Portable fonts:** read [reference/fonts.md](reference/fonts.md). `pipeline init --font-family ID` adds verified OFL fonts and relative QA mappings. Add extra text families with `--extra-font ID`; STIX Two Math is included for formulas. `export --embed-fonts` embeds complete used project families and their notices.
+- **Existing PPTX conversion or unsupported native features:** this native-only release does not provide those capabilities. Inspect the input and preserve unsupported fields; explain the exact limitation and continue independent work. Do not download a vendor runtime or silently discard content.
 - **Manual preview/rework:** the local **web PPTD editor** opens the same project; get its exact launch command using `pipeline.py editor-info /absolute/project/deck.pptd`. Browser use is optional and subject to the user's constraints.
 
 ## Production protocol
@@ -33,6 +34,6 @@ Use the dependency environment selected at installation, not an arbitrary system
 - [reference/native-authoring.md](reference/native-authoring.md): native text, math, diagrams and image conventions.
 - [reference/slides_categories.md](reference/slides_categories.md): design foundation and scenario routing; read the relevant scenario only.
 - [reference/design_system](reference/design_system): preset design specifications. Read only the selected preset.
-- [reference/fonts.md](reference/fonts.md): installed font selection and embedding constraints.
+- [reference/fonts.md](reference/fonts.md): OFL catalog, portable project fonts, installed font mappings and embedding constraints.
 - [reference/general-poster.md](reference/general-poster.md): poster/infographic tasks only.
 - [reference/windows.md](reference/windows.md): Windows setup and tested compatibility scope.

@@ -17,6 +17,8 @@ import yaml
 
 from native_writer import export_native
 from native_media import image_size
+from native_project_fonts import FONT_LIMIT, font_info, require_editable, project_fonts
+from native_validation import verify_output
 
 TEXT_LIMIT = 1024 * 1024
 PROJECT_LIMIT = 100 * 1024 * 1024
@@ -115,6 +117,8 @@ def asset_paths(value):
     if isinstance(value, dict):
         if isinstance(value.get('src'), str):
             paths.add(value['src'])
+        if isinstance(value.get('family'), str) and isinstance(value.get('src'), str) and isinstance(value.get('license'), str):
+            paths.add(value['license'])
         for child in value.values():
             paths.update(asset_paths(child))
     elif isinstance(value, list):
@@ -179,7 +183,9 @@ class Project:
                     raise ValueError('project YAML exceeds 16 MiB editor limit')
                 text = data.decode('utf-8')
                 pages.append(dict(path=path, text=text, hash=digest(data), page=page_value(parse(text))))
-            return dict(manifest=self.manifest, manifestHash=digest(raw), deck=deck, pages=pages)
+            fonts = project_fonts(self.root, deck.get('customFonts'))
+            return dict(manifest=self.manifest, manifestHash=digest(raw), deck=deck, pages=pages,
+                        fonts=[font.public() for font in fonts])
 
     def current(self, manifest_hash):
         current = self.load()
@@ -313,8 +319,8 @@ class Project:
     def export(self, drafts, manifest_hash, hashes=None, theme=None, transition="fade", embed_fonts=False):
         if transition not in ("none", "fade"):
             raise ValueError("unsupported slide transition")
-        if embed_fonts:
-            raise ValueError("独立导出器尚未实现字体嵌入，请关闭嵌入选项。")
+        if not isinstance(embed_fonts, bool):
+            raise ValueError('embedFonts must be a boolean')
         if not isinstance(drafts, dict):
             raise ValueError('drafts must be a mapping of page paths to YAML strings')
         with self.lock:
@@ -345,7 +351,7 @@ class Project:
                     raise ValueError('image source cannot reference a project text file')
                 if total >= PROJECT_LIMIT:
                     raise ValueError('project assets exceed 100 MiB editor limit')
-                data = self.read(path, min(20 * TEXT_LIMIT, PROJECT_LIMIT - total))
+                data = self.read(path, min(FONT_LIMIT if path.lower().endswith(('.ttf', '.otf')) else 20 * TEXT_LIMIT, PROJECT_LIMIT - total))
                 total += len(data)
                 contents[path] = data
             with tempfile.TemporaryDirectory(prefix='native-editor-export-') as directory:
@@ -356,8 +362,84 @@ class Project:
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_bytes(data)
                 output = root / 'output.pptx'
-                export_native(root / self.manifest, output, transition, parse)
+                export_native(root / self.manifest, output, transition, parse, embed_fonts=embed_fonts)
+                verify_output(output, transition, embed_fonts)
                 return output.read_bytes()
+
+    def font(self, name):
+        if name not in {entry.src for entry in project_fonts(self.root, self.load()['deck'].get('customFonts'))}:
+            raise ValueError('font is not declared in project')
+        data = self.read(name, FONT_LIMIT)
+        require_editable(font_info(data))
+        return data, 'font/otf' if data[:4] == b'OTTO' else 'font/ttf'
+
+    def import_font(self, encoded, manifest_hash, *, license_path=None):
+        if not isinstance(encoded, str) or len(encoded) > 44 * TEXT_LIMIT:
+            raise ValueError('font import exceeds 32 MiB limit')
+        data = base64.b64decode(encoded, validate=True)
+        return self.import_font_bundle([data], manifest_hash, license_path=license_path)
+
+    def import_font_bundle(self, resources, manifest_hash, *, notice=None, notice_name=None, license_path=None, role='text'):
+        if not isinstance(resources, list) or not 1 <= len(resources) <= 64:
+            raise ValueError('font bundle needs 1–64 faces')
+        descriptions = [(data, font_info(data)) for data in resources]
+        for _, info in descriptions:
+            require_editable(info)
+            if role not in ('text', 'math') or role == 'math' and not info['math']:
+                raise ValueError('math font requires an OpenType MATH table')
+        with self.lock:
+            current = self.current(manifest_hash)
+            folder = self.root / 'fonts'
+            if folder.is_symlink():
+                raise ValueError('project font folder cannot be a symlink')
+            folder.mkdir(exist_ok=True)
+            def store(name, data):
+                target = self.root / name
+                if target.is_symlink():
+                    raise ValueError('font target cannot be a symlink')
+                if target.exists():
+                    if self.read(name, FONT_LIMIT) != data:
+                        raise ConflictError('existing font resource was modified')
+                    return
+                with tempfile.NamedTemporaryFile(dir=folder, prefix='.pptd-font-', delete=False) as stream:
+                    staged = Path(stream.name)
+                    try:
+                        stream.write(data)
+                        stream.flush()
+                        os.fsync(stream.fileno())
+                        stream.close()
+                        os.link(staged, target)
+                    finally:
+                        staged.unlink(missing_ok=True)
+            if notice is not None:
+                if not isinstance(notice, str) or not 0 < len(notice.encode('utf-8')) <= TEXT_LIMIT or not isinstance(notice_name, str) or not all(c.isascii() and (c.isalnum() or c == '-') for c in notice_name):
+                    raise ValueError('invalid font license notice')
+                raw_notice = notice.encode('utf-8')
+                license_path = 'fonts/' + notice_name + '-OFL-' + digest(raw_notice)[:16] + '.txt'
+                store(license_path, raw_notice)
+            if license_path:
+                self.path(license_path)
+            deck = current['deck']
+            entries = deck.get('customFonts', [])
+            for data, info in descriptions:
+                name = 'fonts/' + digest(data) + '.' + info['format']
+                store(name, data)
+                entry = dict(family=info['family'], src=name, weight=700 if info['bold'] else 400,
+                             style='italic' if info['italic'] else 'normal')
+                if role == 'math':entry['role'] = role
+                if license_path:
+                    entry['license'] = license_path
+                entries = [item for item in entries
+                           if (item['family'], item.get('weight', 400), item.get('style', 'normal')) !=
+                              (entry['family'], entry['weight'], entry['style'])]
+                entries.append(entry)
+            project_fonts(self.root, entries)
+            deck['customFonts'] = entries
+            raw = yaml.safe_dump(deck, allow_unicode=True, sort_keys=False).encode('utf-8')
+            parse(raw.decode('utf-8'))
+            self._publish_manifest(raw, manifest_hash)
+            return dict(manifestHash=digest(raw), customFonts=entries,
+                        fonts=[font.public() for font in project_fonts(self.root, entries)])
 
     def image(self, name):
         data = self.read(name, 20 * TEXT_LIMIT)

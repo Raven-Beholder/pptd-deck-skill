@@ -11,9 +11,10 @@ import yaml
 
 from native_common import NativeExportError
 from native_writer import export_native
+from native_validation import verify_output
 
 
-def export(project, output, transition='fade', force=False):
+def export(project, output, transition='fade', force=False, *, embed_fonts=False):
     """Stage beside the target, verify ZIP integrity, then publish atomically."""
     manifest = Path(project).resolve()
     if manifest.is_dir():
@@ -31,10 +32,11 @@ def export(project, output, transition='fade', force=False):
     target.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.native-pptd-', dir=target.parent) as staging:
         staged = Path(staging) / 'deck.pptx'
-        slides = export_native(manifest, staged, transition, yaml.safe_load)
+        slides = export_native(manifest, staged, transition, yaml.safe_load, embed_fonts=embed_fonts)
         with zipfile.ZipFile(staged) as archive:
             if archive.testzip() is not None:
                 raise NativeExportError('generated ZIP failed CRC validation')
+        verify_output(staged, transition, embed_fonts)
         size = staged.stat().st_size
         if force:
             os.replace(staged, target)
@@ -43,7 +45,7 @@ def export(project, output, transition='fade', force=False):
             # Unlike exists()+replace(), it also protects a concurrently created target.
             os.link(staged, target)
     return dict(output=str(target), slides=slides, bytes=size, exporter='native-python-v1',
-                compatibility='experimental-subset', fontMode='system', legacyFallback=False)
+                compatibility='experimental-subset', fontMode='embedded-project' if embed_fonts else 'system', legacyFallback=False)
 
 
 def main(argv=None):
@@ -53,9 +55,10 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--transition', choices=('fade', 'none'), default='fade')
     parser.add_argument('--force', action='store_true')
+    parser.add_argument('--embed-fonts', action='store_true', help='embed local customFonts resources, including all supplied glyphs')
     args = parser.parse_args(argv)
     try:
-        result = export(args.project, args.output, args.transition, args.force)
+        result = export(args.project, args.output, args.transition, args.force, embed_fonts=args.embed_fonts)
     except (OSError, ValueError, yaml.YAMLError, zipfile.BadZipFile) as exc:
         parser.exit(1, f'native-pptd: {exc}\n')
     print(json.dumps(result, ensure_ascii=False, indent=2))

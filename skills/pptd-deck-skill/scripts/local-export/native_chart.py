@@ -166,7 +166,7 @@ def axis(parent, spec, identifier, other, position, chart, writer):
 
 
 def write_chart(writer, tree, element, index, owner, bounds):
-    chart = model(element, writer.theme)
+    chart = model(element, writer.theme, default_font=writer.package.default_font)
     serial = getattr(writer, 'chart_count', 0) + 1
     writer.chart_count = serial
     chart_owner = f'ppt/charts/chart{serial}.xml'

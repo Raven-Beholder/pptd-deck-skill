@@ -76,6 +76,40 @@ uv run --locked node bin/pptd-deck-skill.js serve --open
 
 打开其他项目时，在 `serve` 后传入项目目录。请保留服务输出的完整链接，并在停止服务前保存或下载项目。
 
+<details>
+<summary>项目管理与项目字体</summary>
+
+点击“打开原文件夹”使用系统文件夹选择器，保存会写回选定原件。
+点击“打开为副本”选择源文件夹和保存位置。副本建立在独立子文件夹中，保存写入副本。
+“项目管理”也提供另存副本、下载项目和临时副本导入。临时副本首次保存时会选择保存位置。
+取消选择会保留当前项目和草稿。原件保存会检查文件哈希，外部修改不会被静默覆盖。
+macOS 使用 Finder；Windows 使用系统文件夹对话框；Linux 桌面需要 zenity 或 kdialog。
+选择器显示在运行本地服务的电脑上。无桌面会话时，可导入临时副本并下载项目。
+拖动页面缩略图可调整顺序，插入位置会显示占位框，相邻页面平滑让位。
+拖到列表顶部或底部时会自动滚动；按 Esc 取消拖动。
+编辑器兼容富文本中的主题颜色和字符串表格单元格。
+表格行列比例合计不为 1 时，预览和导出会按比例适配边界；源数据保留，预览说明会提示。
+
+“项目管理 → 项目字体”提供 16 个字体家族：思源黑体和宋体的简繁体版本、Inter、Source Sans 3、Source Serif 4、Lato、Carlito、Caladea、Montserrat、JetBrains Mono、IBM Plex Sans/Serif/Mono 和 STIX Two Math。
+这些推荐字体采用 OFL-1.1。首次添加从官方固定版本下载，校验哈希，并保留完整版权与许可告知。
+字体放在项目的 `fonts/` 中，由 `customFonts` 使用相对路径引用；副本与项目 ZIP 会携带字体和告知。
+编辑器先加载项目字体，再绘制画面，无需在另一台电脑安装。未指定字体的文字使用项目中的第一个常规正文字体；数学字体单独声明。
+也可添加允许分发和可编辑嵌入的静态 TTF/OTF。单个字体最多 32 MiB，项目最多 100 MiB；不支持 TTC、WOFF 或可变字体。
+导出 PPT 时可启用“嵌入字体”，CLI 使用 `--embed-fonts`。完整字体保留后续编辑需要的字符。
+缺少使用的字体或字重、嵌入受限或字体损坏时会明确报错。PPTX 字体加载仍取决于接收软件的支持。
+详见[项目字体说明](skills/pptd-deck-skill/reference/fonts.md)。
+
+生成阶段也可直接使用 OFL 字体。例如创建中文项目，同时加入代码和数学字体：
+
+```sh
+uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py init --project /absolute/path/to/new-project --topic "数据库入门" --pages 12 --font-family source-han-sans --extra-font jetbrains-mono
+```
+
+该命令加入正文和代码字体，以及默认的 STIX Two Math，并生成相对路径的 `fonts.json`。
+`fonts list` 查看目录；`fonts add` 可给现有项目添加字体。首次添加需要网络，添加后可离线使用。
+
+</details>
+
 ## 功能
 
 - **可编辑的成品**：保留文字、图形、表格和数学公式，方便继续修改。
@@ -107,7 +141,7 @@ CI 覆盖 macOS、Windows 和 Linux。构建使用文件白名单，并记录文
 
 ## 当前支持情况
 
-支持 PPTD 制作、编辑和 PPTX 导出。PPTX 导入、字体嵌入和部分复杂特效尚未支持；具体范围见 [原生制作指南](skills/pptd-deck-skill/reference/native-authoring.md)。
+支持 PPTD 制作、编辑和 PPTX 导出。字体嵌入支持项目中的静态 TTF/OTF。PPTX 导入和部分复杂特效尚未支持；具体范围见 [原生制作指南](skills/pptd-deck-skill/reference/native-authoring.md)。
 
 布局预览使用 Pillow，公式间距为近似值，不能代替 PowerPoint、WPS 或 Keynote 中的实际渲染检查。Windows 的浏览器拖拽与中文输入法仍需人工检查。
 

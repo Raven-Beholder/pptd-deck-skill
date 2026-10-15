@@ -75,14 +75,14 @@ export function color(value, theme, fallback = "transparent") {
     : fallback;
 }
 
-export function textStyle(content, theme) {
+export function textStyle(content, theme, defaultFamily = "MiSans") {
   const inherited =
     typeof content?.style === "string" && content.style.startsWith("$")
       ? theme?.textStyles?.[content.style.slice(1)]
       : {};
   const result = {
     fontSize: 16,
-    fontFamily: "Arial",
+    fontFamily: defaultFamily,
     color: "#333333",
     lineHeight: 1.2,
     ...inherited,
@@ -91,6 +91,12 @@ export function textStyle(content, theme) {
   if (content?.lineHeight !== undefined && content?.lineHeightPx === undefined)
     delete result.lineHeightPx;
   return result;
+}
+
+export function setTableCellText(table, row, index, text) {
+  const cell = table.rows[row][index];
+  if (typeof cell === "string") table.rows[row][index] = text;
+  else cell.text = text;
 }
 
 export function newElement(page, kind) {
@@ -261,8 +267,6 @@ export function previewWarnings(page, deck) {
   inspectFill(page.background);
   if (page.animations?.length)
     warnings.add("编辑画布为静态；播放模式支持出现、消失和淡入淡出动画。");
-  if (deck.customFonts?.length)
-    warnings.add("自定义字体尚未加载；原生导出会明确拒绝此字段。");
   for (const element of page.elements) {
     if (
       !["text", "shape", "image", "line", "chart", "table"].includes(
@@ -274,10 +278,19 @@ export function previewWarnings(page, deck) {
       warnings.add(
         "图表共享导出器的数据规则；刻度、标签避让、轴标题、边框和曲线预览尚未与 PowerPoint 完全一致。",
       );
-    if (element.elementType === "table")
+    if (element.elementType === "table") {
       warnings.add(
         "表格预览包含合并、样式和单元格文字；公式仍显示源码，字体度量需实机验收。",
       );
+      for (const key of ["columnWidths", "rowHeights"]) {
+        const values = element[key];
+        if (Array.isArray(values) && values.every((v) => typeof v === "number" && v > 0 && v <= 1)) {
+          const total = values.reduce((a, b) => a + b, 0);
+          if (Math.abs(total - 1) > 1e-6)
+            warnings.add(`表格 ${element.elementId} 的 ${key} 合计为 ${(total * 100).toFixed(1)}%；预览与导出按比例适配边界，源数据保留。`);
+        }
+      }
+    }
     if (
       element.elementType === "shape" &&
       !previewShapes.has(element.shapeName)

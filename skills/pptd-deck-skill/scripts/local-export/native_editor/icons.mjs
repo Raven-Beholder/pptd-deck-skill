@@ -196,7 +196,7 @@ export const ICONS = {
           "stroke-width": "1.8",
           "stroke-linecap": "round",
           "stroke-linejoin": "round",
-          "d": "M12 3V14 M8 10L12 14L16 10 M4 14V20H20V14"
+          "d": "M12 15V3 M8 7L12 3L16 7 M4 14V20H20V14"
         }
       }
     ]

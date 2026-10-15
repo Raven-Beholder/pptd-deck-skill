@@ -1,5 +1,6 @@
 """Native exporter acceptance and failure isolation; see NATIVE_NOTICE.md."""
 import importlib.util
+from copy import deepcopy
 import shutil
 import sys
 import tempfile
@@ -16,7 +17,9 @@ sys.path.insert(0, str(ROOT / 'tools'))
 from native_common import NS, NativeExportError
 from native_math import parse as parse_math
 from native_animation import schedule
-from native_table import grid, cell_style
+from native_table import grid, cell_style, ratios
+from native_preview import preview
+from native_text import RichText
 from pptx_semantics import snapshot, differences, validate_package
 
 SPEC = importlib.util.spec_from_file_location('native_test_cli', SCRIPTS / 'export_pptx.py')
@@ -150,6 +153,47 @@ class NativeExportTests(unittest.TestCase):
         style = cell_style({}, {'cellStyle': {'border': {'width': 1}}}, {'border': None}, 0, 0, 1, 1, {})
         self.assertIsNone(style['border'])
 
+    def test_mixed_shorthand_cells_and_nonunit_ratios_match_preview_and_export(self):
+        rows = [[{'text': 'Merged', 'rowSpan': 2}, 'Top'], ['Bottom']]
+        table = dict(elementId='mixed', elementType='table', bounds=[0, 0, 600, 200],
+                     columnWidths=[.49, .49], rowHeights=[.51, .51], rows=rows,
+                     style={'cellStyle': {'fontSize': 13}, 'firstRowStyle': {'bold': True}})
+        before = deepcopy(table)
+        data = preview({'elements': [table]}, {})['mixed']
+        self.assertEqual([c['text'] for c in data['cells']], ['Merged', 'Top', 'Bottom'])
+        self.assertEqual(data['cells'][2]['sourceIndex'], 0)
+        self.assertTrue(data['cells'][1]['style']['bold'])
+        self.assertEqual(sum(data['widths']), 1)
+        self.assertEqual(sum(data['heights']), 1)
+        output, _ = self.export(self.project({'elements': [table]}))
+        with zipfile.ZipFile(output) as archive:
+            root = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+            self.assertEqual(root.find('.//a:tc', NS).get('rowSpan'), '2')
+            self.assertEqual([n.text for n in root.findall('.//a:tbl//a:t', NS)], ['Merged', 'Top', 'Bottom'])
+            self.assertEqual(sum(int(c.get('w')) for c in root.findall('.//a:gridCol', NS)), 600 * 12700)
+            self.assertEqual(sum(int(r.get('h')) for r in root.findall('.//a:tr', NS)), 200 * 12700)
+        self.assertEqual(table, before)
+        for values in ([], [0, 1], [-.1, 1], [True], [1.1], [float('nan')]):
+            with self.subTest(values=values), self.assertRaises(NativeExportError):
+                ratios(values, 'rowHeights')
+        for cell in (42, None, True, []):
+            with self.subTest(cell=cell), self.assertRaises(NativeExportError):
+                grid([[cell]], 1, 1)
+
+    def test_multiline_html_ignores_block_whitespace_and_exports_theme_run_colors(self):
+        text = '\n<p><strong style="color:$accent;font-weight:normal">A</strong></p>\n<p><span style="color:$muted;font-size:12px">Note</span></p>\n'
+        parsed = RichText(text, {})
+        self.assertEqual(len(parsed.paragraphs), 2)
+        self.assertEqual(parsed.paragraphs[1][1][0][1]['color'], '$muted')
+        self.assertTrue(parsed.paragraphs[0][1][0][1]['bold'])
+        output, _ = self.export(self.project({'elements': [self.text(text)]},
+            {'theme': {'colors': {'accent': '#116655', 'muted': '#8899AA'}}}))
+        with zipfile.ZipFile(output) as archive:
+            root = ET.fromstring(archive.read('ppt/slides/slide1.xml'))
+            runs = root.findall('.//p:sp/p:txBody/a:p/a:r', NS)
+            self.assertEqual([r.findtext('a:t', namespaces=NS) for r in runs], ['A', 'Note'])
+            self.assertEqual([r.find('a:rPr/a:solidFill/a:srgbClr', NS).get('val') for r in runs], ['116655', '8899AA'])
+
     def test_shadows_and_outset_crop_follow_documented_fit_order(self):
         output, _ = self.export(Path(__file__).parent / 'fixtures/native-effects')
         with zipfile.ZipFile(output) as archive:
@@ -260,7 +304,7 @@ class NativeExportTests(unittest.TestCase):
             self.export(project)
 
     def test_backend_option_conflicts_fail_without_fallback(self):
-        for kwargs in [dict(embed_fonts=True), dict(prefer_local=False), dict(keep_download=True)]:
+        for kwargs in [dict(prefer_local=False), dict(keep_download=True)]:
             with self.subTest(kwargs=kwargs):
                 with self.assertRaisesRegex(CLI.ExportError, 'cannot be combined'):
                     CLI.export_pptx(self.fixture, self.root / 'out.pptx', 'fade', backend='native', **kwargs)

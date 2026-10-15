@@ -5,6 +5,7 @@ import {
   formatSelection,
   replaceSelection,
   writeParagraphs,
+  parseInlineStyles,
 } from "../skills/pptd-deck-skill/scripts/local-export/native_editor/text-format.mjs";
 const sample = () => [
   {
@@ -12,6 +13,25 @@ const sample = () => [
     runs: [{ text: "完全本地离线", style: { "font-size": "48px" } }],
   },
 ];
+test("rich-text theme references survive parsing, display and selection formatting", () => {
+  const style = parseInlineStyles("color:$accent; background-color: $paper; font-size:12px; line-height:1.5");
+  assert.deepEqual(style, {
+    color: "$accent", "background-color": "$paper", "font-size": "12px", "line-height": "1.5",
+  });
+  const paragraphs = [{ style: {}, runs: [{ text: "AB", style: { color: style.color } }] }];
+  const theme = { colors: { accent: "$brand", brand: "#116655" } };
+  const view = writeParagraphs(paragraphs, { theme });
+  assert.match(view, /color: #116655/);
+  assert.match(view, /data-pptd-theme-style=/);
+  assert.match(view, /\$accent/);
+  assert.doesNotMatch(writeParagraphs(paragraphs), /data-pptd-theme-style/);
+  assert.match(writeParagraphs(paragraphs), /color: \$accent/);
+  const changed = formatSelection(paragraphs, 0, 1, { bold: true });
+  assert.equal(changed[0].runs[0].style.color, "$accent");
+  theme.colors.brand = "#993355";
+  assert.match(writeParagraphs(changed, { theme }), /color: #993355/);
+  assert.throws(() => parseInlineStyles("color"), /样式/);
+});
 test("inherited highlight is view-only and explicit run highlights win", () => {
   const paragraphs = [
     {

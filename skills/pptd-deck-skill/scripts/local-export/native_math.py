@@ -300,7 +300,7 @@ def parse(source):
     return Formula(source, Parser(source).sequence())
 
 
-def emit(parent, formula, style, theme, opacity):
+def emit(parent, formula, style, theme, opacity, *, math_family='Cambria Math'):
     math = node('m:oMath', node('a14:m', parent))
     size = round(number(style['fontSize'], 'formula fontSize', 1, 4000) * 100)
 
@@ -309,7 +309,7 @@ def emit(parent, formula, style, theme, opacity):
         color(node('a:solidFill', props), style['color'], theme, opacity)
         # Math requires a font with OpenType MATH metrics. It only inherits size
         # and color from the surrounding text, as the PPTD interface specifies.
-        node('a:latin', props, typeface='Cambria Math')
+        node('a:latin', props, typeface=math_family)
 
     def visit(parent, value, italic=None, bold=False, script=None):
         kind = value.kind

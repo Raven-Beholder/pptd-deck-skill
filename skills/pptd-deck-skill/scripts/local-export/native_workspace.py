@@ -5,11 +5,14 @@ and an upload never overwrites the original directory.
 """
 import base64
 import io
+import json
 from pathlib import Path, PurePosixPath
 import tempfile
+import shutil
 import zipfile
 import yaml
 from native_project import Project, PROJECT_LIMIT, TEXT_LIMIT, asset_paths, page_value, parse
+from native_project_fonts import FONT_LIMIT
 
 
 def import_folder(files):
@@ -29,9 +32,12 @@ def import_folder(files):
                 raise ValueError('invalid or duplicate project path')
             seen.add(name)
             encoded = item.get('data')
-            if not isinstance(encoded, str) or len(encoded) > 28 * TEXT_LIMIT:
-                raise ValueError('imported file exceeds 20 MiB')
+            limit = FONT_LIMIT if name.lower().endswith(('.ttf', '.otf')) else 20 * TEXT_LIMIT
+            if not isinstance(encoded, str) or len(encoded) > (limit * 4 // 3 + 4):
+                raise ValueError('imported file exceeds size limit')
             data = base64.b64decode(encoded, validate=True)
+            if len(data) > limit:
+                raise ValueError('imported file exceeds size limit')
             total += len(data)
             if total > PROJECT_LIMIT:
                 raise ValueError('imported project exceeds 100 MiB')
@@ -43,6 +49,34 @@ def import_folder(files):
     except Exception:
         temporary.cleanup()
         raise
+
+
+def portable_font_config(project):
+    """Carry self-contained QA mappings; never copy host font paths or files."""
+    target = project.root / 'fonts.json'
+    if not target.exists():
+        return None, set()
+    raw = project.read('fonts.json', TEXT_LIMIT)
+    value = json.loads(raw)
+    if not isinstance(value, dict) or not isinstance(value.get('families', {}), dict):
+        raise ValueError('invalid fonts.json mappings')
+    assets = set()
+    for mapping in [*value.get('families', {}).values(), value.get('math', {})]:
+        if not isinstance(mapping, dict):
+            raise ValueError('invalid fonts.json family mapping')
+        for variant in ('regular', 'bold', 'italic', 'boldItalic'):
+            if variant not in mapping:
+                continue
+            spec = mapping[variant]
+            name = spec.get('path') if isinstance(spec, dict) else spec
+            if not isinstance(name, str) or not name:
+                raise ValueError('invalid fonts.json font path')
+            if ':' in name or '\\' in name or PurePosixPath(name).is_absolute():
+                return None, set()  # Installed-font configs are host-specific.
+            if name != str(PurePosixPath(name)) or '..' in PurePosixPath(name).parts:
+                raise ValueError('fonts.json portable path must stay inside the project')
+            assets.add(name)
+    return raw, assets
 
 
 def project_archive(project, drafts, manifest_hash, hashes, theme=None):
@@ -61,6 +95,10 @@ def project_archive(project, drafts, manifest_hash, hashes, theme=None):
             deck['theme'] = theme
         contents = {project.manifest: yaml.safe_dump(deck, allow_unicode=True, sort_keys=False).encode('utf-8')}
         assets = asset_paths(deck)
+        config, font_assets = portable_font_config(project)
+        if config is not None:
+            contents['fonts.json'] = config
+            assets.update(font_assets)
         for record in current['pages']:
             text = drafts.get(record['path'], record['text'])
             assets.update(asset_paths(page_value(parse(text))))
@@ -71,7 +109,7 @@ def project_archive(project, drafts, manifest_hash, hashes, theme=None):
                 raise ValueError('asset references a project source file')
             if total >= PROJECT_LIMIT:
                 raise ValueError('project exceeds 100 MiB')
-            data = project.read(path, min(20 * TEXT_LIMIT, PROJECT_LIMIT - total))
+            data = project.read(path, min(FONT_LIMIT if path.lower().endswith(('.ttf', '.otf')) else 20 * TEXT_LIMIT, PROJECT_LIMIT - total))
             total += len(data)
             if total > PROJECT_LIMIT:
                 raise ValueError('project exceeds 100 MiB')
@@ -81,6 +119,33 @@ def project_archive(project, drafts, manifest_hash, hashes, theme=None):
             for path, data in sorted(contents.items()):
                 archive.writestr(path, data)
         return result.getvalue()
+
+
+def copy_project(project, destination, drafts=None, manifest_hash=None, hashes=None, theme=None):
+    """Create a durable, unique project copy. Never overwrite a destination.
+
+    Snapshot validation happens before any destination is created. The manifest
+    is written last. A failed copy is removed without touching the source.
+    """
+    destination = Path(destination).resolve()
+    if not destination.is_dir():
+        raise ValueError('副本保存位置必须是已有文件夹。')
+    loaded = project.load()
+    data = project_archive(project, drafts or {}, manifest_hash or loaded['manifestHash'],
+                           hashes if hashes is not None else {p['path']: p['hash'] for p in loaded['pages']}, theme)
+    folder = Path(tempfile.mkdtemp(prefix=project.root.name[:80] + '-copy-', dir=destination))
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            names = sorted(archive.namelist(), key=lambda name: name == project.manifest)
+            for name in names:
+                target = folder / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with target.open('xb') as stream:
+                    stream.write(archive.read(name))
+        return Project(folder)
+    except Exception:
+        shutil.rmtree(folder)
+        raise
 
 
 def save_export(encoded, directory, filename):
@@ -99,11 +164,11 @@ def save_export(encoded, directory, filename):
     suffix = Path(filename).suffix.lower()
     if suffix not in ('.pptx', '.png', '.svg'):
         raise ValueError('仅支持保存 PPTX、PNG 或 SVG。')
-    if not isinstance(encoded, str) or len(encoded) > 28 * TEXT_LIMIT:
-        raise ValueError('导出文件超过 20 MiB 保存限制。请使用浏览器下载。')
+    if not isinstance(encoded, str) or len(encoded) > 140 * TEXT_LIMIT:
+        raise ValueError('导出文件超过 100 MiB 保存限制。请使用浏览器下载。')
     data = base64.b64decode(encoded, validate=True)
-    if not data or len(data) > 20 * TEXT_LIMIT:
-        raise ValueError('导出文件为空或超过保存限制。')
+    if not data or len(data) > PROJECT_LIMIT:
+        raise ValueError('导出文件为空或超过 100 MiB 保存限制。')
     valid = (suffix == '.pptx' and data.startswith(b'PK\x03\x04')
              or suffix == '.png' and data.startswith(b'\x89PNG\r\n\x1a\n')
              or suffix == '.svg' and data.lstrip().startswith(b'<svg'))

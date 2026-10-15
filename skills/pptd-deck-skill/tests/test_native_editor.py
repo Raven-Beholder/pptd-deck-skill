@@ -10,6 +10,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 from urllib.parse import urlsplit
 import zipfile
 
@@ -128,6 +129,66 @@ class NativeEditorTests(unittest.TestCase):
         for name in ['../escape.pptd', '/absolute.pptd', 'folder/../escape.pptd', 'a\\b.pptd']:
             with self.assertRaises(ValueError): import_folder([dict(path=name, data='')])
         with self.assertRaises(ValueError): import_folder([files[0], files[0]])
+
+    def test_picker_original_copy_cancel_and_save_as_preserve_write_destinations(self):
+        server, url = create_server(self.project)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        endpoint = urlsplit(url)
+        def request(path, body=None):
+            connection = HTTPConnection('127.0.0.1', endpoint.port, timeout=10)
+            headers = {'Authorization': 'Bearer ' + endpoint.fragment}
+            if body is not None:headers['Content-Type'] = 'application/json'
+            connection.request('GET' if body is None else 'POST', path,
+                               json.dumps(body) if body is not None else None, headers)
+            response = connection.getresponse()
+            result = json.loads(response.read())
+            connection.close()
+            return response.status, result
+        try:
+            original = {p.relative_to(self.root).as_posix():p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+            loaded = request('/api/project')[1]
+            for selection in ([None], [self.root, None]):
+                with patch('native_editor.pick_folder', side_effect=selection):
+                    code, result = request('/api/pick-project', {'mode':'copy'})
+                    self.assertEqual((code, result), (200, {'cancelled':True}))
+                self.assertEqual(request('/api/project')[1]['projectId'], loaded['projectId'])
+            with patch('native_editor.pick_folder', return_value=self.root):
+                code, source = request('/api/pick-project', {'mode':'original'})
+                self.assertEqual(code, 200)
+                self.assertEqual(source['storage'], 'original')
+                self.assertFalse(source['imported'])
+            page = source['pages'][0]
+            text = page['text'].replace('Auditable export', 'ORIGINAL PICKER SAVE')
+            code, _ = request('/api/save', dict(path=page['path'], text=text, hash=page['hash'], manifestHash=source['manifestHash']))
+            self.assertEqual(code, 200)
+            self.assertIn('ORIGINAL PICKER SAVE', (self.root/page['path']).read_text())
+            (self.root/page['path']).write_bytes(original[page['path']])
+            with patch('native_editor.pick_folder', side_effect=[self.root, Path(self.temp.name)]):
+                code, copied = request('/api/pick-project', {'mode':'copy'})
+                self.assertEqual(code, 200)
+            self.assertEqual(copied['storage'], 'copy')
+            self.assertNotEqual(copied['root'], str(self.root))
+            page = copied['pages'][0]
+            code, _ = request('/api/save', dict(path=page['path'], text=text, hash=page['hash'], manifestHash=copied['manifestHash']))
+            self.assertEqual(code, 200)
+            self.assertIn('ORIGINAL PICKER SAVE', (Path(copied['root'])/page['path']).read_text())
+            snapshot = request('/api/project')[1]
+            body = dict(drafts={page['path']:text.replace('ORIGINAL PICKER SAVE','SAVE AS DRAFT')},
+                        hashes={p['path']:p['hash'] for p in snapshot['pages']}, manifestHash=snapshot['manifestHash'])
+            with patch('native_editor.pick_folder', return_value=None):
+                self.assertEqual(request('/api/save-project-copy', body), (200, {'cancelled':True}))
+            with patch('native_editor.pick_folder', return_value=Path(self.temp.name)):
+                code, saved = request('/api/save-project-copy', body)
+                self.assertEqual(code, 200)
+            self.assertNotEqual(saved['root'], copied['root'])
+            self.assertIn('SAVE AS DRAFT', (Path(saved['root'])/page['path']).read_text())
+            self.assertEqual(original, {p.relative_to(self.root).as_posix():p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+            self.assertEqual(request('/api/pick-project', {'mode':'unknown'})[0], 400)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=3)
 
     def test_stale_page_and_manifest_conflicts_preserve_external_changes(self):
         path = self.root / self.first['path']

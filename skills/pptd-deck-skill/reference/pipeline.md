@@ -2,9 +2,17 @@
 
 ## Setup and authoring
 
-Set `SKILL_DIR` to the directory containing SKILL.md and `PROJECT` to an absolute project folder. Run Python 3 with PyYAML and Pillow; if imports fail, install only the missing package in an available environment, then retry. The scripts never open a browser. Use an interpreter with these dependencies consistently across stages.
+Set `SKILL_DIR` to the directory containing SKILL.md and `PROJECT` to an absolute project folder. Use the isolated Python environment selected at installation. For a source checkout, run `uv sync --locked --python 3.12`, then prefix the commands below with `uv run --locked --project /absolute/repository`. The scripts never open a browser. Reuse the same interpreter across stages.
 
-Find installed font files (macOS `/System/Library/Fonts`, Linux `/usr/share/fonts`, Windows `%WINDIR%/Fonts`). Use one multilingual body family for Chinese and Latin. Font names must correspond to the mapped files. A machine preset is available for wine-red-data, derived from its design.md:
+For a portable project, choose verified OFL resources from [fonts.md](fonts.md). A machine preset is available for wine-red-data, derived from its design.md:
+
+```sh
+python "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-red-data --topic "数据库入门" --pages 12 --font-family source-han-sans --extra-font jetbrains-mono
+```
+
+`--font-family` selects the body by catalog ID. Repeat `--extra-font` for additional families. STIX Two Math is added by default; `--math-family` selects a catalog MATH family explicitly. Downloads use pinned official bytes and hashes. Full fonts and notices live in `fonts/`, are declared in `customFonts`, and use relative `fonts.json` mappings. After download, generation and editing work offline. Regular/bold/italic mappings reflect the available real faces. Avoid combining these options with installed font options.
+
+For an installed-font workflow, find local font files (macOS `/System/Library/Fonts`, Linux `/usr/share/fonts`, Windows `%WINDIR%/Fonts`). Use one multilingual body family for Chinese and Latin. Font names must correspond to the mapped files:
 
 ```sh
 python3 "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-red-data --topic "Attention Is All You Need" --pages 18 --research --body-font "/absolute/installed/body.ttf" --math-font "/absolute/installed/math.otf" --family "Actual Font Family"
@@ -18,7 +26,7 @@ python3 "$SKILL_DIR/scripts/pipeline.py" init --project "$PROJECT" --theme wine-
 {"families":{"Actual Font Family":{"regular":"/absolute/body.ttf","syntheticStyles":true}},"math":{"regular":"/absolute/math.otf","italic":"/absolute/math-italic.otf","syntheticStyles":true}}
 ```
 
-Local installed fonts are not bundled into the delivered project or embedded in native PPTX. On another machine, remap fonts and rerun the checks. Missing glyphs are errors, not silent font fallback.
+Local installed mappings alone do not bundle fonts into the delivered project. On another machine, remap them and rerun checks. Declared project fonts and notices travel with project copies and ZIPs; a self-contained relative `fonts.json` travels too. Use `export --embed-fonts` to embed used project families in PPTX. Missing used families/styles or restricted embedding rights stop export. Missing glyphs are errors, not silent font fallback.
 
 ## Source evidence
 

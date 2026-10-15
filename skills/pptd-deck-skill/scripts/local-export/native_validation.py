@@ -6,6 +6,7 @@ from urllib.parse import unquote
 from zipfile import ZipFile, BadZipFile
 import xml.etree.ElementTree as ET
 from native_common import NS, NativeExportError
+from native_project_fonts import read_eot, font_info
 
 ExportError=NativeExportError
 
@@ -17,8 +18,10 @@ def verify_output(pptx,transition='fade',expect_fonts=False):
             if len(names)!=len(known) or archive.testzip():raise ExportError('duplicate ZIP members or CRC failure')
             types=ET.fromstring(archive.read('[Content_Types].xml'))
             overrides={n.get('PartName','').lstrip('/') for n in types if n.tag.endswith('Override')}
+            content_types={n.get('PartName','').lstrip('/'):n.get('ContentType') for n in types if n.tag.endswith('Override')}
             defaults={n.get('Extension') for n in types if n.tag.endswith('Default')}
             rels={}
+            font_relationships={}
             for name in names:
                 if name=='[Content_Types].xml' or name.endswith('/'):continue
                 if name not in overrides and name.rsplit('.',1)[-1] not in defaults:raise ExportError('missing content type: '+name)
@@ -34,6 +37,8 @@ def verify_output(pptx,transition='fade',expect_fonts=False):
                             target=unquote(rel.get('Target',''))
                             target=posixpath.normpath(posixpath.join(posixpath.dirname(owner),target)).lstrip('/')
                             if target not in known:raise ExportError('broken relationship: '+target)
+                            if owner=='ppt/presentation.xml' and rel.get('Type')==NS['r']+'/font':
+                                font_relationships[rid]=target
                     rels[owner]=ids
             slides=0;fades=0
             for name in names:
@@ -53,6 +58,30 @@ def verify_output(pptx,transition='fade',expect_fonts=False):
                     fades+=1
             if not slides:raise ExportError('PPTX has no slides')
             fonts=[n for n in names if n.startswith('ppt/fonts/') and not n.endswith('/')]
-            if fonts or expect_fonts:raise ExportError('native validation does not support embedded font parts')
+            if expect_fonts and not fonts:raise ExportError('font embedding requested but no font parts found')
+            declared=set()
+            families=[]
+            presentation=ET.fromstring(archive.read('ppt/presentation.xml'))
+            for item in presentation.findall('p:embeddedFontLst/p:embeddedFont',NS):
+                face=item.find('p:font',NS)
+                family=face.get('typeface') if face is not None else None
+                if not family or family in families:raise ExportError('invalid or duplicate embedded family')
+                families.append(family)
+                versions=set()
+                for entry in item:
+                    tag=entry.tag.rsplit('}',1)[-1]
+                    if tag=='font':continue
+                    if tag not in ('regular','bold','italic','boldItalic') or tag in versions:raise ExportError('invalid embedded font variant')
+                    versions.add(tag)
+                    target=font_relationships.get(entry.get('{'+NS['r']+'}id'))
+                    if target not in fonts or content_types.get(target)!='application/x-fontdata':raise ExportError('invalid embedded font relationship/type')
+                    info=font_info(read_eot(archive.read(target)))
+                    if family not in info['aliases']:raise ExportError('embedded font family mismatch')
+                    variant='boldItalic' if info['bold'] and info['italic'] else 'bold' if info['bold'] else 'italic' if info['italic'] else 'regular'
+                    if tag!=variant:raise ExportError('embedded font variant mismatch')
+                    declared.add(target)
+                if not versions:raise ExportError('embedded font has no data')
+            if declared!=set(fonts) or set(font_relationships.values())!=declared:raise ExportError('orphan embedded font part or relationship')
+            if fonts and (presentation.get('embedTrueTypeFonts')!='1' or presentation.get('saveSubsetFonts')!='0'):raise ExportError('invalid full-font embedding settings')
     except (BadZipFile,KeyError,ET.ParseError) as error:raise ExportError('invalid PPTX package: '+str(error)) from error
-    return {'slides':slides,'fadeTransitions':fades,'fontParts':0,'fontValidation':'not-embedded','relationshipValidation':'passed','bytes':pptx.stat().st_size}
+    return {'slides':slides,'fadeTransitions':fades,'fontParts':len(fonts),'embeddedFamilies':families,'fontValidation':'passed' if fonts else 'not-embedded','relationshipValidation':'passed','bytes':pptx.stat().st_size}

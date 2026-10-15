@@ -25,6 +25,9 @@ from native_common import configure_utf8_console, fields, project_path, NS
 from native_writer import Writer
 from native_cli import export as native_export
 from native_fonts import families
+from native_project_fonts import project_fonts
+from native_font_catalog import catalog as font_catalog, install_family, project_font_config
+from native_project import Project
 from render_native import Renderer, check_capabilities
 from font_support import FontRegistry, face
 from PIL import Image, ImageDraw
@@ -44,13 +47,16 @@ def load(manifest):
     manifest=Path(manifest).resolve();root=manifest.parent;deck=parse(manifest.read_text(encoding='utf-8'))
     fields(deck,'version title size theme pages customFonts','presentation')
     if deck.get('version')!='v2' or not isinstance(deck.get('pages'),list) or not deck['pages']:raise NeedsRepair('manifest needs version v2 and a nonempty pages list')
-    if deck.get('customFonts'):raise NeedsRepair('native pipeline requires mapped local fonts, not customFonts')
+    project_fonts(root,deck.get('customFonts'))
     pages=[page_value(parse(project_path(root,p).read_text(encoding='utf-8'))) for p in deck['pages']]
     return root,deck,pages
 
 def snapshot(manifest, fonts):
     root,deck,pages=load(manifest);inputs={Path(manifest).resolve().relative_to(root).as_posix():digest(manifest)}
     for path in deck['pages']:inputs[path]=digest(project_path(root,path))
+    for font in deck.get('customFonts',[]):
+        inputs[font['src']]=digest(project_path(root,font['src']))
+        if font.get('license'):inputs[font['license']]=digest(project_path(root,font['license']))
     for page in pages:
         for element in page['elements']:
             if element['elementType']=='image':
@@ -177,8 +183,9 @@ def export(args):
     if output.suffix.lower()!='.pptx':raise NeedsRepair('output must have a .pptx extension')
     if output.exists() and not args.force:raise NeedsRepair('output exists; choose a new output name or --force for an authorized replacement')
     with tempfile.TemporaryDirectory(prefix='pptd-pipeline-',dir=root/'.pipeline') as tmp:
-        staged=Path(tmp)/'deck.pptx';native_export(Path(args.manifest).resolve(),staged,args.transition)
-        package=verify_output(staged,args.transition,False)
+        embedded=bool(getattr(args,'embed_fonts',False))
+        staged=Path(tmp)/'deck.pptx';native_export(Path(args.manifest).resolve(),staged,args.transition,embed_fonts=embedded)
+        package=verify_output(staged,args.transition,embedded)
         with ZipFile(staged) as archive:
             if archive.testzip() is not None:raise NeedsRepair('PPTX ZIP validation failed')
             slides=[p for p in archive.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
@@ -197,7 +204,7 @@ def export(args):
             else:os.link(pending,output)
         finally:pending.unlink(missing_ok=True)
     review_record=read(root/'.pipeline/review.json')
-    result={'version':VERSION,'status':'complete','fingerprint':fingerprint,'output':str(output),'outputSha256':digest(output),'slides':len(pages),'editableMathObjects':maths,'transition':args.transition,'fontMode':'system-not-embedded','qaMode':review_record['mode'],'limitations':report['limitations'],'officeRenderVerified':False,'computerUseUsed':False,'packageValidation':package,'editorCommand':editor_command(args.manifest)}
+    result={'version':VERSION,'status':'complete','fingerprint':fingerprint,'output':str(output),'outputSha256':digest(output),'slides':len(pages),'editableMathObjects':maths,'transition':args.transition,'fontMode':'embedded-project' if embedded else 'system-not-embedded','qaMode':review_record['mode'],'limitations':report['limitations'],'officeRenderVerified':False,'computerUseUsed':False,'packageValidation':package,'editorCommand':editor_command(args.manifest)}
     save(root/'.pipeline/export.json',result);print(json.dumps(result,ensure_ascii=False))
 
 def fresh_for_repair(args):
@@ -239,17 +246,31 @@ def init(args):
     theme_path=SCRIPTS.parent/'reference/design_system/academic'/args.theme/'theme.json'
     if not theme_path.is_file():raise NeedsRepair('No machine preset for this theme. Read its design.md and author the manifest/theme manually, or use wine-red-data.')
     theme=read(theme_path)
-    body=Path(args.body_font).resolve();math_font=Path(args.math_font).resolve()
-    face(str(body),args.body_font_index);face(str(math_font),args.math_font_index)
-    names=sorted(families(body))
-    if not names:raise NeedsRepair('body font has no readable family metadata')
-    family=args.family or next((n for n in names if n=='Arial Unicode MS'),names[0])
-    if family not in names:raise NeedsRepair(f'font family does not match the font file; available names: {names}')
-    math_map={'regular':{'path':str(math_font),'index':args.math_font_index},'syntheticStyles':True}
-    alternative=math_font.with_name(math_font.stem+'Italic'+math_font.suffix)
-    if alternative.is_file():math_map['italic']=str(alternative)
-    config={'families':{family:{'regular':{'path':str(body),'index':args.body_font_index},'syntheticStyles':True}},'math':math_map}
-    save(project/'fonts.json',config);save(project/'theme.json',theme)
+    ofl=getattr(args,'font_family',None)
+    if ofl:
+        if args.body_font or args.math_font or args.family:
+            raise NeedsRepair('--font-family uses project OFL resources; do not combine it with installed font options')
+        choices={entry['id']:entry for entry in font_catalog()}
+        math_id=getattr(args,'math_family',None) or 'stix-two-math'
+        requested=list(dict.fromkeys([ofl,*getattr(args,'extra_font',[]),math_id]))
+        if any(identifier not in choices for identifier in requested):raise NeedsRepair('unknown OFL catalog id; use native_font_catalog.py list')
+        if choices[ofl].get('role','text')!='text' or choices[math_id].get('role')!='math':raise NeedsRepair('choose a text body font and a MATH font')
+        family=choices[ofl]['family']
+    else:
+        if not args.body_font or not args.math_font:raise NeedsRepair('provide --body-font and --math-font, or choose --font-family from the OFL catalog')
+        if getattr(args,'math_family',None) or getattr(args,'extra_font',[]):raise NeedsRepair('catalog options require --font-family')
+        body=Path(args.body_font).resolve();math_font=Path(args.math_font).resolve()
+        face(str(body),args.body_font_index);face(str(math_font),args.math_font_index)
+        names=sorted(families(body))
+        if not names:raise NeedsRepair('body font has no readable family metadata')
+        family=args.family or next((n for n in names if n=='Arial Unicode MS'),names[0])
+        if family not in names:raise NeedsRepair(f'font family does not match the font file; available names: {names}')
+        math_map={'regular':{'path':str(math_font),'index':args.math_font_index},'syntheticStyles':True}
+        alternative=math_font.with_name(math_font.stem+'Italic'+math_font.suffix)
+        if alternative.is_file():math_map['italic']=str(alternative)
+        config={'families':{family:{'regular':{'path':str(body),'index':args.body_font_index},'syntheticStyles':True}},'math':math_map}
+        save(project/'fonts.json',config)
+    save(project/'theme.json',theme)
     save(project/'brief.json',{'topic':args.topic,'audience':'具备相关基础的读者','pages':args.pages,'requiresSources':args.research,'minimumBodyFontSize':16})
     save(project/'evidence.json',{'sources':[],'claims':[],'comparisons':[]})
     import yaml
@@ -261,18 +282,22 @@ def init(args):
         page={'background':{'type':'solid','color':'$white'},'elements':[{'elementId':'title','elementType':'text','bounds':[46,34,860,58],'content':{'style':'$title','text':'TODO：填写本页结论'}},{'elementId':'body','elementType':'text','bounds':[46,160,860,310],'content':{'style':'$body','text':'TODO：填写正文、图表、公式与来源'}}]}
         (project/file).write_text(yaml.safe_dump(page,allow_unicode=True,sort_keys=False),encoding='utf-8')
     (project/'deck.pptd').write_text(yaml.safe_dump(deck,allow_unicode=True,sort_keys=False),encoding='utf-8')
+    if ofl:
+        value=Project(project)
+        for identifier in requested:install_family(value,identifier,value.load()['manifestHash'])
+        save(project/'fonts.json',project_font_config(value))
     print(json.dumps({'status':'initialized','project':str(project),'manifest':str(project/'deck.pptd'),'family':family,'next':'Read the selected design.md; fill all TODO pages and evidence.json, then prepare.'},ensure_ascii=False))
 
 def main():
     configure_utf8_console()
     parser=argparse.ArgumentParser(description=__doc__);commands=parser.add_subparsers(dest='command',required=True)
-    p=commands.add_parser('init');p.add_argument('--project',required=True);p.add_argument('--theme',default='wine-red-data');p.add_argument('--topic',required=True);p.add_argument('--pages',type=int,default=18);p.add_argument('--body-font',required=True);p.add_argument('--math-font',required=True);p.add_argument('--family');p.add_argument('--research',action='store_true');p.add_argument('--body-font-index',type=int,default=0);p.add_argument('--math-font-index',type=int,default=0)
+    p=commands.add_parser('init');p.add_argument('--project',required=True);p.add_argument('--theme',default='wine-red-data');p.add_argument('--topic',required=True);p.add_argument('--pages',type=int,default=18);p.add_argument('--body-font');p.add_argument('--math-font');p.add_argument('--font-family',help='body font id from the OFL catalog');p.add_argument('--extra-font',action='append',default=[]);p.add_argument('--math-family',help='OFL MATH font id; defaults to stix-two-math for catalog init');p.add_argument('--family');p.add_argument('--research',action='store_true');p.add_argument('--body-font-index',type=int,default=0);p.add_argument('--math-font-index',type=int,default=0)
     for name in ['prepare','review','repair','export','editor-info']:
         p=commands.add_parser(name);p.add_argument('manifest');p.add_argument('--fonts')
         if name=='prepare':p.add_argument('--structural-only',action='store_true');p.add_argument('--reason')
         if name=='review':p.add_argument('--mode',choices=['visual','structural'],default='visual');p.add_argument('--note',required=True);p.add_argument('--reason');p.add_argument('--failed',action='store_true')
         if name=='repair':p.add_argument('--apply',action='store_true')
-        if name=='export':p.add_argument('--output');p.add_argument('--force',action='store_true');p.add_argument('--transition',choices=['fade','none'],default='fade')
+        if name=='export':p.add_argument('--output');p.add_argument('--force',action='store_true');p.add_argument('--transition',choices=['fade','none'],default='fade');p.add_argument('--embed-fonts',action='store_true')
     args=parser.parse_args()
     try:
         if args.command=='editor-info':print(json.dumps({'command':editor_command(args.manifest),'notice':'用网页版 PPTD 编辑器查看效果或修改返工；文件改变后重新 prepare/review/export。'},ensure_ascii=False))

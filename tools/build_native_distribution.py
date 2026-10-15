@@ -19,11 +19,11 @@ SOURCE = ROOT / 'skills/pptd-deck-skill/scripts/local-export'
 MODULES = (
     'native_cli', 'native_animation', 'native_common', 'native_effects', 'native_fill',
     'native_math', 'native_media', 'native_package', 'native_table', 'native_text', 'native_writer',
-    'native_chart', 'native_chart_model', 'native_workbook', 'native_validation',
+    'native_chart', 'native_chart_model', 'native_workbook', 'native_validation', 'native_project_fonts',
 )
-EDITOR_MODULES = ('native_editor', 'native_project', 'native_preview', 'native_fonts', 'native_workspace')
-EDITOR_ASSETS = ('index.html', 'app.mjs', 'model.mjs', 'styles.css', 'charts.mjs', 'text-format.mjs', 'shapes.mjs', 'math.mjs', 'playback.mjs', 'ui.mjs', 'images.mjs', 'icons.mjs')
-EDITOR_IMPORTS = set(EDITOR_MODULES) | {'http.server', 'socketserver', 'secrets', 'urllib.parse', 'threading', 'base64', 'uuid'}
+EDITOR_MODULES = ('native_editor', 'native_project', 'native_preview', 'native_fonts', 'native_workspace', 'native_picker', 'native_font_catalog')
+EDITOR_ASSETS = ('index.html', 'app.mjs', 'model.mjs', 'styles.css', 'charts.mjs', 'text-format.mjs', 'shapes.mjs', 'math.mjs', 'playback.mjs', 'ui.mjs', 'images.mjs', 'icons.mjs', 'page-drag.mjs', 'project-fonts.mjs')
+EDITOR_IMPORTS = set(EDITOR_MODULES) | {'http.server', 'socketserver', 'secrets', 'urllib.parse', 'urllib.request', 'threading', 'base64', 'uuid', 'subprocess', 'shutil'}
 IMPORTS = set(MODULES) | {
     'argparse', 'json', 'os', 'pathlib', 'tempfile', 'zipfile', 'yaml', 'dataclasses',
     'math', 're', 'xml.etree.ElementTree', 'functools', 'hashlib', 'struct', 'posixpath',
@@ -37,17 +37,20 @@ subset of PPTD v2. It contains no legacy editor, WASM, vendor fonts, icons,
 templates or third-party implementation. It never falls back to another exporter.
 It is NOT a full replacement or a legal clearance; read NATIVE_NOTICE.md.
 
-Python 3.9+ is required; install the separately licensed PyYAML dependency:
+Python 3.12+ is required; prepare an isolated environment with the separately
+licensed PyYAML dependency:
 
     python3 -m pip install -r requirements.txt
     python3 native_cli.py /path/to/deck.pptd --output /path/to/deck.pptx
 
 Use --force to replace an existing output; --transition accepts fade or none.
-Fonts are system font references, not embedded or downloaded resources.
+Fonts are family references by default. Use --embed-fonts for declared local
+static TTF/OTF customFonts resources. Include used families/styles and their
+distribution notices. No font binaries are bundled with this archive.
 Supported: rich-text subset, basic shapes/lines, local PNG/JPEG, shared fills,
 outer shadows, tables, editable bar/line/pie/doughnut charts with embedded XLSX,
 bounded editable formulas, basic entrance/exit animations.
-Unsupported inputs fail explicitly. Full charts, SVG, fonts and animation
+Unsupported inputs fail explicitly. Full charts, SVG, variable/collection fonts and animation
 coverage and cross-application acceptance are still pending.
 
 MANIFEST.json records the exact source files, hashes and direct imports.
@@ -88,6 +91,10 @@ def source_payload(source=SOURCE, *, editor=False):
     payload['NATIVE_NOTICE.md'] = notice.read_bytes()
     payload['README.md'] = README.encode()
     if editor:
+        catalog = source / 'font-catalog.json'
+        if catalog.is_symlink():
+            raise ValueError('font catalog must not be a symlink')
+        payload['font-catalog.json'] = catalog.read_bytes()
         payload['README.md'] = payload['README.md'].replace(
             b'It contains no legacy editor, WASM, vendor fonts, icons,\ntemplates or third-party implementation.',
             b'The exporter contains no legacy runtime, WASM, vendor fonts or templates.\nThe editor includes independently drawn toolbar SVGs; see ICONS_NOTICE.md.')
@@ -114,8 +121,11 @@ stages file replacement; it is not a cross-process filesystem CAS transaction.
 Omit the project argument for a blank workspace with local-project opening.
 Floating text/shape tools, themes, formulas, watermarks, tables/charts, deletion,
 context menus, recoverable page structure edits, PNG/SVG export, portable
-project download and bounded animation playback are implemented. Font
-embedding is explicitly unavailable. Page and manifest changes check hashes.
+project download and bounded animation playback are implemented. Original
+folder and durable-copy modes use system folder pickers. The recommended OFL
+font catalog downloads pinned official files only when requested, and retains
+license notices in the project. Static local fonts load before preview and can
+be embedded as full EOT parts in PPTX. Page and manifest changes check hashes.
 The toolbar uses independently drawn SVGs; read ICONS_NOTICE.md. No vendor runtime, remote fonts, CDN
 or WASM is loaded. The native-only CLI profile excludes these icons. Selected GUI flows
 were checked; large-deck performance and complete feature parity remain pending.

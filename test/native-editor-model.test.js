@@ -2,7 +2,17 @@ import { SHAPES } from '../skills/pptd-deck-skill/scripts/local-export/native_ed
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
-import { PageDraft, SerialActions, newElement, previewWarnings, color, textStyle, canvasScale, moveLayer, resizeBounds, deleteElement } from '../skills/pptd-deck-skill/scripts/local-export/native_editor/model.mjs';
+import { PageDraft, SerialActions, newElement, previewWarnings, color, textStyle, canvasScale, moveLayer, resizeBounds, deleteElement, setTableCellText } from '../skills/pptd-deck-skill/scripts/local-export/native_editor/model.mjs';
+
+test('editing mixed table cells preserves shorthand and object styles', () => {
+  const table = { elementId: 'table', elementType: 'table', rows: [['plain', { text: 'styled', bold: true }]], columnWidths: [.5, .5], rowHeights: [.6] };
+  setTableCellText(table, 0, 0, 'changed');
+  setTableCellText(table, 0, 1, 'also changed');
+  assert.deepEqual(table.rows, [['changed', { text: 'also changed', bold: true }]]);
+  assert.ok(previewWarnings({ elements: [table] }, {}).some(w => /60.0%.*按比例/.test(w)));
+  table.rowHeights = [1];
+  assert.ok(!previewWarnings({ elements: [table] }, {}).some(w => /合计/.test(w)));
+});
 
 test('save follows an in-flight edit and a failed operation does not block future edits', async () => {
   const queue = new SerialActions(), events = [];

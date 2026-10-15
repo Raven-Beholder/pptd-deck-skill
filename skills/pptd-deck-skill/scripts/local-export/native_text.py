@@ -109,14 +109,16 @@ class RichText(HTMLParser):
     def handle_starttag(self, tag, attrs):
         choice(tag, ('p', 'span', 'strong', 'em', 'u', 's', 'sup', 'sub', 'a', 'br'), 'HTML tag')
         attrs = dict(attrs)
-        fields(attrs, 'href' if tag == 'a' else ('style' if tag in ('p', 'span') else ''), f'<{tag}>')
+        fields(attrs, 'href style' if tag == 'a' else ('' if tag == 'br' else 'style'), f'<{tag}>')
         if tag == 'br':
             if self.current is None:
                 self.current = (self.effective(), [])
                 self.paragraphs.append(self.current)
             self.current[1].append((None, self.effective()))
             return
-        style = css(attrs.get('style', ''), tag)
+        # Legacy semantic inline tags may carry the same styles as a span.
+        # effective() still gives their semantic bold/italic/decoration priority.
+        style = css(attrs.get('style', ''), 'p' if tag == 'p' else 'span')
         if tag == 'a':
             href = string(attrs.get('href'), 'hyperlink')
             if not re.match(r'^(https?://|mailto:)\S+$', href):
@@ -193,7 +195,7 @@ def run_properties(parent, style, theme, package, owner, opacity, tag='a:rPr'):
 def text_body(parent, content, theme, package, owner, opacity=1, *, math_mode=True, body_tag='p:txBody'):
     fields(content, STYLE_FIELDS + ' text style textDirection wrap align', 'text.content')
     # Observed legacy defaults differ from the prose PPTD reference (18/black/1).
-    style = dict(color='#333333', fontSize=16, fontFamily='MiSans', bold=False, italic=False, lineHeight=1.2)
+    style = dict(color='#333333', fontSize=16, fontFamily=getattr(package, 'default_font', 'MiSans'), bold=False, italic=False, lineHeight=1.2)
     if 'style' in content:
         reference = string(content['style'], 'text style')
         if not reference.startswith('$') or reference[1:] not in theme.get('textStyles', {}):
@@ -229,7 +231,7 @@ def text_body(parent, content, theme, package, owner, opacity=1, *, math_mode=Tr
         for text, run_style in runs:
             if isinstance(text, Formula):
                 if math_mode:
-                    emit_math(paragraph, text, run_style, theme, opacity)
+                    emit_math(paragraph, text, run_style, theme, opacity, math_family=getattr(package, 'math_font', 'Cambria Math'))
                     continue
                 text = '\\(' + text.source + '\\)'
             run = node('a:br' if text is None else 'a:r', paragraph)

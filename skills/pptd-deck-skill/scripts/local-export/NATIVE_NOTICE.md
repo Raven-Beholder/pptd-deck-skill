@@ -16,6 +16,24 @@ These packages are installed separately and keep their own licenses:
 Python and Node are external runtimes. System fonts are read from the host and
 are not included in release packages. Presentation materials retain their own rights.
 
+## Optional project fonts
+
+The editor and generation CLI can download Source Han Sans/Serif SC and TC,
+Source Sans 3 and Source Serif 4 from Adobe; Inter from the Inter project;
+JetBrains Mono from JetBrains; Lato, Carlito, Caladea and STIX Two Math from
+Google Fonts; Montserrat from its official project; and IBM Plex Sans/Serif/Mono
+from IBM. These fonts
+retain SIL Open Font License 1.1. They are not bundled with the source-only
+review archives. Explicit downloads use immutable official resources with
+recorded hashes. Their full copyright and license notices are saved with the
+project and retained in portable copies and embedded PPTX. Font bytes and family names are not
+modified. See `font-catalog.json` in the editor profile.
+
+The independent font reader and EOT writer refer to the Microsoft OpenType
+OS/2/name specifications and the Microsoft EOT format submission:
+https://learn.microsoft.com/en-us/typography/opentype/spec/os2
+https://www.w3.org/submissions/EOT/
+
 ## MIT license
 
 MIT License

@@ -1,4 +1,22 @@
 // Text-box and selection formatting. No third-party editor implementation.
+import { color as themeColor } from "./model.mjs";
+
+// CSSOM drops PPTD theme references such as color:$accent. Read declarations
+// from the inert source attribute before asking the browser to paint them.
+export function parseInlineStyles(source = "") {
+  const result = {};
+  for (const declaration of source.split(";")) {
+    if (!declaration.trim()) continue;
+    const colon = declaration.indexOf(":");
+    if (colon < 1) throw new Error("无效的文字样式声明。");
+    result[declaration.slice(0, colon).trim().toLowerCase()] =
+      declaration.slice(colon + 1).trim();
+  }
+  return result;
+}
+
+const inlineStyle = (values) => Object.entries(values)
+  .map(([key, value]) => `${key}: ${value}`).join("; ");
 const cssKeys = {
   fontFamily: "font-family",
   fontSize: "font-size",
@@ -55,7 +73,7 @@ export function formatText(content, key, value) {
       !tags.has(node.tagName) ||
       [...node.attributes].some(
         (a) =>
-          !(["P", "SPAN"].includes(node.tagName) && a.name === "style") &&
+          !(node.tagName !== "BR" && a.name === "style") &&
           !(node.tagName === "A" && a.name === "href"),
       )
     ) {
@@ -64,8 +82,10 @@ export function formatText(content, key, value) {
       );
     }
     if (cssKeys[key]) {
-      node.style.removeProperty(cssKeys[key]);
-      if (!node.style.length) node.removeAttribute("style");
+      const values = parseInlineStyles(node.getAttribute("style") || "");
+      delete values[cssKeys[key]];
+      if (Object.keys(values).length) node.setAttribute("style", inlineStyle(values));
+      else node.removeAttribute("style");
     }
   }
   const tag = semanticTags[key];
@@ -153,6 +173,9 @@ export function readParagraphs(source) {
       (paragraphs.push({ style: {}, runs: [] }), paragraphs.at(-1)));
   function visit(node, inherited = {}) {
     if (node.nodeType === 3) {
+      // Formatting whitespace between <p> blocks is not a paragraph. Keep
+      // whitespace within a paragraph and explicit <br> / empty <p> intact.
+      if (!paragraph && !node.data.trim()) return;
       ensure().runs.push({
         ...inherited,
         style: { ...inherited.style },
@@ -167,19 +190,34 @@ export function readParagraphs(source) {
     if (
       [...node.attributes].some(
         (a) =>
-          !(a.name === "style" && ["P", "SPAN", "DIV"].includes(tag)) &&
+          !(a.name === "style" && tag !== "BR") &&
           !(a.name === "href" && tag === "A") &&
           !(
             typeof source !== "string" &&
             tag === "SPAN" &&
             a.name === "data-inherited-highlight"
+          ) &&
+          !(
+            typeof source !== "string" &&
+            tag !== "BR" &&
+            a.name === "data-pptd-theme-style"
           ),
       )
     )
       throw new Error(`文字编辑不支持 ${tag} 的附加属性，请使用源码编辑。`);
     const next = { ...inherited, style: { ...inherited.style } };
     const block = {};
-    for (const key of node.style) {
+    const values = parseInlineStyles(node.getAttribute("style") || "");
+    if (typeof source !== "string" && node.hasAttribute("data-pptd-theme-style")) {
+      const references = JSON.parse(node.getAttribute("data-pptd-theme-style"));
+      for (const [key, [reference, painted]] of Object.entries(references)) {
+        if (["color", "background-color"].includes(key) &&
+            typeof reference === "string" && reference.startsWith("$") &&
+            cssColor(values[key] || "") === cssColor(painted))
+          values[key] = reference;
+      }
+    }
+    for (const [key, raw] of Object.entries(values)) {
       // A view-only wrapper paints the text-box default behind glyphs. It must
       // not become an explicit run style when the edited DOM is serialized.
       if (
@@ -190,7 +228,7 @@ export function readParagraphs(source) {
         continue;
       if (!inlineCSS.has(key) && !blockCSS.has(key))
         throw new Error(`文字编辑不支持 ${key} 样式。`);
-      const value = node.style.getPropertyValue(key);
+      const value = raw;
       if (inlineCSS.has(key))
         next.style[key] = key.includes("color") ? cssColor(value) : value;
       else block[key] = value;
@@ -217,12 +255,22 @@ export function readParagraphs(source) {
   for (const child of root.content.childNodes) visit(child);
   return paragraphs.length ? paragraphs : [{ style: {}, runs: [] }];
 }
-export function writeParagraphs(paragraphs, { inheritedHighlight } = {}) {
+export function writeParagraphs(paragraphs, { inheritedHighlight, theme } = {}) {
   const style = (values) => {
-    const css = Object.entries(values || {})
-      .map(([k, v]) => `${k}: ${v}`)
-      .join("; ");
-    return css ? ` style="${escapeHTML(css)}"` : "";
+    const painted = { ...values }, references = {};
+    if (theme) {
+      for (const key of ["color", "background-color"]) {
+        if (typeof painted[key] === "string" && painted[key].startsWith("$")) {
+          const reference = painted[key];
+          painted[key] = themeColor(reference, theme);
+          references[key] = [reference, painted[key]];
+        }
+      }
+    }
+    const css = inlineStyle(painted);
+    const metadata = Object.keys(references).length
+      ? ` data-pptd-theme-style="${escapeHTML(JSON.stringify(references))}"` : "";
+    return css ? `${metadata} style="${escapeHTML(css)}"` : "";
   };
   const compact = (runs) => {
     const result = [];
@@ -372,7 +420,7 @@ export class TextEditingSession {
     this.onChange = onChange;
     this.onFinish = onFinish;
     this.initial = writeParagraphs(readParagraphs(source));
-    this.viewOptions = { inheritedHighlight: options.inheritedHighlight };
+    this.viewOptions = { inheritedHighlight: options.inheritedHighlight, theme: options.theme };
     this.undo = [];
     this.redo = [];
     this.pending = {};

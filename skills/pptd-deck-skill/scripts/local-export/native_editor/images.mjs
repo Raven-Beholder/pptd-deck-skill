@@ -2,7 +2,7 @@
 export async function slideImage(
   project,
   record,
-  { paint, drawElement, complexPreview, previewFor, api, formulaCache },
+  { paint, drawElement, complexPreview, previewFor, api, formulaCache, fontCSS = "" },
 ) {
   await document.fonts.ready;
   const [w, h] = project.deck.size,
@@ -87,6 +87,11 @@ export async function slideImage(
       margin: "0",
     });
     cloneHost.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+    if (fontCSS) {
+      const style = document.createElement("style");
+      style.textContent = fontCSS;
+      cloneHost.prepend(style);
+    }
     const source = new XMLSerializer().serializeToString(cloneHost);
     return new Blob(
       [

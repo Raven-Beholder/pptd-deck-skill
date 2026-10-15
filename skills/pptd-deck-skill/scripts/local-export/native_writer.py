@@ -14,6 +14,7 @@ from native_table import write_table
 from native_animation import timing
 from native_effects import shadow
 from native_chart import write_chart
+from native_project_fonts import project_fonts, embed_project_fonts
 
 PRESENTATION_TYPE = 'application/vnd.openxmlformats-officedocument.presentationml.'
 SHAPES = ('rect', 'roundRect', 'ellipse', 'triangle', 'diamond', 'parallelogram',
@@ -76,7 +77,7 @@ def geometry(parent, name):
 
 
 class Writer:
-    def __init__(self, deck, root, transition):
+    def __init__(self, deck, root, transition, *, embed_fonts=False):
         self.deck = deck
         self.size = vector(deck.get('size'), 2, 'size', 1)
         if max(self.size) > 10000:
@@ -89,6 +90,10 @@ class Writer:
         self.package = Package()
         self.media = Media(root, self.package)
         self.transition = choice(transition, ('fade', 'none'), 'transition')
+        self.fonts = project_fonts(root, deck.get('customFonts'))
+        self.package.default_font = next((font.family for font in self.fonts if font.role == 'text' and font.weight == 400 and font.style == 'normal'), 'MiSans')
+        self.package.math_font = next((font.family for font in self.fonts if font.role == 'math' and font.variant == 'regular'), 'Cambria Math')
+        self.embed_fonts = boolean(embed_fonts, 'embed_fonts')
 
     def draw_fill(self, parent, value, owner, bounds, opacity=1):
         fill(parent, value, self.theme, opacity, media=self.media, owner=owner, bounds=bounds)
@@ -242,6 +247,8 @@ class Writer:
         width, height = self.size
         node('p:sldSz', presentation, cx=emu(width), cy=emu(height), type='custom')
         node('p:notesSz', presentation, cx=emu(540), cy=emu(720))
+        if self.embed_fonts:
+            embed_project_fonts(package, presentation, self.fonts)
         package.add(owner, presentation, PRESENTATION_TYPE + 'presentation.main+xml')
         package.relate('', owner, 'officeDocument')
         core = node('cp:coreProperties')
@@ -290,7 +297,7 @@ class Writer:
         for tag in ('majorFont', 'minorFont'):
             item = node('a:' + tag, fonts)
             for script in ('latin', 'ea', 'cs'):
-                node('a:' + script, item, typeface='MiSans')
+                node('a:' + script, item, typeface=self.package.default_font)
         formats = node('a:fmtScheme', elements, name='Native')
         for tag in ('fillStyleLst', 'lnStyleLst', 'effectStyleLst', 'bgFillStyleLst'):
             styles = node('a:' + tag, formats)
@@ -303,19 +310,17 @@ class Writer:
         self.package.add(owner, theme, 'application/vnd.openxmlformats-officedocument.theme+xml')
 
 
-def export_native(manifest, destination, transition, parse_yaml):
+def export_native(manifest, destination, transition, parse_yaml, *, embed_fonts=False):
     root = manifest.parent.resolve()
     deck = parse_yaml(manifest.read_text(encoding='utf-8'))
     fields(deck, 'version title size theme pages customFonts', 'presentation')
     if deck.get('version') != 'v2':
         raise NativeExportError('only PPTD v2 is supported')
-    if deck.get('customFonts') not in (None, []):
-        raise NativeExportError('customFonts are not supported by native-v1; use system font names')
     paths = deck.get('pages')
     if not isinstance(paths, list) or not paths:
         raise NativeExportError('pages must be a nonempty array')
     deck = dict(deck, pages=[parse_yaml(project_path(root, p).read_text(encoding='utf-8')) for p in paths])
-    writer = Writer(deck, root, transition)
+    writer = Writer(deck, root, transition, embed_fonts=embed_fonts)
     writer.slides()
     writer.scaffold()
     # The complete package is constructed before opening the staged destination.

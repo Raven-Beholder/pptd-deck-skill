@@ -11,13 +11,14 @@ import {
   SerialActions,
   clone,
   color,
-  textStyle,
+  textStyle as resolveTextStyle,
   newElement,
   previewWarnings,
   canvasScale,
   moveLayer,
   resizeBounds,
   deleteElement,
+  setTableCellText,
   themeEntryReferences,
 } from "./model.mjs";
 import { drawChart } from "./charts.mjs";
@@ -30,10 +31,13 @@ import {
   formatSelection,
   replaceSelection,
   restoreTextBookmark,
+  parseInlineStyles,
 } from "./text-format.mjs";
 import { SHAPES, drawShape, drawLine } from "./shapes.mjs";
 import { drawMath } from "./math.mjs";
 import { Playback } from "./playback.mjs";
+import { PageDrag } from "./page-drag.mjs";
+import { ProjectFonts } from "./project-fonts.mjs";
 
 const $ = (id) => document.getElementById(id);
 const controls = enhanceControls();
@@ -50,6 +54,9 @@ let project,
   scale = 1,
   pendingControls = false;
 const images = new Map();
+const projectFonts = new ProjectFonts();
+const fontLabels = new Map();
+let fontLoadError = "";
 const actions = new SerialActions();
 let renderVersion = 0,
   previews = {};
@@ -78,6 +85,13 @@ const page = () => drafts[current];
 const element = () =>
   page()?.page.elements.find((item) => item.elementId === selected);
 const hasPendingSource = () => page() && $("source").value !== page().text;
+const defaultFont = () => project?.fonts?.find(font => font.role !== "math" && font.weight === 400 && font.style === "normal")?.family || "MiSans";
+const textStyle = (content, theme) => resolveTextStyle(content, theme, defaultFont());
+const projectLocation = () => project.storage === "temporary"
+  ? "临时副本" : project.storage === "copy" ? "副本文件夹" : "原文件夹";
+const savedStatus = (scope = "全部页面") => project.storage === "temporary"
+  ? `${scope}已保存到临时副本；请另存副本或下载项目`
+  : `${scope}已保存到${projectLocation()}`;
 
 async function api(path, body, binary = false) {
   const response = await fetch(path, {
@@ -140,6 +154,9 @@ function refreshControls() {
       button.disabled = !project;
   });
   if (!project) return;
+  $("open-project").disabled = busy;
+  $("open-project-copy").disabled = busy;
+  $("manage-project").disabled = busy;
   $("properties").disabled = busy || !element();
   $("text-controls").disabled = element()?.elementType !== "text";
   document.querySelectorAll("#data-cells input").forEach((input) => {
@@ -307,13 +324,18 @@ function richText(source, target, highlight) {
     return span;
   };
   if (!/<\/?[a-zA-Z][^>]*>/.test(source)) {
-    target.append(textNode(source));
+    for (const line of source.replace(/\n$/, "").split("\n")) {
+      const paragraph = document.createElement("p");
+      paragraph.append(textNode(line));
+      target.append(paragraph);
+    }
     return;
   }
   const parsed = document.createElement("template");
   parsed.innerHTML = source; // Template content is inert, including resource elements.
   function copy(node, parent, inheritedHighlight = highlight) {
     if (node.nodeType === Node.TEXT_NODE) {
+      if (parent === target && !node.textContent.trim()) return;
       parent.append(textNode(node.textContent, inheritedHighlight));
       return;
     }
@@ -322,10 +344,16 @@ function richText(source, target, highlight) {
     const child = document.createElement(
       node.tagName === "A" ? "span" : node.tagName.toLowerCase(),
     );
-    if (["P", "SPAN"].includes(node.tagName)) {
-      for (const key of Array.from(node.style)) {
-        if (styles.has(key))
-          child.style.setProperty(key, node.style.getPropertyValue(key));
+    if (node.tagName !== "BR") {
+      try {
+        for (const [key, value] of Object.entries(parseInlineStyles(node.getAttribute("style") || ""))) {
+          if (styles.has(key))
+            child.style.setProperty(key,
+              ["color", "background-color"].includes(key) && value.startsWith("$")
+                ? color(value, project.deck.theme) : value);
+        }
+      } catch {
+        target.dataset.previewError = "无效的文字样式声明";
       }
     }
     for (const item of node.childNodes)
@@ -353,11 +381,13 @@ function fontStyle(target, spec) {
     color: color(spec.color, project.deck.theme, "#333333"),
     fontWeight: spec.bold ? "700" : "400",
     fontStyle: spec.italic ? "italic" : "normal",
+    letterSpacing: `${spec.letterSpacing ?? 0}px`,
     lineHeight:
       spec.lineHeightPx !== undefined
         ? `${spec.lineHeightPx}px`
         : String(spec.lineHeight || 1.2),
   });
+  target.style.setProperty("--paragraph-margin-top", `${spec.marginTop ?? 0}px`);
 }
 
 function drawTable(data) {
@@ -409,7 +439,7 @@ function drawTable(data) {
     });
     const content = document.createElement("div");
     content.className = "table-text";
-    richText(String(cell.text), content);
+    richText(String(cell.text), content, color(style.backgroundColor, project.deck.theme));
     box.append(content);
     root.append(box);
   }
@@ -477,6 +507,7 @@ function drawElement(item, interactive = true) {
       color: color(spec.color, project.deck.theme, "#333333"),
       fontWeight: spec.bold ? "700" : "400",
       fontStyle: spec.italic ? "italic" : "normal",
+      letterSpacing: `${spec.letterSpacing ?? 0}px`,
       lineHeight:
         spec.lineHeightPx !== undefined
           ? `${spec.lineHeightPx}px`
@@ -492,9 +523,14 @@ function drawElement(item, interactive = true) {
         middle: "center",
         bottom: "flex-end",
       }[spec.align?.[1] || "top"],
+      whiteSpace: spec.wrap === false ? "pre" : "pre-wrap",
+      writingMode: spec.textDirection === "vertical" ? "vertical-rl" : "horizontal-tb",
     });
+    content.style.setProperty("--paragraph-margin-top", `${spec.marginTop ?? 0}px`);
     const runs = document.createElement("div");
     runs.style.width = "100%";
+    runs.style.flexShrink = "0";
+    runs.style.display = "flow-root";
     richText(
       String(spec.text ?? ""),
       runs,
@@ -508,6 +544,7 @@ function drawElement(item, interactive = true) {
           readParagraphs(String(spec.text ?? "")),
           {
             inheritedHighlight: color(spec.backgroundColor, project.deck.theme),
+            theme: project.deck.theme || {},
           },
         );
         runs.dataset.editable = "true";
@@ -785,7 +822,7 @@ function inspectData(item) {
         action(() =>
           edit((draft) => {
             const target = draft.elements.find((e) => e.elementId === id);
-            if (table) target.rows[value.row][value.sourceIndex].text = text;
+            if (table) setTableCellText(target, value.row, value.sourceIndex, text);
             else target.data.rows[r][c] = text === "" ? null : text;
           }),
         );
@@ -803,6 +840,7 @@ function previewFor(record) {
     const pending = api("/api/preview", {
       page: record.page,
       theme: project.deck.theme || {},
+      defaultFont: project.fonts?.some(font => font.role !== "math") ? defaultFont() : null,
     });
     previewCache.set(key, pending);
     pending.catch(() => {
@@ -870,6 +908,7 @@ function runThumbnails() {
 
 function render() {
   if (!project) return;
+  pageDrag.cancel();
   const draft = page();
   pendingControls = false;
   const version = ++renderVersion;
@@ -902,34 +941,7 @@ function render() {
   drafts.forEach((record, index) => {
     const button = document.createElement("button");
     button.dataset.page = index;
-    button.draggable = true;
-    button.addEventListener("dragstart", (event) =>
-      event.dataTransfer.setData("application/x-pptd-page", String(index)),
-    );
-    button.addEventListener("dragover", (event) => {
-      if ([...event.dataTransfer.types].includes("application/x-pptd-page"))
-        event.preventDefault();
-    });
-    button.addEventListener("drop", (event) => {
-      event.preventDefault();
-      const from = Number(
-        event.dataTransfer.getData("application/x-pptd-page"),
-      );
-      if (
-        !Number.isInteger(from) ||
-        from < 0 ||
-        from >= drafts.length ||
-        from === index
-      )
-        return;
-      action(async () => {
-        await applySource();
-        const paths = drafts.map((d) => d.path),
-          [path] = paths.splice(from, 1);
-        paths.splice(index, 0, path);
-        await arrangePages(paths, index);
-      });
-    });
+    button.draggable = false;
     button.setAttribute(
       "aria-label",
       `第 ${index + 1} 页 ${record.path.split("/").at(-1)}${record.dirty ? " 未保存" : ""}`,
@@ -982,10 +994,15 @@ function render() {
     li.textContent = message;
     $("warnings").append(li);
   }
+  if (fontLoadError) {
+    const li = document.createElement("li");
+    li.textContent = fontLoadError;
+    $("warnings").append(li);
+  }
   status(
     drafts.some((item) => item.dirty) || themeDirty()
       ? "存在未保存草稿"
-      : "全部页面已保存",
+      : savedStatus(),
   );
   select(selected, false, true);
   fit();
@@ -1365,6 +1382,10 @@ $("save").addEventListener("click", () =>
     if (pendingControls)
       throw new Error("属性输入尚未成功提交，请修正输入并离开输入框后再保存。");
     await applySource();
+    if (project.storage === "temporary") {
+      await saveProjectCopy();
+      return;
+    }
     const draft = page(),
       text = draft.text;
     const result = await api("/api/save", {
@@ -1376,7 +1397,7 @@ $("save").addEventListener("click", () =>
     draft.saved(result.hash, text);
     await saveTheme();
     render();
-    status("本页与主题已保存到项目文件");
+    status(savedStatus("本页与主题"));
   }),
 );
 function exportSettings(resetName = false) {
@@ -1385,12 +1406,16 @@ function exportSettings(resetName = false) {
   $("export-directory-row").hidden = !folder;
   $("export-download").textContent = folder ? "保存" : "下载";
   $("export-transition").disabled = format !== "pptx";
+  $("export-embed").disabled = format !== "pptx" || !(project.fonts?.length);
+  $("export-font-note").textContent = project.fonts?.length
+    ? "嵌入项目中的完整字体，保留后续编辑所需字符；缺少使用的字体或字重会明确报错。"
+    : "请在项目管理中添加允许分发的字体，才能嵌入 PPT。当前导出保留字体名称。";
   $("export-scope").textContent =
     format === "pptx"
       ? "PPT 包含全部页面及未保存草稿。"
       : format === "png"
         ? "PNG 导出当前页，包含当前使用的字体外观。"
-        : "SVG 导出当前页，字体外观依赖接收电脑的字体。";
+        : "SVG 导出当前页并携带项目字体；系统字体仍依赖接收电脑。";
   if (resetName || !$("export-filename").value)
     $("export-filename").value =
       format === "pptx"
@@ -1433,15 +1458,15 @@ $("export-download").addEventListener("click", () =>
         {
           ...exportSnapshot(),
           transition: $("export-transition").value,
-          embedFonts: false,
+          embedFonts: !$("export-embed").disabled && $("export-embed").checked,
         },
         true,
       );
     }
     let saved;
     if (folder) {
-      if (blob.size > 20 * 1024 * 1024)
-        throw new Error("导出文件超过 20 MiB，请使用浏览器下载。");
+      if (blob.size > 100 * 1024 * 1024)
+        throw new Error("导出文件超过 100 MiB，请使用浏览器下载。");
       const data = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result.split(",")[1]);
@@ -2349,7 +2374,28 @@ $("background-all").addEventListener("click", () => {
   );
 });
 
-function acceptProject(value) {
+async function loadProjectFonts() {
+  fontLoadError = "";
+  try {
+    await projectFonts.load(project.fonts || [], api);
+  } catch (error) {
+    fontLoadError = `项目字体加载失败：${error.message}。请更换有效字体文件。`;
+  }
+  const names = [...new Set((project.fonts || []).map((font) => font.family))];
+  const mathFamily = project.fonts?.find(font => font.role === "math")?.family;
+  document.documentElement.style.setProperty("--pptd-math-font", JSON.stringify(mathFamily || "Cambria Math"));
+  $("project-fonts").textContent = fontLoadError || (names.length
+    ? `已携带：${names.join("、")}` : "未添加项目字体；当前使用本机字体。");
+  $("font-families").querySelectorAll("[data-project-font]").forEach((option) => option.remove());
+  for (const name of names) {
+    const option = document.createElement("option");
+    option.value = name;
+    option.label = `${fontLabels.get(name) || name} · 项目字体`;
+    option.dataset.projectFont = "true";
+    $("font-families").prepend(option);
+  }
+}
+async function acceptProject(value) {
   for (const pending of images.values())
     pending.then((url) => URL.revokeObjectURL(url)).catch(() => {});
   images.clear();
@@ -2374,9 +2420,12 @@ function acceptProject(value) {
   syncThemeStyles();
   $("title").textContent = value.deck.title || value.manifest;
   $("project-path").textContent = value.imported
-    ? `${value.manifest} · 工作副本`
-    : value.manifest;
-  $("local-project-path").value = value.root;
+    ? `${value.manifest} · ${value.storage === "copy" ? "工作副本" : "临时副本"}`
+    : `${value.manifest} · 原文件夹`;
+  $("project-location").textContent = value.storage === "temporary"
+    ? "当前项目：临时副本，首次保存时选择保存位置。"
+    : `当前项目：${projectLocation()} · ${value.root}`;
+  await loadProjectFonts();
   render();
 }
 function requireSavedBeforeOpen() {
@@ -2391,20 +2440,41 @@ function requireSavedBeforeOpen() {
       "当前项目有未保存草稿。请先保存或下载项目，再打开其他文件夹。",
     );
 }
-$("open-project").addEventListener("click", () => {
+async function pickProject(mode, fromToolbar = false) {
+  if (fromToolbar) $("discard-project-drafts").checked = false;
+  requireSavedBeforeOpen();
+  status(mode === "copy" ? "请选择源文件夹和副本保存位置…" : "请选择原文件夹…");
+  const result = await api("/api/pick-project", { mode });
+  if (result.cancelled) {
+    status("已取消打开，当前项目保持不变");
+    return;
+  }
+  await acceptProject(result);
+  $("project-dialog").close();
+  status(`${projectLocation()}已打开；保存会写入此文件夹`);
+}
+$("open-project").addEventListener("click", () => action(() => pickProject("original", true)));
+$("open-project-copy").addEventListener("click", () => action(() => pickProject("copy", true)));
+$("choose-project-original").addEventListener("click", () => action(() => pickProject("original")));
+$("choose-project-copy").addEventListener("click", () => action(() => pickProject("copy")));
+$("manage-project").addEventListener("click", () => {
   $("discard-project-drafts").checked = false;
   $("project-dialog").showModal();
 });
-$("open-path").addEventListener("click", () =>
-  action(async () => {
-    requireSavedBeforeOpen();
-    const result = await api("/api/open-project", {
-      path: $("local-project-path").value.trim(),
-    });
-    acceptProject(result);
-    $("project-dialog").close();
-  }),
-);
+async function saveProjectCopy() {
+  if (pendingControls) throw new Error("请先提交属性输入。");
+  await applySource();
+  status("请选择副本的保存位置…");
+  const result = await api("/api/save-project-copy", exportSnapshot());
+  if (result.cancelled) {
+    status("已取消另存，草稿保持不变");
+    return false;
+  }
+  await acceptProject(result);
+  status(`全部页面与资源已保存到副本：${result.root}`);
+  return true;
+}
+$("save-project-copy").addEventListener("click", () => action(saveProjectCopy));
 $("choose-project-folder").addEventListener("click", () => {
   $("project-folder").value = "";
   $("project-folder").click();
@@ -2425,9 +2495,9 @@ $("project-folder").addEventListener("change", () =>
         path: file.webkitRelativePath.split("/").slice(1).join("/"),
         data: await encodeFile(file),
       });
-    acceptProject(await api("/api/open-project", { files: entries }));
+    await acceptProject(await api("/api/open-project", { files: entries }));
     $("project-dialog").close();
-    status("本地项目已打开为工作副本；下载项目以带走全部修改。");
+    status("本地项目已打开为临时副本；首次保存时选择保存位置。");
   }),
 );
 $("download-project").addEventListener("click", () =>
@@ -2452,6 +2522,41 @@ $("download-project").addEventListener("click", () =>
     status("项目 ZIP 已生成，包含全部草稿、主题及引用资源。");
   }),
 );
+
+$("import-fonts").addEventListener("click", () => {
+  $("font-files").value = "";
+  $("font-files").click();
+});
+async function acceptFonts(result) {
+  project.manifestHash = result.manifestHash;
+  project.deck.customFonts = result.customFonts;
+  project.fonts = result.fonts;
+  await loadProjectFonts();
+  previewCache.clear();
+  render();
+}
+$("font-files").addEventListener("change", () => action(async () => {
+  for (const file of $("font-files").files) {
+    if (!/\.(ttf|otf)$/i.test(file.name) || file.size > 32 * 1024 * 1024)
+      throw new Error("请添加不超过 32 MiB 的静态 TTF/OTF 字体文件。");
+    await acceptFonts(await api("/api/import-font", {
+      data: await encodeFile(file), manifestHash: project.manifestHash,
+    }));
+  }
+  status("字体已加入项目；可在字体列表中选择使用");
+}));
+$("add-font-family").addEventListener("click", () => action(async () => {
+  status("正在从官方来源下载项目字体及许可告知…");
+  $("add-font-family").disabled = true;
+  try {
+    await acceptFonts(await api("/api/add-font-family", {
+      id: $("recommended-font").value, manifestHash: project.manifestHash,
+    }));
+    status("开源字体与许可告知已加入项目；可在字体列表中选择使用");
+  } finally {
+    $("add-font-family").disabled = false;
+  }
+}));
 
 let previewIndex = 0,
   presentationVersion = 0,
@@ -2614,7 +2719,17 @@ $("presentation").addEventListener("keydown", (event) => {
 });
 new ResizeObserver(fitPresentation).observe($("presentation-viewport"));
 action(async () => {
-  acceptProject(await api("/api/project"));
+  const {families: recommended} = await api("/api/font-catalog");
+  $("recommended-font").replaceChildren();
+  for (const font of recommended) {
+    const option = document.createElement("option");
+    option.value = font.id;
+    option.textContent = font.label;
+    $("recommended-font").append(option);
+    fontLabels.set(font.family, font.label);
+  }
+  controls.sync();
+  await acceptProject(await api("/api/project"));
   api("/api/fonts")
     .then(({ families }) => {
       for (const name of families) {
@@ -2627,8 +2742,6 @@ action(async () => {
       $("font-family").title =
         "字体列表未能读取，可手动输入字体名称。";
     });
-  $("title").textContent = project.deck.title || project.manifest;
-  $("project-path").textContent = project.manifest;
   render();
 });
 
@@ -2644,6 +2757,16 @@ function exportSnapshot() {
     theme: project.deck.theme || {},
   };
 }
+const pageDrag = new PageDrag($("pages"), $("page-sidebar"), {
+  canStart: () => !busy && !pendingControls && !hasPendingSource() && !textSession,
+  onDrop: (from, to) => action(async () => {
+    await applySource();
+    const paths = drafts.map((draft) => draft.path), [path] = paths.splice(from, 1);
+    paths.splice(to, 0, path);
+    await arrangePages(paths, to);
+    status(`页面已移动到第 ${to + 1} 页`);
+  }),
+});
 async function arrangePages(entries, focus, record = true) {
   const before = {
     paths: drafts.map((d) => d.path),
@@ -3512,6 +3635,7 @@ function beginTextEdit(box, item) {
       finishTextEdit,
       {
         preserveDOM: target.dataset.editable === "true",
+        theme: project.deck.theme || {},
         inheritedHighlight: color(
           textStyle(item.content, project.deck.theme).backgroundColor,
           project.deck.theme,
@@ -3547,6 +3671,7 @@ async function travelHistory(command) {
 }
 
 function slideImage(record) {
+  if (fontLoadError) throw new Error(fontLoadError);
   return exportSlideImage(project, record, {
     paint,
     drawElement,
@@ -3554,6 +3679,7 @@ function slideImage(record) {
     previewFor,
     api,
     formulaCache,
+    fontCSS: projectFonts.css,
   });
 }
 
@@ -3561,6 +3687,10 @@ $("save-all").addEventListener("click", () =>
   action(async () => {
     if (pendingControls) throw new Error("请先提交属性输入。");
     await applySource();
+    if (project.storage === "temporary") {
+      await saveProjectCopy();
+      return;
+    }
     for (const draft of drafts)
       if (draft.dirty) {
         const result = await api("/api/save", {
@@ -3573,7 +3703,7 @@ $("save-all").addEventListener("click", () =>
       }
     await saveTheme();
     render();
-    status("所有页面和主题已保存");
+    status(savedStatus("所有页面和主题"));
   }),
 );
 

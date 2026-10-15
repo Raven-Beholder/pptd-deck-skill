@@ -12,7 +12,9 @@ import yaml
 from native_project import ConflictError, Project, TEXT_LIMIT, page_value, parse
 from native_preview import preview
 from native_fonts import installed_families
-from native_workspace import import_folder, project_archive, save_export
+from native_workspace import import_folder, project_archive, save_export, copy_project
+from native_picker import pick_folder
+from native_font_catalog import public_catalog, install_family
 from native_math import parse as parse_math
 from native_animation import schedule
 from dataclasses import asdict
@@ -22,6 +24,8 @@ import tempfile
 ASSETS = Path(__file__).with_name('native_editor')
 STATIC = {'/': ('index.html', 'text/html'), '/app.mjs': ('app.mjs', 'text/javascript'),
           '/model.mjs': ('model.mjs', 'text/javascript'), '/styles.css': ('styles.css', 'text/css'),
+          '/page-drag.mjs': ('page-drag.mjs', 'text/javascript'),
+          '/project-fonts.mjs': ('project-fonts.mjs', 'text/javascript'),
           '/charts.mjs': ('charts.mjs', 'text/javascript'),
           '/text-format.mjs': ('text-format.mjs', 'text/javascript'),
           '/shapes.mjs': ('shapes.mjs', 'text/javascript'),
@@ -37,6 +41,7 @@ def create_server(project, port=0, *, imported=False):
     font_names = None
     project_id = secrets.token_hex(16)
     workspaces = []
+    storage = 'temporary' if imported else 'original'
     workspace_lock = threading.RLock()
 
     class Handler(BaseHTTPRequestHandler):
@@ -53,12 +58,12 @@ def create_server(project, port=0, *, imported=False):
             self.send_header('Cache-Control', 'no-store')
             self.send_header('X-Content-Type-Options', 'nosniff')
             self.send_header('Referrer-Policy', 'no-referrer')
-            self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
+            self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")
             self.end_headers()
             self.wfile.write(data)
 
         def route(self):
-            nonlocal font_names, project, project_id, imported
+            nonlocal font_names, project, project_id, imported, storage
             expected_host = f'127.0.0.1:{self.server.server_port}'
             if self.headers.get('Host') != expected_host:
                 self.reply(403, {'error': 'invalid local host'})
@@ -79,19 +84,24 @@ def create_server(project, port=0, *, imported=False):
             if active is not None and active != project_id:
                 raise ConflictError('本地服务已切换项目；请保留草稿后重新打开。')
             if self.command == 'GET' and url.path == '/api/project':
-                self.reply(200, dict(project.load(), projectId=project_id, root=str(project.root), imported=imported))
+                self.reply(200, dict(project.load(), projectId=project_id, root=str(project.root), imported=imported, storage=storage))
             elif self.command == 'GET' and url.path == '/api/fonts':
                 if font_names is None:
                     font_names = installed_families()
                 self.reply(200, {'families': font_names})
+            elif self.command == 'GET' and url.path == '/api/font-catalog':
+                self.reply(200, {'families': public_catalog()})
             elif self.command == 'GET' and url.path == '/api/image':
                 data, kind = project.image(parse_qs(url.query).get('path', [''])[0])
+                self.reply(200, data, kind)
+            elif self.command == 'GET' and url.path == '/api/font':
+                data, kind = project.font(parse_qs(url.query).get('path', [''])[0])
                 self.reply(200, data, kind)
             elif self.command == 'POST':
                 if self.headers.get('Content-Type') != 'application/json':
                     raise ValueError('expected application/json')
                 length = int(self.headers.get('Content-Length', '0'))
-                limit = (140 if url.path == '/api/open-project' else 28 if url.path == '/api/save-export' else 20) * TEXT_LIMIT
+                limit = (140 if url.path in ('/api/open-project', '/api/save-export') else 44 if url.path == '/api/import-font' else 20) * TEXT_LIMIT
                 if not 0 < length <= limit:
                     raise ValueError('request exceeds editor limit')
                 body = json.loads(self.rfile.read(length))
@@ -99,20 +109,55 @@ def create_server(project, port=0, *, imported=False):
                     raise ValueError('expected a JSON object')
                 if url.path == '/api/parse':
                     self.reply(200, {'page': page_value(parse(body.get('text')))})
+                elif url.path in ('/api/pick-project', '/api/save-project-copy'):
+                    saving = url.path == '/api/save-project-copy'
+                    mode = body.get('mode', 'original')
+                    if mode not in ('original', 'copy'):
+                        raise ValueError('unknown project opening mode')
+                    if saving:
+                        if not isinstance(body.get('drafts'), dict) or not isinstance(body.get('hashes'), dict) or not isinstance(body.get('manifestHash'), str):
+                            raise ValueError('expected project snapshot and baseline hashes')
+                        candidate = project
+                    else:
+                        source = pick_folder('选择 PPTD 原文件夹' if mode == 'original' else '选择要复制的 PPTD 文件夹',
+                                             project.root if storage != 'temporary' else None)
+                        if source is None:
+                            self.reply(200, {'cancelled': True})
+                            return
+                        candidate = Project(source)
+                    if saving or mode == 'copy':
+                        destination = pick_folder('选择副本的保存位置')
+                        if destination is None:
+                            self.reply(200, {'cancelled': True})
+                            return
+                        candidate = copy_project(candidate, destination,
+                                                 body.get('drafts') if saving else None,
+                                                 body.get('manifestHash') if saving else None,
+                                                 body.get('hashes') if saving else None,
+                                                 body.get('theme') if saving else None)
+                        next_storage = 'copy'
+                    else:
+                        next_storage = 'original'
+                    project, storage = candidate, next_storage
+                    imported = storage != 'original'
+                    project_id = secrets.token_hex(16)
+                    self.reply(200, dict(project.load(), projectId=project_id, root=str(project.root), imported=imported, storage=storage))
                 elif url.path == '/api/open-project':
                     if 'files' in body:
                         temporary, candidate = import_folder(body['files'])
                         workspaces.append(temporary)
                         imported = True
+                        storage = 'temporary'
                     else:
                         path = body.get('path')
                         if not isinstance(path, str) or not Path(path).expanduser().is_absolute():
                             raise ValueError('请输入本地项目文件夹或 .pptd 文件的绝对路径。')
                         candidate = Project(Path(path).expanduser())
                         imported = False
+                        storage = 'original'
                     project = candidate
                     project_id = secrets.token_hex(16)
-                    self.reply(200, dict(project.load(), projectId=project_id, root=str(project.root), imported=imported))
+                    self.reply(200, dict(project.load(), projectId=project_id, root=str(project.root), imported=imported, storage=storage))
                 elif url.path == '/api/formula':
                     source = body.get('source')
                     if not isinstance(source, str) or not source.strip():
@@ -128,7 +173,10 @@ def create_server(project, port=0, *, imported=False):
                     theme = body.get('theme', project.load()['deck'].get('theme', {}))
                     if not isinstance(theme, dict):
                         raise ValueError('theme must be a mapping')
-                    self.reply(200, {'elements': preview(value, theme)})
+                    family = body.get('defaultFont')
+                    if family is not None and (not isinstance(family, str) or not family or len(family) > 200):
+                        raise ValueError('invalid default font family')
+                    self.reply(200, {'elements': preview(value, theme, default_font=family)})
                 elif url.path == '/api/serialize':
                     value = page_value(body.get('page'))
                     text = yaml.safe_dump(value, allow_unicode=True, sort_keys=False)
@@ -144,6 +192,10 @@ def create_server(project, port=0, *, imported=False):
                     self.reply(200, project.save_theme(body.get('theme'), body.get('manifestHash')))
                 elif url.path == '/api/import-image':
                     self.reply(200, project.import_image(body.get('data')))
+                elif url.path == '/api/import-font':
+                    self.reply(200, project.import_font(body.get('data'), body.get('manifestHash')))
+                elif url.path == '/api/add-font-family':
+                    self.reply(200, install_family(project, body.get('id'), body.get('manifestHash')))
                 elif url.path == '/api/save-export':
                     self.reply(200, save_export(body.get('data'), body.get('directory'), body.get('filename')))
                 elif url.path == '/api/export':

@@ -68,7 +68,7 @@ class NativeDistributionTests(unittest.TestCase):
         runtime = self.root / 'editor-runtime'
         with zipfile.ZipFile(artifact) as archive:
             expected = {m + '.py' for m in MODULES + EDITOR_MODULES} | {
-                'README.md', 'requirements.txt', 'NATIVE_NOTICE.md', 'ICONS_NOTICE.md', 'MANIFEST.json'} | {
+                'README.md', 'requirements.txt', 'NATIVE_NOTICE.md', 'ICONS_NOTICE.md', 'MANIFEST.json', 'font-catalog.json'} | {
                 'native_editor/' + name for name in EDITOR_ASSETS}
             self.assertEqual(set(archive.namelist()), expected)
             manifest = json.loads(archive.read('MANIFEST.json'))

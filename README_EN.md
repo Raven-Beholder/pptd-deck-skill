@@ -78,6 +78,40 @@ uv run --locked node bin/pptd-deck-skill.js serve --open
 
 To open another project, pass its folder after `serve`. Keep the complete service URL and save or download your project before stopping the service.
 
+<details>
+<summary>Project management and project fonts</summary>
+
+Click “Open Original Folder” to use the system folder picker. Save writes back to the selected original.
+Click “Open as Copy” to select a source folder and destination. The copy gets its own subfolder, and Save writes there.
+“Project Management” also offers Save a Copy, project download and temporary imports. A temporary copy asks for a destination on its first save.
+Cancellation preserves the current project and drafts. Original saves check hashes and refuse to silently overwrite external edits.
+macOS uses Finder; Windows uses its system folder dialog; Linux desktops need zenity or kdialog.
+The picker appears on the computer running the local service. Without a desktop session, import a temporary copy and download the project.
+Drag page thumbnails to reorder them. A placeholder marks the insertion point, and neighboring pages move smoothly.
+Dragging near the top or bottom of the list scrolls it automatically; press Esc to cancel.
+The editor supports theme colors in rich text and string table cells.
+When table row or column proportions do not sum to 1, preview and export fit them proportionally to the bounds. Source values are retained, and preview notes explain the adjustment.
+
+“Project Management → Project Fonts” offers 16 families: Source Han Sans and Serif in simplified and traditional Chinese, Inter, Source Sans 3, Source Serif 4, Lato, Carlito, Caladea, Montserrat, JetBrains Mono, IBM Plex Sans/Serif/Mono and STIX Two Math.
+These recommended fonts use OFL-1.1. Adding them downloads pinned official versions, verifies hashes, and preserves full copyright and license notices.
+Fonts live in the project's `fonts/` folder and use relative `customFonts` paths. Copies and project ZIPs include the fonts and notices.
+The editor loads project fonts before drawing. Other computers need no system installation. Text without an explicit family uses the first regular project text font; math fonts have a separate role.
+You may also add redistributable static TTF/OTF fonts that permit editable embedding. Each font is limited to 32 MiB, and the project to 100 MiB. TTC, WOFF and variable fonts are unsupported.
+Enable “Embed Fonts” for PPT export, or use `--embed-fonts` in the CLI. Full fonts retain characters needed for future editing.
+Missing families or styles, restricted embedding rights and corrupt fonts produce explicit errors. PPTX font loading still depends on the receiving application's support.
+See the [project font guide](skills/pptd-deck-skill/reference/fonts.md).
+
+Generation can use OFL fonts directly. For example, create a Chinese project with code and math fonts:
+
+```sh
+uv run --locked python skills/pptd-deck-skill/scripts/pipeline.py init --project /absolute/path/to/new-project --topic "Database introduction" --pages 12 --font-family source-han-sans --extra-font jetbrains-mono
+```
+
+This adds text and code fonts plus the default STIX Two Math, and writes relative `fonts.json` mappings.
+Use `fonts list` to inspect the catalog and `fonts add` to add fonts to an existing project. The initial download needs a network; added fonts work offline.
+
+</details>
+
 ## Features
 
 - **Editable output**: keep text, shapes, tables and equations available for further changes.
@@ -109,7 +143,7 @@ CI covers macOS, Windows and Linux. Builds use a file allowlist and record hashe
 
 ## Current support
 
-PPTD authoring, editing and PPTX export are supported. PPTX import, font embedding and some complex effects are still unavailable. See the [native authoring guide](skills/pptd-deck-skill/reference/native-authoring.md) for details.
+PPTD authoring, editing and PPTX export are supported. Font embedding supports project-local static TTF/OTF resources. PPTX import and some complex effects are still unavailable. See the [native authoring guide](skills/pptd-deck-skill/reference/native-authoring.md) for details.
 
 Layout previews use Pillow and approximate equation spacing. They do not replace rendering checks in PowerPoint, WPS or Keynote. Windows browser drag interactions and Chinese IME behavior still need manual checks.
 

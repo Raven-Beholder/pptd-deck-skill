@@ -1,0 +1,575 @@
+[
+  {
+    "id": "source-han-sans",
+    "label": "思源黑体 · 简体中文",
+    "family": "Source Han Sans SC",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-han-sans",
+    "fonts": [
+      {
+        "name": "source-han-sans-Regular.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/OTF/SimplifiedChinese/SourceHanSansSC-Regular.otf",
+        "bytes": 16529832,
+        "sha256": "f1d8611151880c6c336aabeac4640ef434fa13cbfbf1ffe82d0a71b2a5637256"
+      },
+      {
+        "name": "source-han-sans-Bold.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/OTF/SimplifiedChinese/SourceHanSansSC-Bold.otf",
+        "bytes": 16963428,
+        "sha256": "df2b90f5bcc6d01dfc964cec5f6d535d6b6aebd26ed7fd79a9c1b3f2112fcb6b"
+      }
+    ],
+    "notice": {
+      "name": "source-han-sans-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/LICENSE.txt",
+      "bytes": 4463,
+      "sha256": "fcac737e761ec63dbfbdce11030a1780161920d80315edba9c8beff1c2bac5a2"
+    }
+  },
+  {
+    "id": "source-han-serif",
+    "label": "思源宋体 · 简体中文",
+    "family": "Source Han Serif SC",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-han-serif",
+    "fonts": [
+      {
+        "name": "source-han-serif-Regular.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/OTF/SimplifiedChinese/SourceHanSerifSC-Regular.otf",
+        "bytes": 24543332,
+        "sha256": "78aa7a328fd974df2d688c8a9fd74a33d8334dfa84ab24d9d11efb2ffc464117"
+      },
+      {
+        "name": "source-han-serif-Bold.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/OTF/SimplifiedChinese/SourceHanSerifSC-Bold.otf",
+        "bytes": 25521732,
+        "sha256": "706b8c0de2deff6cbc0c87e2cdedfd33a78b7ffd76cebb4549012f197ba611fe"
+      }
+    ],
+    "notice": {
+      "name": "source-han-serif-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/LICENSE.txt",
+      "bytes": 4463,
+      "sha256": "9ff5bb567e1b92c801fc1069e5fbf992ff8efccacb9db94e5959a5b3ba9bb903"
+    }
+  },
+  {
+    "id": "inter",
+    "label": "Inter · 英文正文",
+    "family": "Inter",
+    "license": "OFL-1.1",
+    "source": "https://github.com/rsms/inter",
+    "fonts": [
+      {
+        "name": "Inter-4.1.zip",
+        "url": "https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip",
+        "bytes": 33707794,
+        "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+        "member": "extras/ttf/Inter-Regular.ttf",
+        "memberSha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+        "fontBytes": 411640
+      },
+      {
+        "name": "Inter-4.1.zip",
+        "url": "https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip",
+        "bytes": 33707794,
+        "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+        "member": "extras/ttf/Inter-Bold.ttf",
+        "memberSha256": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f",
+        "fontBytes": 420428
+      },
+      {
+        "name": "Inter-4.1.zip",
+        "url": "https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip",
+        "bytes": 33707794,
+        "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+        "member": "extras/ttf/Inter-Italic.ttf",
+        "memberSha256": "bbc051dd204b5019a1aa0bc0ae2aa8a05ab13e7a3f979fa357631dc7feb6833a",
+        "fontBytes": 417388
+      },
+      {
+        "name": "Inter-4.1.zip",
+        "url": "https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip",
+        "bytes": 33707794,
+        "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+        "member": "extras/ttf/Inter-BoldItalic.ttf",
+        "memberSha256": "948405a16cdc62701da5f4005ed068ca5f4d27061d98f7974ccfc37831d9581d",
+        "fontBytes": 425296
+      }
+    ],
+    "notice": {
+      "name": "Inter-4.1.zip",
+      "url": "https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip",
+      "bytes": 33707794,
+      "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+      "member": "LICENSE.txt",
+      "memberSha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    }
+  },
+  {
+    "id": "jetbrains-mono",
+    "label": "JetBrains Mono · 代码",
+    "family": "JetBrains Mono",
+    "license": "OFL-1.1",
+    "source": "https://github.com/JetBrains/JetBrainsMono",
+    "fonts": [
+      {
+        "name": "jetbrains-mono-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/19371302b95d218af43299bce79ddbddd0bc364d/fonts/ttf/JetBrainsMono-Regular.ttf",
+        "bytes": 270224,
+        "sha256": "e6fd0d7e91550b3ed2b735d4312474362c4716edc4fc0577a0f61ed782d5aed1"
+      },
+      {
+        "name": "jetbrains-mono-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/19371302b95d218af43299bce79ddbddd0bc364d/fonts/ttf/JetBrainsMono-Bold.ttf",
+        "bytes": 274096,
+        "sha256": "d22c4f3821d725eb01210d278d95dfcfcaadc34699a06658d47c8a5cc5830ada"
+      },
+      {
+        "name": "jetbrains-mono-Italic.ttf",
+        "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/19371302b95d218af43299bce79ddbddd0bc364d/fonts/ttf/JetBrainsMono-Italic.ttf",
+        "bytes": 276084,
+        "sha256": "6dc8e1322d4b2013b64e277bf66abc6748207c46a590471d4296876c2c235d0c"
+      },
+      {
+        "name": "jetbrains-mono-BoldItalic.ttf",
+        "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/19371302b95d218af43299bce79ddbddd0bc364d/fonts/ttf/JetBrainsMono-BoldItalic.ttf",
+        "bytes": 279172,
+        "sha256": "cec9b489af5c98a94cb8d8d8708ef1640cca0f296b207de1f50b2dd95e967bdf"
+      }
+    ],
+    "notice": {
+      "name": "jetbrains-mono-OFL.txt",
+      "url": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/19371302b95d218af43299bce79ddbddd0bc364d/OFL.txt",
+      "bytes": 4399,
+      "sha256": "a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697"
+    }
+  },
+  {
+    "id": "source-han-sans-tc",
+    "label": "思源黑体 · 繁体中文",
+    "family": "Source Han Sans TC",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-han-sans",
+    "fonts": [
+      {
+        "name": "source-han-sans-tc-Regular.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/OTF/TraditionalChinese/SourceHanSansTC-Regular.otf",
+        "bytes": 16528276,
+        "sha256": "10e6d832bc73650840aa7fbfec4e10c527f8136ae2aec71c3e1c13a67475c24a"
+      },
+      {
+        "name": "source-han-sans-tc-Bold.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/OTF/TraditionalChinese/SourceHanSansTC-Bold.otf",
+        "bytes": 16961872,
+        "sha256": "179452727f1fc3b4e6a558b577e826f024d822787844a3d4e3c9a59d2c2e0476"
+      }
+    ],
+    "notice": {
+      "name": "source-han-sans-tc-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/LICENSE.txt",
+      "bytes": 4463,
+      "sha256": "fcac737e761ec63dbfbdce11030a1780161920d80315edba9c8beff1c2bac5a2"
+    }
+  },
+  {
+    "id": "source-han-serif-tc",
+    "label": "思源宋体 · 繁体中文",
+    "family": "Source Han Serif TC",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-han-serif",
+    "fonts": [
+      {
+        "name": "source-han-serif-tc-Regular.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/OTF/TraditionalChinese/SourceHanSerifTC-Regular.otf",
+        "bytes": 24542148,
+        "sha256": "659c9606d8fda03372247b99ec5e5bbc5a034e06a70d80fb00546772c582d3e5"
+      },
+      {
+        "name": "source-han-serif-tc-Bold.otf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/OTF/TraditionalChinese/SourceHanSerifTC-Bold.otf",
+        "bytes": 25520548,
+        "sha256": "5dfc336214dc81d9bfed14c668cdce99b55078bfee60833d50f5445b8fa944b3"
+      }
+    ],
+    "notice": {
+      "name": "source-han-serif-tc-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-han-serif/7889f11bf31170b5d092a083b357c8c8130f89e0/LICENSE.txt",
+      "bytes": 4463,
+      "sha256": "9ff5bb567e1b92c801fc1069e5fbf992ff8efccacb9db94e5959a5b3ba9bb903"
+    }
+  },
+  {
+    "id": "source-sans-3",
+    "label": "Source Sans 3 · 正文",
+    "family": "Source Sans 3",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-sans",
+    "fonts": [
+      {
+        "name": "source-sans-3-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/87b37a2daaed80fcb8e8ccb0085c4d72ddade12e/TTF/SourceSans3-Regular.ttf",
+        "bytes": 431196,
+        "sha256": "4644c81b86ec9caaa76b634889968ed3c4f4f52f054855933acc7c2b21e53b0f"
+      },
+      {
+        "name": "source-sans-3-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/87b37a2daaed80fcb8e8ccb0085c4d72ddade12e/TTF/SourceSans3-Bold.ttf",
+        "bytes": 428176,
+        "sha256": "9214b9d95e4231c609802815c2646c98174e2102d0d37f88978a7f8e71006e6a"
+      },
+      {
+        "name": "source-sans-3-It.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/87b37a2daaed80fcb8e8ccb0085c4d72ddade12e/TTF/SourceSans3-It.ttf",
+        "bytes": 315812,
+        "sha256": "192afd78f0f54a3c69eaf02d43f4d9a821e9d6110e41d3d25d61a7385cd580e4"
+      },
+      {
+        "name": "source-sans-3-BoldIt.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/87b37a2daaed80fcb8e8ccb0085c4d72ddade12e/TTF/SourceSans3-BoldIt.ttf",
+        "bytes": 318700,
+        "sha256": "7978291fc1bf314db887e0366853b33c5cf2e964c7b95cfb9ce403a6ec46a842"
+      }
+    ],
+    "notice": {
+      "name": "source-sans-3-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-sans/87b37a2daaed80fcb8e8ccb0085c4d72ddade12e/LICENSE.md",
+      "bytes": 4486,
+      "sha256": "56af9b9c6715597e458284a474dc118a50a4150e9d547c70f7b4a33c3e6a9328"
+    }
+  },
+  {
+    "id": "source-serif-4",
+    "label": "Source Serif 4 · 衬线",
+    "family": "Source Serif 4",
+    "license": "OFL-1.1",
+    "source": "https://github.com/adobe-fonts/source-serif",
+    "fonts": [
+      {
+        "name": "source-serif-4-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/80d3f8894c09c937bebfa9011247d2e1c79fd6f4/TTF/SourceSerif4-Regular.ttf",
+        "bytes": 261868,
+        "sha256": "e5a4ee6a3d87bb9024796be390c6771e2a0eb1883dae25effaf57ca01668e24b"
+      },
+      {
+        "name": "source-serif-4-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/80d3f8894c09c937bebfa9011247d2e1c79fd6f4/TTF/SourceSerif4-Bold.ttf",
+        "bytes": 271568,
+        "sha256": "7cf4f4e1ad74f45058d5bc61716b82560442fbdcd9d3654d2dea96bf6c683d86"
+      },
+      {
+        "name": "source-serif-4-It.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/80d3f8894c09c937bebfa9011247d2e1c79fd6f4/TTF/SourceSerif4-It.ttf",
+        "bytes": 187808,
+        "sha256": "9d2950a8f1da66e21502c35d646a1d2148e79f9ea43fd2158cf02f5232e7f430"
+      },
+      {
+        "name": "source-serif-4-BoldIt.ttf",
+        "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/80d3f8894c09c937bebfa9011247d2e1c79fd6f4/TTF/SourceSerif4-BoldIt.ttf",
+        "bytes": 191832,
+        "sha256": "7b215b37f8873f5579f3f8d2ded3ca7c588e2f435cd996605ebfc5befe2cd5eb"
+      }
+    ],
+    "notice": {
+      "name": "source-serif-4-OFL.txt",
+      "url": "https://raw.githubusercontent.com/adobe-fonts/source-serif/80d3f8894c09c937bebfa9011247d2e1c79fd6f4/LICENSE.md",
+      "bytes": 4491,
+      "sha256": "c21d7293d87b6d7ab1d0229a2f55b77f33a7613a6a4e66f6693d68d7d8d09464"
+    }
+  },
+  {
+    "id": "lato",
+    "label": "Lato · 正文",
+    "family": "Lato",
+    "license": "OFL-1.1",
+    "source": "https://github.com/google/fonts",
+    "fonts": [
+      {
+        "name": "lato-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/lato/Lato-Regular.ttf",
+        "bytes": 656568,
+        "sha256": "d636e4683231f931eda222d588e944d082bfd3bdba02f928bee461c0f185b251"
+      },
+      {
+        "name": "lato-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/lato/Lato-Bold.ttf",
+        "bytes": 656544,
+        "sha256": "8a0aace75d33794eece4b28187bfc1df0bbd2888b5d8a56e01788c8d65d16be1"
+      },
+      {
+        "name": "lato-Italic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/lato/Lato-Italic.ttf",
+        "bytes": 722900,
+        "sha256": "e399c44efe1387100531d26c7e4800c5d12251b890d6654a3098c7c679cb1786"
+      },
+      {
+        "name": "lato-BoldItalic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/lato/Lato-BoldItalic.ttf",
+        "bytes": 698364,
+        "sha256": "62c1b7f0d2e74b45960154c3520efc337b553db0961bfdc950d5618334596cc8"
+      }
+    ],
+    "notice": {
+      "name": "lato-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/lato/OFL.txt",
+      "bytes": 4407,
+      "sha256": "74ba064d03f1f1c4a952da936c3eb71866c34404916734de3cae73b34357e59e"
+    }
+  },
+  {
+    "id": "carlito",
+    "label": "Carlito · 正文",
+    "family": "Carlito",
+    "license": "OFL-1.1",
+    "source": "https://github.com/google/fonts",
+    "fonts": [
+      {
+        "name": "carlito-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/carlito/Carlito-Regular.ttf",
+        "bytes": 628032,
+        "sha256": "f6418f708baede9789daef5d458c0f53d2a888af9820e8062934e504fedc6595"
+      },
+      {
+        "name": "carlito-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/carlito/Carlito-Bold.ttf",
+        "bytes": 682468,
+        "sha256": "bb5d20f79b82599ec72983597437373a80f2d2085fa91fc144fd74e876a594db"
+      },
+      {
+        "name": "carlito-Italic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/carlito/Carlito-Italic.ttf",
+        "bytes": 615236,
+        "sha256": "0b019225e58d702bfedcbd35c21696769f8ee115cb6343f84c2f240312450d1c"
+      },
+      {
+        "name": "carlito-BoldItalic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/carlito/Carlito-BoldItalic.ttf",
+        "bytes": 808508,
+        "sha256": "b32928186c119599e03ca6a1ffc680fdcb7fac95772f4b95d989cf6cd3861517"
+      }
+    ],
+    "notice": {
+      "name": "carlito-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/carlito/OFL.txt",
+      "bytes": 4424,
+      "sha256": "58402f82a7c332a700294988fe7554fbb0a63a8d27ccc1ee3bbc640311990a00"
+    }
+  },
+  {
+    "id": "caladea",
+    "label": "Caladea · 衬线",
+    "family": "Caladea",
+    "license": "OFL-1.1",
+    "source": "https://github.com/google/fonts",
+    "fonts": [
+      {
+        "name": "caladea-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/caladea/Caladea-Regular.ttf",
+        "bytes": 81600,
+        "sha256": "f1e899278b7b4491aba5b6a8253c4b04c050cc59b21865be5c37559a775153cd"
+      },
+      {
+        "name": "caladea-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/caladea/Caladea-Bold.ttf",
+        "bytes": 84492,
+        "sha256": "ae3cb2dcbc925809dd29d2a44e9802211cab66be541bacbfc9c08c74b27c3742"
+      },
+      {
+        "name": "caladea-Italic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/caladea/Caladea-Italic.ttf",
+        "bytes": 83780,
+        "sha256": "4359a8e24f748b6447b1ff6d7a174febe70961d29f8bb8634b56dacd740a3deb"
+      },
+      {
+        "name": "caladea-BoldItalic.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/caladea/Caladea-BoldItalic.ttf",
+        "bytes": 83356,
+        "sha256": "ccabaa7b7e2fdf253d2b1a5fa699dd8a3df8d835a9eb285ad82631a677eb76c0"
+      }
+    ],
+    "notice": {
+      "name": "caladea-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/caladea/OFL.txt",
+      "bytes": 4393,
+      "sha256": "ccdab61d371d8c8683a128a92cd7d498dbdb1d37689f7cb21f1bf6b16658d213"
+    }
+  },
+  {
+    "id": "montserrat",
+    "label": "Montserrat · 标题",
+    "family": "Montserrat",
+    "license": "OFL-1.1",
+    "source": "https://github.com/JulietaUla/Montserrat",
+    "fonts": [
+      {
+        "name": "montserrat-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/fonts/ttf/Montserrat-Regular.ttf",
+        "bytes": 445928,
+        "sha256": "3e8abe50c44c82e2242e97d1ec8c0d385c4890cdc50447bcdb8605c81a38cfb2"
+      },
+      {
+        "name": "montserrat-Bold.ttf",
+        "url": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/fonts/ttf/Montserrat-Bold.ttf",
+        "bytes": 454864,
+        "sha256": "bc6e854971cea46b463be6f9eef4d9cd52f51cfc1fc0dd90c9d3e6483dc0ec61"
+      },
+      {
+        "name": "montserrat-Italic.ttf",
+        "url": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/fonts/ttf/Montserrat-Italic.ttf",
+        "bytes": 449764,
+        "sha256": "b8fa0ea7f433669d94d27e66ea81cc627deb71861ed9d20f53d7afa1f33ba86a"
+      },
+      {
+        "name": "montserrat-BoldItalic.ttf",
+        "url": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/fonts/ttf/Montserrat-BoldItalic.ttf",
+        "bytes": 460160,
+        "sha256": "b4c121b337aaa977d711b6f397c5b9672d720af622555f1e3f9d3b87f2983665"
+      }
+    ],
+    "notice": {
+      "name": "montserrat-OFL.txt",
+      "url": "https://raw.githubusercontent.com/JulietaUla/Montserrat/555facfb2a18c72c3c0380f0d9c0f060453a9058/OFL.txt",
+      "bytes": 4400,
+      "sha256": "8b7141c03fa4f8d44e6345d5d4931709290f0f67875e452e95ac1fd3a027802e"
+    }
+  },
+  {
+    "id": "ibm-plex-sans",
+    "label": "IBM Plex Sans · 正文",
+    "family": "IBM Plex Sans",
+    "license": "OFL-1.1",
+    "source": "https://github.com/IBM/plex",
+    "fonts": [
+      {
+        "name": "ibm-plex-sans-Regular.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-sans/fonts/complete/otf/IBMPlexSans-Regular.otf",
+        "bytes": 136352,
+        "sha256": "6b17a35a31ded2e81b3ed19e5eb532d22b9a0b5a76833b0d757a5c71ab5e0f6c"
+      },
+      {
+        "name": "ibm-plex-sans-Bold.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-sans/fonts/complete/otf/IBMPlexSans-Bold.otf",
+        "bytes": 140656,
+        "sha256": "19de5aec74215119b3f8f7d1b1f0e0eba867bee2d2c65c5761b287d67581c316"
+      },
+      {
+        "name": "ibm-plex-sans-Italic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-sans/fonts/complete/otf/IBMPlexSans-Italic.otf",
+        "bytes": 144148,
+        "sha256": "d3cf12b234deda906353d9cb67b27c9ae7243e3ecdc069c6b4114b063dccb1e7"
+      },
+      {
+        "name": "ibm-plex-sans-BoldItalic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-sans/fonts/complete/otf/IBMPlexSans-BoldItalic.otf",
+        "bytes": 145720,
+        "sha256": "2e8c2072b45c1e9c95d8409472e848d911edf57f2c60cce361fd87691f5db903"
+      }
+    ],
+    "notice": {
+      "name": "ibm-plex-sans-OFL.txt",
+      "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/LICENSE.txt",
+      "bytes": 4456,
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    }
+  },
+  {
+    "id": "ibm-plex-serif",
+    "label": "IBM Plex Serif · 衬线",
+    "family": "IBM Plex Serif",
+    "license": "OFL-1.1",
+    "source": "https://github.com/IBM/plex",
+    "fonts": [
+      {
+        "name": "ibm-plex-serif-Regular.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-serif/fonts/complete/otf/IBMPlexSerif-Regular.otf",
+        "bytes": 144348,
+        "sha256": "7c4b1adfb874ac4190cc8cb68c2dd282e7a73f8ac6c7822d98bd89b9a534633e"
+      },
+      {
+        "name": "ibm-plex-serif-Bold.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-serif/fonts/complete/otf/IBMPlexSerif-Bold.otf",
+        "bytes": 148208,
+        "sha256": "d1f84bef08b08400c45db0bd937e6014953f2561e8f140ec7a747484d8b1e56c"
+      },
+      {
+        "name": "ibm-plex-serif-Italic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-serif/fonts/complete/otf/IBMPlexSerif-Italic.otf",
+        "bytes": 151680,
+        "sha256": "cf47ee3d19497d67f73a20578a8ab915cbfc107b68c07197b8bf4e1f0af47df0"
+      },
+      {
+        "name": "ibm-plex-serif-BoldItalic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-serif/fonts/complete/otf/IBMPlexSerif-BoldItalic.otf",
+        "bytes": 156008,
+        "sha256": "977d902a36ad0ddd0e363241115a5da0ce807177b2a40d3430b870592583b7ca"
+      }
+    ],
+    "notice": {
+      "name": "ibm-plex-serif-OFL.txt",
+      "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/LICENSE.txt",
+      "bytes": 4456,
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    }
+  },
+  {
+    "id": "ibm-plex-mono",
+    "label": "IBM Plex Mono · 代码",
+    "family": "IBM Plex Mono",
+    "license": "OFL-1.1",
+    "source": "https://github.com/IBM/plex",
+    "fonts": [
+      {
+        "name": "ibm-plex-mono-Regular.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-mono/fonts/complete/otf/IBMPlexMono-Regular.otf",
+        "bytes": 89052,
+        "sha256": "372fe8f8a459baef84ee346b0a478084e80c46bd299a0c27bcb0f3412f5a9d28"
+      },
+      {
+        "name": "ibm-plex-mono-Bold.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-mono/fonts/complete/otf/IBMPlexMono-Bold.otf",
+        "bytes": 91776,
+        "sha256": "27a69e26eb871f52431f45fef5e938acd45e752d9132faaf38aa4a045168b3b6"
+      },
+      {
+        "name": "ibm-plex-mono-Italic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-mono/fonts/complete/otf/IBMPlexMono-Italic.otf",
+        "bytes": 94568,
+        "sha256": "71a52792168111d6ed4263151fee8a2de652bd3623846ac14ad9d4234294d119"
+      },
+      {
+        "name": "ibm-plex-mono-BoldItalic.otf",
+        "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/packages/plex-mono/fonts/complete/otf/IBMPlexMono-BoldItalic.otf",
+        "bytes": 95568,
+        "sha256": "f94a7d994e5aed3364744a9f9b047f1151a5bf69e380d2ff9abd4da51412f726"
+      }
+    ],
+    "notice": {
+      "name": "ibm-plex-mono-OFL.txt",
+      "url": "https://raw.githubusercontent.com/IBM/plex/39276912b05f700ee1dd491950c35d8697214208/LICENSE.txt",
+      "bytes": 4456,
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    }
+  },
+  {
+    "id": "stix-two-math",
+    "label": "STIX Two Math · 数学公式",
+    "family": "STIX Two Math",
+    "role": "math",
+    "license": "OFL-1.1",
+    "source": "https://github.com/stipub/stixfonts",
+    "fonts": [
+      {
+        "name": "stix-two-math-Regular.ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/stixtwomath/STIXTwoMath-Regular.ttf",
+        "bytes": 1517976,
+        "sha256": "562551b15b836e6e01d1b7350909baf3c8c8d83260c1190fbf4544333e6936de"
+      }
+    ],
+    "notice": {
+      "name": "stix-two-math-OFL.txt",
+      "url": "https://raw.githubusercontent.com/google/fonts/e9678a5385322c63730122ba464765baad83cfd8/ofl/stixtwomath/OFL.txt",
+      "bytes": 4519,
+      "sha256": "0c8825913b60d858aacdb33c4ca6660a7d64b0d6464702efbb19313f5765861a"
+    }
+  }
+]
